@@ -20,7 +20,7 @@ app.UseStaticFiles();
 //
 app.MapGet("/api/intro", () => new
 {
-    name = "Sunghyun Chang",
+    name = "Sunghyun 'Sam' Chang",
     title = "Senior Software Engineer",
     lead = "Specialized in AI Integration and System Architecture", // :contentReference[oaicite:3]{index=3}
 });
@@ -45,9 +45,24 @@ app.MapGet("/api/about", () => new
 app.MapGet("/api/services", () => new[]
 {
     new {
-        title = "",
-        body = "" // :contentReference[oaicite:6]{index=6}
+        title = "AI INTEGRATION (PRODUCTION)",
+        body = "I bridge research and production. I align interfaces, define message protocols, and build services that safely serve models at scale—turning prototypes into business value with clear contracts, versioning, and rollbacks." // :contentReference[oaicite:6]{index=6}
     },
+    new
+    {
+        title = "",
+        body = ""
+    },
+    new
+    {
+        title = "PROBLEM SOLVING",
+        body = "I break complex problems into clear, testable pieces, then solve the highest-impact part first. I start with the current constraints, define success metrics (latency, error rate, throughput), and validate with quick prototypes before scaling. In production, I favor simple, observable solutions—measure, iterate, and ship."
+    },
+    new
+    {
+        title = "SYSTEM DESIGN & RELIABILITY",
+        body = "Architecture is a team sport. I document decisions, plan for failure, and design for operability—metrics, logs, alerts, and SLOs—so systems remain understandable and fixable long after launch."
+    }
 });
 
 //
