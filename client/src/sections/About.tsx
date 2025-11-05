@@ -26,12 +26,13 @@ export default function About() {
         </h1>
 
         {/* 서브헤드 */}
-        <h3 className="text-base md:text-lg text-slate-300 leading-relaxed mb-6 max-w-3xl mx-auto md:mx-0">
+        <h3 className="text-base md:text-lg text-slate-300 leading-relaxed mb-6 
+                      w-full md:max-w-none text-justify break-words [text-align-last:justify]">
           {about.body[0]}
         </h3>
 
         {/* ✅ 라인(divider) */}
-        <div className="w-20 h-[2px] bg-[#14b8a6] mx-auto md:mx-0 mb-10"></div>
+        {/* <div className="w-20 h-[2px] bg-[#14b8a6] mx-auto md:mx-0 mb-10"></div> */}
 
         {/* 본문 */}
         <div className="md:flex md:items-start md:gap-10">
@@ -47,7 +48,7 @@ export default function About() {
           </div>
 
           {/* 텍스트 본문 */}
-          <div className="flex-1 text-slate-200 space-y-5 text-sm md:text-base leading-relaxed">
+          <div className="flex-1 text-slate-200 space-y-5 text-sm md:text-base leading-relaxed text-justify">
             {about.body.slice(1).map((p, i) => (
               <p key={i}>{p}</p>
             ))}
