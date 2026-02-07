@@ -2,7 +2,6 @@ DobbyPortfolio.sln
 run.sh
 server/bin
 server/obj
-server/wwwroot
 
 # Logs
 logs
