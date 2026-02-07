@@ -27,3 +27,24 @@ export default {
   },
   plugins: [],
 }
+
+module.exports = {
+  content: [
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
+  theme: {
+    extend: {
+     keyframes: {
+      modalOut: {
+          '0%': { opacity: '1', transform: 'translateY(0) scale(1)' },
+          '100%': { opacity: '0', transform: 'translateY(8px) scale(0.98)' },
+        },
+      },
+      animation: {
+        modalIn: 'modalIn 0.25s ease-out',
+        modalOut: 'modalOut 0.2s ease-in',
+      },
+    },
+  },
+  plugins: [],
+};

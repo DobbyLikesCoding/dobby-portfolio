@@ -14,9 +14,11 @@ export default function WhatIDo() {
 
   return (
     <section id="what-i-do" className="relative bg-[#101418] py-14 md:py-20 overflow-hidden">
-      <div className="absolute inset-0 bg-cover bg-center opacity-20 md:opacity-30"
-           style={{ backgroundImage: "url('/images/desk.jpg')" }} />
-      <div className="absolute inset-0 bg-[#101418]/80" />
+      <div
+        className="absolute inset-0 bg-cover bg-center scale-102 blur-sm"
+        style={{ backgroundImage: "url('/images/desk.jpg')" }}
+      />
+      <div className="absolute inset-0 bg-[#101418]/75" />
 
       <div className="relative max-w-6xl mx-auto px-4 md:px-8">
         <h2 className="text-3xl font-serif mb-8 flex items-center gap-3">

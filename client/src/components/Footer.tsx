@@ -1,21 +1,21 @@
 export default function Footer() {
   return (
     <footer className="bg-black/0">
-      <div className="bg-gradient-to-r from-sky-500 via-blue-500 to-indigo-700">
+      <div className="bg-gradient-to-r from-[#101418] via-[#121920] to-[#101418] border-t border-white/10">
         <div className="mx-auto max-w-6xl px-6 py-10 flex flex-col items-center gap-8">
           {/* icons */}
           <div className="flex gap-8">
             {/* 1. Email */}
             <a
               href="mailto:samashe.chang@gmail.com"
-              className="w-10 h-10 flex items-center justify-center text-white transition transform hover:-translate-y-1.5"
+              className="w-10 h-10 flex items-center justify-center text-slate-200 transition transform hover:-translate-y-1.5 hover:text-white"
               aria-label="Email"
             >
               <svg
                 className="w-6 h-6"
                 viewBox="0 0 24 24"
                 fill="none"
-                stroke="white"
+                stroke="currentColor"
                 strokeWidth={1.8} 
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -28,13 +28,13 @@ export default function Footer() {
             {/* 2. LinkedIn */}
             <a
               href="https://www.linkedin.com/in/samashe/"
-              className="w-10 h-10 flex items-center justify-center text-white transition transform hover:-translate-y-1.5"
+              className="w-10 h-10 flex items-center justify-center text-slate-200 transition transform hover:-translate-y-1.5 hover:text-white"
               aria-label="LinkedIn"
             >
               <svg
                 className="w-6 h-6"
                 viewBox="0 0 24 24"
-                fill="white"
+                fill="currentColor"
               >
                 <path d="M6.94 8.5H3.56V20h3.38V8.5zM5.25 3.75A1.75 1.75 0 105.26 7.25 1.75 1.75 0 005.25 3.75zM20.44 20h-3.37v-5.8c0-1.38-.5-2.33-1.73-2.33-.94 0-1.5.64-1.75 1.25-.09.2-.11.49-.11.78V20H10.1s.04-9.9 0-10.9h3.38v1.55A3.37 3.37 0 0116.5 8c2.21 0 3.94 1.44 3.94 4.53V20z" />
               </svg>
@@ -43,13 +43,13 @@ export default function Footer() {
             {/* 3. GitHub */}
             <a
               href="https://github.com/DobbyLikesCoding"
-              className="w-10 h-10 flex items-center justify-center text-white transition transform hover:-translate-y-1.5"
+              className="w-10 h-10 flex items-center justify-center text-slate-200 transition transform hover:-translate-y-1.5 hover:text-white"
               aria-label="GitHub"
             >
               <svg
                 className="w-6 h-6"
                 viewBox="0 0 24 24"
-                fill="white"
+                fill="currentColor"
               >
                 <path
                   fillRule="evenodd"
@@ -61,7 +61,7 @@ export default function Footer() {
           </div>
 
           {/* text */}
-          <p className="text-sm text-white tracking-wide">
+          <p className="text-sm text-slate-300 tracking-wide">
             © Sunghyun Chang {new Date().getFullYear()}
           </p>
         </div>

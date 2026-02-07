@@ -3,7 +3,7 @@ import About from './sections/About';
 import WhatIDo from './sections/WhatIDo';
 import Skills from './sections/Skills';
 import Experience from './sections/Experience';
-import Portfolio from './sections/Portfolio';
+import Portfolio from './sections/Projects';
 import Contact from './sections/Contact';
 import PageDots from './components/PageDots';
 import Footer from './components/Footer';

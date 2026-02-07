@@ -146,3 +146,7 @@ button:hover {
 .animate-bounce-slow {
   animation: bounce-slow 1.6s infinite;
 }
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}

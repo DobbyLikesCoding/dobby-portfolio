@@ -50,24 +50,24 @@ export default function Intro() {
       />
 
       {/* 오버레이 */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-black/40 to-[#101418]" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/55 to-[#101418]" />
 
       {/* 내용 */}
       <div className="relative z-10 px-4 md:px-6">
         <h1
           className="font-serif font-semibold text-white leading-tight"
-          style={{ fontSize: 'clamp(2.75rem, 6vw, 5rem)' }}
+          style={{ fontSize: 'clamp(3.2rem, 7.5vw, 6rem)' }}
         >
           {intro ? intro.name : '...'}
         </h1>
 
-        <p className="mt-4 uppercase tracking-[0.35em] text-xs md:text-sm text-slate-100/90">
+        <p className="mt-4 uppercase tracking-[0.3em] text-base md:text-lg text-slate-100/95 drop-shadow-[0_2px_10px_rgba(0,0,0,0.6)]">
           {intro ? intro.title : ''}
         </p>
 
         {/* lead 문장은 원하면 보여주기 */}
         {intro?.lead ? (
-          <p className="mt-6 max-w-2xl mx-auto text-sm md:text-base text-slate-100/80">
+          <p className="mt-6 max-w-3xl mx-auto text-lg md:text-xl text-slate-100/90 drop-shadow-[0_2px_12px_rgba(0,0,0,0.65)]">
             {intro.lead}
           </p>
         ) : null}
