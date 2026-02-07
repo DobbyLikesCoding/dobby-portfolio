@@ -51,14 +51,13 @@ function MediaViewer({ media }: { media?: ProjectMediaInput[] }) {
       {!!images.length && (
         <div className="grid grid-cols-1 gap-3">
           {images.map((item, idx) => {
-          const isQraftAxeImage =
-            item.type === 'image' && item.src.includes('/images/qraft_axe/');
-          return (
-            <div
-              key={`${item.type}-${idx}-${item.src}`}
-              className="aspect-video rounded-lg overflow-hidden border border-white/10 bg-black/20"
-            >
-              {item.type === 'image' && (
+            const isQraftAxeImage =
+              item.type === 'image' && item.src.includes('/images/qraft_axe/');
+            return (
+              <div
+                key={`${item.type}-${idx}-${item.src}`}
+                className="aspect-video rounded-lg overflow-hidden border border-white/10 bg-black/20"
+              >
                 <img
                   src={item.src}
                   alt={item.alt ?? ''}
@@ -69,17 +68,8 @@ function MediaViewer({ media }: { media?: ProjectMediaInput[] }) {
                       : '',
                   ].join(' ')}
                 />
-              )}
-
-              {item.type === 'video' && (
-                <video
-                  src={item.src}
-                  controls
-                  className="h-full w-full object-contain"
-                />
-              )}
-            </div>
-          );
+              </div>
+            );
           })}
         </div>
       )}
