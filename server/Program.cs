@@ -32,9 +32,9 @@ app.MapGet("/api/about", () => new
     headline = "I'm Sunghyun",
     body = new[]
     {
-        "As an AI Integration Engineer and architecture-minded problem solver, I specialize in designing scalable systems that translate business requirements into technical models, seamlessly connecting AI capabilities with real-world applications.", // :contentReference[oaicite:4]{index=4}
-        "With over 11 years of experience in software engineering, I focus on solving complex challenges through clear structure, thoughtful design, and a deep understanding of how systems work. I combine architectural insight with practical engineering to design scalable solutions that turn business requirements into solid technical models, integrating AI capabilities to create real-world value. My background in C# and software architecture helps me build reliable, efficient systems that improve performance and maintainability.",
-        "I’m driven by the challenge of transforming abstract ideas into tangible results—bridging design, technology, and meaningful impact.", // :contentReference[oaicite:5]{index=5}
+        "AI integration engineer focused on turning business requirements into reliable, scalable systems that connect models to production workflows.",
+        "11+ years in software engineering with a C#/.NET foundation, designing architectures that stay fast, observable, and maintainable under real-world load.",
+        "I value clear problem framing, measurable outcomes, and delivering systems teams can operate confidently."
     }
 });
 
@@ -50,7 +50,7 @@ app.MapGet("/api/services", () => new[]
     new
     {
         title = "REAL-TIME DISTRIBUTED SYSTEMS",
-        body = "Drawing on my experience at Qraft Technologies, I specialize in designing and optimizing real-time distributed systems that process large volumes of data with minimal latency. Using C#/.NET, I’ve built microservice-based architectures deployed with Docker and Kubernetes, integrating Redis for in-memory performance and Pulsar/Kafka for reliable messaging. Across the software lifecycle—from system design and development to deployment, monitoring, and optimization—I emphasize clarity, observability, and long-term maintainability. My goal is to deliver systems that are fast under pressure, easy to understand, and effortless to evolve."        
+        body = "Design and optimize real-time distributed systems with low latency and high throughput. Built C#/.NET microservices on Docker/Kubernetes with Redis and Pulsar/Kafka, emphasizing observability, operability, and long-term maintainability."        
     },
     new
     {
@@ -70,16 +70,16 @@ app.MapGet("/api/services", () => new[]
 app.MapGet("/api/skills", () => new
 { 
     development = new[] {
-        "C#", ".NET Core", ".NET Framework", "WPF", "WinForms", "Xamarin",  "React", "C++"
+        "C#", ".NET Core", ".NET Framework", "WPF", "WinForms", "Xamarin", "React", "C++"
     }, // :contentReference[oaicite:10]{index=10}
     tools = new[] {
-        "Git / GitHub", "Docker", "Kubernetes", "AWS", "Jenkins", "JIRA", "Windows", "Linux"
+        "Git / GitHub", "Docker", "Kubernetes", "AWS", "Jenkins", "JIRA", "Linux", "Windows"
     }, // :contentReference[oaicite:11]{index=11}
     knowledge = new[] {
         "Network", "TCP/IP", "REST API", "Message Queue (Kafka, Pulsar)", "MySQL", "Redis", "CI/CD", "FIX Protocol"
     }, // :contentReference[oaicite:12]{index=12}
     softskill = new[] {
-        "Problem Solving", "Software Lifecycle", "Architecture Design", "Microservice", "Teamwork", "Team Building", "Project Planning", "Agile", "Self-Motivated", "Responsibility"
+        "System Design", "Reliability", "Observability", "Architecture Documentation", "Cross-team Collaboration", "Mentorship", "Execution"
     }, // :contentReference[oaicite:13]{index=13}
 });
 
@@ -159,58 +159,63 @@ app.MapGet("/api/projects", () => new object[]
 {
     new {
         title = "[QRAFT - AXE] AI Execution Engine System",
-        description = "AXE is a real-time automated order execution system based on reinforcement learning models. It aims to minimize market impact and reduce transaction costs when large institutional clients place large stock orders.",
+        description = "A real-time automated order execution platform using reinforcement learning to reduce market impact and transaction costs for institutional-sized orders.",
         tech = new[] { "Python", ".NET Core", "Rust", "MySQL", "Redis", "AWS", "Docker", "Apache Pulsar", "WPF", "FIX Protocol", "TCP/IP", "Jenkins", "Kubernetes" },
         images = new [] { "/images/qraft_axe/6.png" },
         web = "https://www.qraftec.com/market-intelligence-execution",
         details = new[] 
         {
-            "AXE is agent-based deep reinforcement learning architecture and this model adeptly navigates complex market scenarios, optimizes order execution, and minimizes trading costs. ",
-            "By processing extensive tick-level data, including price, volume, order book dynamics, and historical patterns through the reinforcement learning, AXE fine-tunes trading strategies, considering factors such as market impact, liquidity, and risk.",
-            "This enables real-time enhance execution efficiency while reducing trading costs."
+            "Agent-based deep RL architecture that learns execution policies under changing liquidity and volatility.",
+            "Consumes tick-level data (price, volume, order book, historical context) to optimize impact, fill quality, and risk.",
+            "Designed for low-latency operation with observability, backtesting, and safe rollout of strategy updates."
         },
         tasks = new[]
         {
-            "Developed Middleware Endpoint for AXE(AI Execution Engine), the connection for several client Securities Firm Companies’s Order Management Systems (OMS), and converted protocol data between OMS and AXE.",
-            "Developed integration scenario test program to CI/CD",
-            "Developed monitoring program",
-            "Developed daily report/backup program",
-            "Developed trading system through OpenAPI of EBEST Investment & securities Co.,Ltd. and connected AXE",
-            "Developed strategy and stock selection program",
-            "Managed trading system for AXE performance history data"
+            "Built OMS integration middleware (protocol translation, validation, and routing for multiple broker OMS).",
+            "Delivered CI/CD scenario tests, monitoring, and daily reporting/backup automation.",
+            "Implemented trading integrations (OpenAPI) and managed performance history pipelines.",
+            "Led a cross-functional team (4 research, 3 engineering, 1 QA) as team lead.",
+            "Supported customer-facing technical sales and solution alignment with client stakeholders."
         },
         media = new[] { "/images/qraft_axe/1.png", "/images/qraft_axe/2.png", "/images/qraft_axe/3.png", "/images/qraft_axe/4.png", "/images/qraft_axe/5.png" },
     },
     new
     {
         title = "[QRAFT - ASAQ] Real-time supply-demand analysis system",
-        description = "ASAQ service provides real-time investment information based on the supply and demand of Korean stocks. It analyzes data in real time to help individual retail investors make informed investment decisions effectively.",
+        description = "A real-time supply/demand analytics service for Korean equities, built to surface actionable signals for retail investors.",
         tech = new[] { "ASP.NET Core", "WPF", "Xamarin", "MySQL", "SignalR" },
         images = new [] { "/images/qraft_asaq/1.png" },
         details = new[] 
         { 
-            "There are 2,300 stocks on the Korean stock market. In a market that changes every day, each event has so many factors that it is very difficult to analyze.",
-            "Furthermore, in a fast-changing market every day, individual investors are bound to lack information compared to institutions and foreign securities.",
-            "ASAQ aims to analyze and calculate market big market data and help secure effective investments by determining market conditions based on real-time data provided.",
-            "Performace : 500+ downloads in Play Store and over 1000+ customers"
+            "Processed large-scale market data across 2,300+ stocks to derive supply/demand indicators in real time.",
+            "Focused on clear, fast insights for non-institutional investors in a noisy, fast-moving market.",
+            "Result: 500+ Play Store downloads and 1,000+ active customers."
         },
         tasks = new[] 
         { 
-            "Project Management, Architecture Design, Data Analysis, Software Development, Operations and Maintenance, Marketing",
-            "Development of real-time supply and demand analysis algorithm engine",
-            "Development server",
-            "Development Windows Client Program",
-            "Development Android App"
+            "Owned end-to-end delivery: architecture, data analysis, backend, and ops.",
+            "Built the real-time analytics engine and SignalR streaming pipeline.",
+            "Shipped Windows client + Android app with consistent UX and low-latency updates.",
+            "Early-stage startup: handled planning, build, release operations, and marketing as a solo contributor."
         },
         media = new[] { "/images/qraft_asaq/1.png", "/images/qraft_asaq/2.png", "/images/qraft_asaq/3.png", "/images/qraft_asaq/demo.mp4" },
     },
     new
     {
         title = "[QRAFT - UP&DOWN] Tick Trading to futures option",
-        description = "A trading program developed to enable retail clients to perform scapling trades across a wide range of instruments, including stock indices, currencies, energy, on multiple exchanges such a CEM, EUREX and ICE.",
+        description = "A high-speed tick trading platform for futures/options across CME, EUREX, and ICE markets.",
         tech = new[] { "C#, WPF, MySQL" },
         images = new [] { "/images/qraft_und/1.png" },
-        tasks = new[] { "Project Management, Architecture Design, Software Development" },
+        details = new[]
+        {
+            "Optimized for low-latency order entry and rapid position management across multiple exchanges.",
+            "Delivered a desktop client focused on speed, reliability, and clarity for retail traders."
+        },
+        tasks = new[]
+        {
+            "Project management, architecture design, and core trading client development.",
+            "Early-stage startup: handled planning, build, release operations, and marketing as a solo contributor."
+        },
         media = new[] { "/images/qraft_und/1.png", "/images/qraft_und/demo.mp4" },
     }
 });
