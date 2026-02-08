@@ -19,15 +19,14 @@ export default function About() {
 
   return (
     <section id="about" className="bg-[#111314] py-16 md:py-24">
-      <div className="max-w-5xl mx-auto px-4 md:px-8 text-center md:text-left fade-in">
+      <div className="max-w-5xl mx-auto px-4 md:px-8 text-left fade-in">
         {/* 헤드라인 */}
         <h1 className="text-3xl md:text-4xl font-serif font-semibold text-white mb-4">
           {about.headline}
         </h1>
 
         {/* 서브헤드 */}
-        <h3 className="text-base md:text-lg text-slate-300 leading-relaxed mb-6 
-                      w-full md:max-w-none text-justify break-words [text-align-last:justify]">
+        <h3 className="text-base md:text-lg text-slate-300 leading-relaxed mb-6 w-full md:max-w-none text-left">
           {about.body[0]}
         </h3>
 
@@ -35,9 +34,9 @@ export default function About() {
         {/* <div className="w-20 h-[2px] bg-[#14b8a6] mx-auto md:mx-0 mb-10"></div> */}
 
         {/* 본문 */}
-        <div className="md:flex md:items-start md:gap-10">
+        <div className="md:flex md:items-start md:gap-12">
           {/* 이미지 */}
-          <div className="flex justify-center md:justify-start mb-10 md:mb-0">
+          <div className="flex justify-center md:justify-start mb-10 md:mb-0 md:shrink-0">
             <div className="w-40 h-40 md:w-56 md:h-56 rounded-full overflow-hidden border-[6px] border-[#111314] outline outline-2 outline-[#14b8a6]">
               <img
                 src="/images/profile.jpg"
@@ -48,7 +47,7 @@ export default function About() {
           </div>
 
           {/* 텍스트 본문 */}
-          <div className="flex-1 text-slate-200 space-y-5 text-sm md:text-base leading-relaxed text-justify">
+          <div className="flex-1 text-slate-200 space-y-5 text-sm md:text-base leading-relaxed text-left">
             {about.body.slice(1).map((p, i) => (
               <p key={i}>{p}</p>
             ))}

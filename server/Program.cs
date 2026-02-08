@@ -32,9 +32,9 @@ app.MapGet("/api/about", () => new
     headline = "I'm Sunghyun",
     body = new[]
     {
-        "AI integration engineer focused on turning business requirements into reliable, scalable systems that connect models to production workflows.",
-        "11+ years in software engineering with a C#/.NET foundation, designing architectures that stay fast, observable, and maintainable under real-world load.",
-        "I value clear problem framing, measurable outcomes, and delivering systems teams can operate confidently."
+        "As an AI Integration Engineer and architecture-minded problem solver, I specialize in designing scalable systems that translate business requirements into technical models, seamlessly connecting AI capabilities with real-world applications.", // :contentReference[oaicite:4]{index=4}
+        "With over 11 years of experience in software engineering, I focus on solving complex challenges through clear structure, thoughtful design, and a deep understanding of how systems work. I combine architectural insight with practical engineering to design scalable solutions that turn business requirements into solid technical models, integrating AI capabilities to create real-world value. My background in C# and software architecture helps me build reliable, efficient systems that improve performance and maintainability.",
+        "I’m driven by the challenge of transforming abstract ideas into tangible results—bridging design, technology, and meaningful impact.", // :contentReference[oaicite:5]{index=5}
     }
 });
 
