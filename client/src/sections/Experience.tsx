@@ -150,16 +150,6 @@ function Card({ exp, align }: { exp: ExperienceItem; align: "left" | "right" }) 
         </a>
       )}
 
-      {exp.organization === "HANSEO University, South Korea" && exp.period == "Feb 2015" && (
-        <a
-          href="/files/TranscriptUniversity.pdf"
-          target="_blank"
-          rel="noreferrer"
-          className="inline-flex items-center gap-1 mt-4 text-xs text-emerald-400 hover:underline"
-        >
-          📄 View Transcript (PDF)
-        </a>
-      )}
     </div>
   );
 }
