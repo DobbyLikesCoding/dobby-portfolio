@@ -86,7 +86,7 @@ app.MapGet("/api/skills", () => new
 //
 // 5) Experience ─────────────────────────────────────────────────
 //
-app.MapGet("/api/experience", () => new[]
+app.MapGet("/api/experience", () => new object[]
 {    
     new {
     organization = "HANSEO University, South Korea",
@@ -113,9 +113,93 @@ app.MapGet("/api/experience", () => new[]
     organization = "Camino de Santiago, Europe",
     role = "Solo Pilgrimage",
     period = "Jun 2011 – Aug 2011",
-    description = "Completed a 1,000 km solo pilgrimage from St-Jean-Pied-de-Port, France, to Porto, Portugal. Originally undertaken as a journey, it became a pivotal turning point that shaped my personal resilience, self-reflection, and long-term life direction."
-    },
+    highlightText = "What started as a simple trip became the turning point that shaped the path of my life.",
+    description = "Completed a 1,000 km solo pilgrimage along the Camino de Santiago, starting in St-Jean-Pied-de-Port, France, and continuing beyond Santiago de Compostela toward Portugal. What started as a simple travel plan eventually became a turning point that shaped my mindset, resilience, and long-term direction in life.",
+    storyBlocks = new object[]
+    {
+        new { type = "heading", text = "The Beginning" },
+        new { type = "paragraph", text = "The journey began with a simple goal: I wanted to travel through Europe for a longer period on a limited budget." },
+        new { type = "paragraph", text = "While researching affordable ways to travel alone, I discovered the Camino de Santiago. The idea of walking across countries with only a backpack felt both intimidating and exciting." },
+        new { type = "paragraph", text = "At the time, it was also my first time traveling abroad alone. I could barely speak English, and since the journey would take place in Spain, I spent about two months learning basic Spanish so I could manage simple conversations along the way." },
+        new { type = "paragraph", text = "Before leaving, I prepared as much as I could: researching the route, estimating costs, and deciding what to pack for the pilgrimage." },
+        new
+        {
+            type = "imageRow",
+            images = new object[]
+            {
+                new { src = "/images/camino/route.jpg", alt =  "Camino route map" },
+                new { src = "/images/camino/13.jpg", alt = "Backpack" }
+            }
+        },
+        new { type = "divider" },
 
+        new { type = "heading", text = "The Journey" },
+        new { type = "paragraph", text = "The journey did not begin smoothly. My flight was delayed, and I arrived in France much later than expected. Late at night, in an unfamiliar country, I had to find a place to stay before heading to Saint-Jean-Pied-de-Port, the starting point of the pilgrimage." },
+        new { type = "paragraph", text = "Standing there alone, tired and uncertain, I remember feeling overwhelmed." },
+        new { type = "paragraph", text = "Once the walking began, the days quickly became physically demanding." },
+        new { type = "paragraph", text = "Most mornings started around 6 a.m., and I would walk 20 to 30 kilometers until midday. Some days were painful — my toenails fell off, and on difficult days my only goal was to reach the next village." },
+        new { type = "quote", text = "On the second day, I remember thinking to myself,\n\"Why did I choose to put myself through this?\"" },
+        new { type = "paragraph", text = "But the Camino has a unique way of changing your perspective." },
+        new { type = "paragraph", text = "Along the trail, I met pilgrims from many different countries. Even though my Spanish was far from perfect, we shared conversations, meals, and stories. Everyone I met had their own reason for walking." },
+        new { type = "paragraph", text = "Some were searching for something. Some were recovering from difficult moments in life. Others simply wanted to experience the journey." },
+        new
+        {
+            type = "imageRow",
+            images = new object[]
+            {
+                new { src = "/images/camino/21.jpg", alt = "" },
+                new { src = "/images/camino/27.jpg", alt = "" },
+                new { src = "/images/camino/20.jpg", alt = "" },
+                new { src = "/images/camino/25.jpg", alt = "" },
+                new { src = "/images/camino/23.jpg", alt = "" },                
+                new { src = "/images/camino/11.jpg", alt = "" },
+            }
+        },
+        new { type = "divider" },
+
+        new { type = "heading", text = "Looking Inward" },
+        new { type = "paragraph", text = "At first I mostly noticed the landscape — fields, villages, mountains, and endless paths. But gradually my attention shifted inward." },
+        new { type = "paragraph", text = "Walking day after day gave me time to reflect on my life and my future." },
+        new { type = "paragraph", text = "Many of the worries that once felt overwhelming slowly started to feel smaller." },
+        new { type = "paragraph", text = "Somewhere along the way, the Camino stopped feeling like a physical challenge and began to feel like a personal journey." },
+        new
+        {
+            type = "imageRow",
+            images = new object[]
+            {
+                new { src = "/images/camino/7.jpg", alt = "" },
+                new { src = "/images/camino/12.jpg", alt = "" },
+                new { src = "/images/camino/18.jpg", alt = "" },
+                new { src = "/images/camino/19.jpg", alt = "" },
+            }
+        },
+        new { type = "divider" },
+
+        new { type = "heading", text = "Beyond the Destination" },
+        new { type = "paragraph", text = "Originally, the goal was to reach Santiago de Compostela." },
+        new { type = "paragraph", text = "But when I finally arrived, it didn’t feel like the end of the journey." },
+        new { type = "paragraph", text = "Instead, it felt like a new beginning.." },
+        new { type = "paragraph", text = "So rather than stopping there, I continued walking toward Portugal." },
+        new { type = "image", src = "/images/camino/16.jpg", alt = "Camino destination" },
+        new { type = "image", src = "/images/camino/28.jpg", alt = "" },
+        new { type = "divider" },
+
+        new { type = "heading", text = "Reflection" },
+        new { type = "paragraph", text = "Looking back now, the Camino became a turning point in my life." },
+        new { type = "paragraph", text = "It showed me that I was capable of doing things that once felt impossible." },
+        new { type = "paragraph", text = "More importantly, it gave me the confidence to start asking what I truly wanted to do with my life." },
+        new { type = "paragraph", text = "In many ways, that journey helped shape the person I am today." },
+        new
+        {
+            type = "imageRow",
+            images = new object[]
+            {
+                new { src = "/images/camino/2.jpg", alt = "" },
+                new { src = "/images/camino/8.jpg", alt = "" },
+            }
+        },
+        new { type = "image", src = "/images/camino/17.jpg", alt = "" }
+    }},
     new {
     organization = "North-West University, Mafikeng, South Africa",
     role = "Exchange Student, Computer Science and Electronics",
@@ -143,7 +227,12 @@ app.MapGet("/api/experience", () => new[]
     period = "Nov 2016 – Nov 2023",
     description = "Led the AXE team and operated a real-time automated order execution system based on reinforcement learning, ensuring stable, low-latency trading operations for large institutional clients."
     },
-
+    new
+    {
+        organization = "Relocation",
+        period = "Dec 2023 - Apr 2024",
+        description = "A new beginning: I’ve made the big move to the United States and am ready for what lies ahead."
+    },
     new {
     organization = "LG Energy Solution Michigan",
     role = "Smart Factory Senior Engineer",
