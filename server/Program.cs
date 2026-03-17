@@ -142,27 +142,16 @@ app.MapGet("/api/experience", () => new object[]
         new { type = "paragraph", text = "But the Camino has a unique way of changing your perspective." },
         new { type = "paragraph", text = "Along the trail, I met pilgrims from many different countries. Even though my Spanish was far from perfect, we shared conversations, meals, and stories. Everyone I met had their own reason for walking." },
         new { type = "paragraph", text = "Some were searching for something. Some were recovering from difficult moments in life. Others simply wanted to experience the journey." },
-<<<<<<< HEAD
-=======
         new { type = "image", src = "/images/camino/27.jpg", alt = "" },
->>>>>>> 1b3412a (layout update)
         new
         {
             type = "imageRow",
             images = new object[]
             {
                 new { src = "/images/camino/21.jpg", alt = "" },
-<<<<<<< HEAD
-                new { src = "/images/camino/27.jpg", alt = "" },
-                new { src = "/images/camino/20.jpg", alt = "" },
-                new { src = "/images/camino/25.jpg", alt = "" },
-                new { src = "/images/camino/23.jpg", alt = "" },                
-                new { src = "/images/camino/11.jpg", alt = "" },
-=======
                 new { src = "/images/camino/20.jpg", alt = "" },
                 new { src = "/images/camino/25.jpg", alt = "" },
                 new { src = "/images/camino/23.jpg", alt = "" },
->>>>>>> 1b3412a (layout update)
             }
         },
         new { type = "divider" },
