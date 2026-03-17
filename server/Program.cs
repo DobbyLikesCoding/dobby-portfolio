@@ -166,7 +166,7 @@ app.MapGet("/api/experience", () => new object[]
             type = "imageRow",
             images = new object[]
             {
-                new { src = "/images/camino/7.jpg", alt = "" },
+                new { src = "/images/camino/7.jpg", alt = "meet" },
                 new { src = "/images/camino/12.jpg", alt = "" },
                 new { src = "/images/camino/18.jpg", alt = "" },
                 new { src = "/images/camino/19.jpg", alt = "" },
