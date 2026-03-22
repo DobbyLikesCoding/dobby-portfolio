@@ -244,6 +244,7 @@ function ProjectModal({
 export default function Projects() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [selectedTitle, setSelectedTitle] = useState<string | null>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
     fetch('/api/projects')
@@ -256,72 +257,197 @@ export default function Projects() {
     () => projects.find((p) => p.title === selectedTitle) ?? null,
     [projects, selectedTitle]
   );
+  const activeProject = projects[activeIndex] ?? null;
+  const projectCount = projects.length;
+
+  useEffect(() => {
+    if (!projects.length) return;
+    setActiveIndex((prev) => Math.min(prev, projects.length - 1));
+  }, [projects.length]);
+
+  function getProjectOffset(offset: number) {
+    if (!projectCount) return null;
+    const idx = (activeIndex + offset + projectCount) % projectCount;
+    return projects[idx];
+  }
+
+  function getProjectCover(project: Project | null) {
+    if (!project) return null;
+    if (project.images?.[0]) return project.images[0];
+
+    const mediaImage = (project.media ?? [])
+      .map(toMediaItem)
+      .find((m): m is ProjectMedia => !!m && m.type === 'image');
+    return mediaImage?.src ?? null;
+  }
+
+  const prevProject = getProjectOffset(-1);
+  const nextProject = getProjectOffset(1);
 
   return (
     <section id="portfolio" className="bg-[#101418] py-20 text-slate-100">
-      <div className="max-w-6xl mx-auto px-4 md:px-8 space-y-20">
+      <div className="max-w-6xl mx-auto px-4 md:px-8 space-y-12">
         <header>
-          <h2 className="text-3xl font-serif mb-3">Some of My Work</h2>
+          <h2 className="text-3xl font-serif mb-3">Projects</h2>
           <div className="w-10 h-[2px] bg-teal-400" />
         </header>
 
-        {projects.map((p) => (
-          <button
-            key={p.title}
-            type="button"
-            onClick={() => setSelectedTitle(p.title)}
-            className="w-full text-left group bg-transparent focus:outline-none focus:ring-0 active:outline-none">
-            <article className="rounded-lg p-8 md:p-10 bg-transparent border-2 border-white/25 shadow-none transition hover:border-white/40">
-              {/* Preview Images (desktop only) */}
-              {p.images && (
-                <div className="relative mb-12 h-[420px] hidden md:block">
-                  {p.images[0] && (
-                    <img
-                      src={p.images[0]}
-                      alt=""
-                      className="absolute left-0 top-8 w-[65%] rounded-md shadow-2xl transition-transform duration-500 ease-out group-hover:scale-[1.03]"/>
-                  )}
-                  {p.images[1] && (
-                    <img
-                      src={p.images[1]}
-                      alt=""
-                      className="absolute left-0 top-8 w-[65%] rounded-md shadow-2xl transition-transform duration-500 ease-out group-hover:scale-[1.03]"/>
-                  )}
-                  {p.images[2] && (
-                    <img
-                      src={p.images[2]}
-                      alt=""
-                      className="absolute left-0 top-8 w-[65%] rounded-md shadow-2xl transition-transform duration-500 ease-out group-hover:scale-[1.03]"/>
-                  )}
-                </div>
-              )}
+        {!!activeProject && (
+          <div className="space-y-8">
+            <div className="relative rounded-2xl border border-white/10 bg-[radial-gradient(120%_100%_at_50%_0%,rgba(56,189,248,0.2),rgba(15,19,23,0.92)_58%)] px-3 py-5 md:px-6 md:py-8 overflow-hidden">
+              {/* Desktop slider */}
+              <div className="hidden md:flex relative h-[340px] items-center justify-center">
+                {!!prevProject && (
+                  <button
+                    type="button"
+                    onClick={() => setActiveIndex((prev) => (prev - 1 + projectCount) % projectCount)}
+                    className="absolute left-4 z-10 w-[30%] max-w-[280px] overflow-hidden rounded-xl border border-white/10 opacity-75 hover:opacity-95 transition"
+                  >
+                    {getProjectCover(prevProject) ? (
+                      <img
+                        src={getProjectCover(prevProject)!}
+                        alt={prevProject.title}
+                        className="h-[220px] w-full object-cover"
+                      />
+                    ) : (
+                      <div className="h-[220px] w-full bg-slate-900" />
+                    )}
+                  </button>
+                )}
 
-              <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8">
-                <div className="max-w-xl">
-                  <h3 className="text-xl font-semibold mb-2 group-hover:text-white transition">
-                    {p.title}
-                  </h3>
-                  <p className="text-slate-300 text-sm leading-relaxed mb-5">
-                    {p.description}
-                  </p>
+                <button
+                  type="button"
+                  onClick={() => setSelectedTitle(activeProject.title)}
+                  className="relative z-20 w-[56%] max-w-[560px] overflow-hidden rounded-xl border border-white/20 shadow-2xl hover:scale-[1.01] transition"
+                >
+                  {getProjectCover(activeProject) ? (
+                    <img
+                      src={getProjectCover(activeProject)!}
+                      alt={activeProject.title}
+                      className="h-[290px] w-full object-cover"
+                    />
+                  ) : (
+                    <div className="h-[290px] w-full bg-slate-900" />
+                  )}
+                </button>
 
-                  <div className="flex flex-wrap gap-2">
-                    {p.tech.map((t) => (
-                      <span key={t} className="text-[11px] px-2 py-1 bg-slate-800 rounded">
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+                {!!nextProject && (
+                  <button
+                    type="button"
+                    onClick={() => setActiveIndex((prev) => (prev + 1) % projectCount)}
+                    className="absolute right-4 z-10 w-[30%] max-w-[280px] overflow-hidden rounded-xl border border-white/10 opacity-75 hover:opacity-95 transition"
+                  >
+                    {getProjectCover(nextProject) ? (
+                      <img
+                        src={getProjectCover(nextProject)!}
+                        alt={nextProject.title}
+                        className="h-[220px] w-full object-cover"
+                      />
+                    ) : (
+                      <div className="h-[220px] w-full bg-slate-900" />
+                    )}
+                  </button>
+                )}
 
-                {/* mini hint */}
-                <div className="text-xs text-slate-400 shrink-0">
-                  Click to view details →
+                <button
+                  type="button"
+                  onClick={() => setActiveIndex((prev) => (prev - 1 + projectCount) % projectCount)}
+                  className="absolute left-2 z-30 rounded-full border border-white/20 bg-black/30 px-3 py-2 text-sm hover:bg-black/50 transition"
+                  aria-label="Previous project"
+                >
+                  ‹
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveIndex((prev) => (prev + 1) % projectCount)}
+                  className="absolute right-2 z-30 rounded-full border border-white/20 bg-black/30 px-3 py-2 text-sm hover:bg-black/50 transition"
+                  aria-label="Next project"
+                >
+                  ›
+                </button>
+              </div>
+
+              {/* Mobile slider */}
+              <div className="md:hidden space-y-3">
+                <button
+                  type="button"
+                  onClick={() => setSelectedTitle(activeProject.title)}
+                  className="w-full overflow-hidden rounded-xl border border-white/20 shadow-xl"
+                >
+                  {getProjectCover(activeProject) ? (
+                    <img
+                      src={getProjectCover(activeProject)!}
+                      alt={activeProject.title}
+                      className="h-[220px] w-full object-cover"
+                    />
+                  ) : (
+                    <div className="h-[220px] w-full bg-slate-900" />
+                  )}
+                </button>
+                <div className="flex justify-between gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setActiveIndex((prev) => (prev - 1 + projectCount) % projectCount)}
+                    className="flex-1 rounded-md border border-white/20 bg-white/5 py-2 text-sm"
+                  >
+                    Prev
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setActiveIndex((prev) => (prev + 1) % projectCount)}
+                    className="flex-1 rounded-md border border-white/20 bg-white/5 py-2 text-sm"
+                  >
+                    Next
+                  </button>
                 </div>
               </div>
-            </article>
-          </button>
-        ))}
+
+              <div className="mt-4 flex justify-center gap-2">
+                {projects.map((p, idx) => (
+                  <button
+                    key={p.title}
+                    type="button"
+                    onClick={() => setActiveIndex(idx)}
+                    className={[
+                      'h-2.5 w-6.5 rounded-full border transition-all duration-250',
+                      idx === activeIndex
+                        ? 'w-8 border-teal-200/80 bg-gradient-to-r from-teal-300 to-cyan-300 shadow-[0_0_0_1.5px_rgba(45,212,191,0.14)]'
+                        : 'border-slate-500/45 bg-slate-700/45 hover:border-slate-300/60 hover:bg-slate-500/55',
+                    ].join(' ')}
+                    aria-label={`Go to ${p.title}`}
+                  />
+                ))}
+              </div>
+
+              <div className="mt-4 pt-1 md:pt-2">
+                <div className="flex flex-col md:flex-row md:items-stretch md:justify-between gap-4 min-h-[190px]">
+                  <div className="max-w-3xl flex-1 min-w-0 overflow-hidden">
+                    <h3 className="text-lg md:text-xl font-semibold mb-2">{activeProject.title}</h3>
+                    <p className="text-slate-300 text-sm leading-relaxed mb-3 max-h-[68px] overflow-y-auto pr-1 [scrollbar-width:thin] [scrollbar-color:rgba(148,163,184,0.5)_transparent] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-slate-500/40 hover:[&::-webkit-scrollbar-thumb]:bg-slate-400/60">
+                      {activeProject.description}
+                    </p>
+                    <div className="flex flex-wrap gap-2 max-h-[92px] overflow-y-auto pr-1 [scrollbar-width:thin] [scrollbar-color:rgba(148,163,184,0.5)_transparent] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-slate-500/40 hover:[&::-webkit-scrollbar-thumb]:bg-slate-400/60">
+                      {activeProject.tech.map((t) => (
+                        <span key={t} className="text-[11px] px-2 py-1 bg-slate-800 rounded">
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => setSelectedTitle(activeProject.title)}
+                    className="shrink-0 self-start md:self-auto inline-flex h-8 items-center gap-1.5 rounded-full border border-teal-300/35 bg-teal-400/10 px-3 text-[11px] font-medium text-teal-100 hover:bg-teal-400/20 transition"
+                  >
+                    <span>View details</span>
+                    <span aria-hidden>→</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Modal */}
