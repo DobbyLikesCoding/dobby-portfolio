@@ -187,7 +187,8 @@ app.MapGet("/api/experience", () => new object[]
         new { type = "paragraph", text = "Looking back now, the Camino became a turning point in my life." },
         new { type = "paragraph", text = "It showed me that I was capable of doing things that once felt impossible." },
         new { type = "paragraph", text = "More importantly, it gave me the confidence to start asking what I truly wanted to do with my life." },
-        new { type = "paragraph", text = "In many ways, that journey helped shape the person I am today." },
+        new { type = "paragraph", text = "In many ways, that journey helped shape the person I am today." },        
+        new { type = "image", src = "/images/camino/17.jpg", alt = "" },
         new
         {
             type = "imageRow",
@@ -196,8 +197,7 @@ app.MapGet("/api/experience", () => new object[]
                 new { src = "/images/camino/2.jpg", alt = "" },
                 new { src = "/images/camino/8.jpg", alt = "" },
             }
-        },
-        new { type = "image", src = "/images/camino/17.jpg", alt = "" }
+        }
     }},
     new {
     organization = "North-West University, Mafikeng, South Africa",
@@ -216,14 +216,14 @@ app.MapGet("/api/experience", () => new object[]
     new {
     organization = "Pixoneer Geomatics",
     role = "Software Engineer",
-    period = "Oct 2014 – Jun 2016",
+    period = "Oct.20 2014 – Jun.30 2016",
     description = "Worked on aerospace and defense projects, including a helicopter condition monitoring system, gaining hands-on experience across the full software development life cycle from requirements analysis to deployment."
     },
 
     new {
     organization = "QRAFT Technologies",
     role = "AXE Team Leader & Senior Software Development Engineer",
-    period = "Nov 2016 – Nov 2023",
+    period = "Nov.15 2016 – Nov.20 2023",
     description = "Led the AXE team and operated a real-time automated order execution system based on reinforcement learning, ensuring stable, low-latency trading operations for large institutional clients."
     },
     new
@@ -234,9 +234,9 @@ app.MapGet("/api/experience", () => new object[]
     },
     new {
     organization = "LG Energy Solution Michigan",
-    role = "Smart Factory Senior Engineer",
-    period = "May 2024 – Present",
-    description = "Operated and managed smart factory product traceability systems for EV battery manufacturing, ensuring stable production by supporting roll map and cell tracking systems across electrode and assembly processes."
+    role = "Senior Smart Factory Engineer",
+    period = "May.06 2024 – Present",
+    description = "Operated and managed smart factory product traceability systems for EV and ESS battery manufacturing, ensuring stable production by supporting roll map and cell tracking systems across electrode and assembly processes."
     }
 });
 

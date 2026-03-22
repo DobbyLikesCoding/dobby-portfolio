@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+const RESUME_FILE = "/files/Resume_sunghyun.pdf";
+
 type ExperienceItem = {
   organization: string;
   role?: string;
@@ -29,6 +31,26 @@ function getNodeIcon(org: string) {
   if (lower.includes("university")) return "🎓"; // School
   else if (lower.includes("europe")) return "🥾";
   else return "💼"; // Work
+}
+
+function ResumeIcon({ className = "w-4 h-4" }: { className?: string }) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      fill="none"
+      className={className}
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M14 3H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V9z" />
+      <path d="M14 3v6h6" />
+      <path d="M12 12v6" />
+      <path d="m9.5 15.5 2.5 2.5 2.5-2.5" />
+    </svg>
+  );
 }
 
 export default function Experience() {
@@ -78,13 +100,35 @@ export default function Experience() {
           Experience
         </h2>
         <div className="mx-auto mt-4 h-px w-12 bg-[#1fa8c5]/70" />
+        <div className="mt-4 md:hidden flex justify-center">
+          <a
+            href={RESUME_FILE}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 rounded-full border border-[#1fa8c5]/50 bg-[#1fa8c5]/10 px-4 py-2 text-xs text-[#a8f0ff] hover:bg-[#1fa8c5]/20 transition"
+          >
+            <ResumeIcon />
+            <span>Download Resume</span>
+          </a>
+        </div>
 
         {/* timeline */}
         <div className="relative mt-14">
           {/* timeline arrow (center) */}
-          <div className="hidden md:flex absolute left-1/2 top-0 h-full -translate-x-1/2 flex-col items-center">
-            <div className="flex-1 w-[2px] bg-gradient-to-b from-[#1fa8c5]/25 via-[#1fa8c5]/60 to-[#1fa8c5]/25"/>
-            <div className="mt-4 text-[#1fa8c5] text-2xl leading-none animate-bounce">▼</div>
+          <div className="hidden md:flex absolute left-1/2 top-0 h-full -translate-x-1/2 z-0 pointer-events-none flex-col items-center">
+            <div className="pointer-events-none flex-1 w-[2px] bg-gradient-to-b from-[#1fa8c5]/25 via-[#1fa8c5]/60 to-[#1fa8c5]/25"/>
+            <div className="pointer-events-none mt-4 text-[#1fa8c5] text-2xl leading-none animate-bounce">▼</div>
+          </div>
+          <div className="hidden md:block absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-10 z-30">
+            <a
+              href={RESUME_FILE}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 rounded-full border border-[#1fa8c5]/45 bg-[#0f1418]/90 px-3 py-1.5 text-[11px] tracking-wide text-[#a8f0ff] shadow-[0_6px_14px_rgba(0,0,0,0.3)] hover:bg-[#1fa8c5]/15 transition"
+            >
+              <ResumeIcon className="w-3.5 h-3.5" />
+              <span>Resume</span>
+            </a>
           </div>
 
           <div className="space-y-10 md:space-y-12">
