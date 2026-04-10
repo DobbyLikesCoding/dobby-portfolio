@@ -297,7 +297,6 @@ app.MapGet("/api/projects", () => new object[]
         images = new [] { "/images/qraft_und/1.png" },
         details = new[]
         {
-            "live "
             "Optimized for low-latency order entry and rapid position management across multiple exchanges.",
             "Delivered a desktop client focused on speed, reliability, and clarity for retail traders."
         },
