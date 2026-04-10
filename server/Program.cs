@@ -161,6 +161,7 @@ app.MapGet("/api/experience", () => new object[]
         new { type = "paragraph", text = "Walking day after day gave me time to reflect on my life and my future." },
         new { type = "paragraph", text = "Many of the worries that once felt overwhelming slowly started to feel smaller." },
         new { type = "paragraph", text = "Somewhere along the way, the Camino stopped feeling like a physical challenge and began to feel like a personal journey." },
+        new { type = "image", src = "/images/camino/4.jpg", alt = "" },
         new
         {
             type = "imageRow",
@@ -169,7 +170,7 @@ app.MapGet("/api/experience", () => new object[]
                 new { src = "/images/camino/7.jpg", alt = "" },
                 new { src = "/images/camino/18.jpg", alt = "" },
                 new { src = "/images/camino/31.jpg", alt = "" },
-                new { src = "/images/camino/19.jpg", alt = "" },
+                new { src = "/images/camino/30.jpg", alt = "" },
             }
         },
         new { type = "divider" },
@@ -296,6 +297,7 @@ app.MapGet("/api/projects", () => new object[]
         images = new [] { "/images/qraft_und/1.png" },
         details = new[]
         {
+            "live "
             "Optimized for low-latency order entry and rapid position management across multiple exchanges.",
             "Delivered a desktop client focused on speed, reliability, and clarity for retail traders."
         },
