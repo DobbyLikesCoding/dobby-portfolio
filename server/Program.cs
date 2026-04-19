@@ -249,6 +249,7 @@ app.MapGet("/api/projects", () => new object[]
     new {
         title = "[QRAFT - AXE] AI Execution Engine System",
         description = "A real-time automated order execution platform using reinforcement learning to reduce market impact and transaction costs for institutional-sized orders.",
+        launched = "Aug. 2019",
         tech = new[] { "Python", ".NET Core", "Rust", "MySQL", "Redis", "AWS", "Docker", "Apache Pulsar", "WPF", "FIX Protocol", "TCP/IP", "Jenkins", "Kubernetes" },
         images = new [] { "/images/qraft_axe/6.png" },
         web = "https://www.qraftec.com/market-intelligence-execution",
@@ -271,6 +272,9 @@ app.MapGet("/api/projects", () => new object[]
     new
     {
         title = "[QRAFT - ASAQ] Real-time supply-demand analysis system",
+        launched = "Apr. 2018",
+        discontinued = "Jul. 2019",
+        age = "1y 4m",
         description = "A real-time supply/demand analytics service for Korean equities, built to surface actionable signals for retail investors.",
         tech = new[] { "ASP.NET Core", "WPF", "Xamarin", "MySQL", "SignalR" },
         images = new [] { "/images/qraft_asaq/1.png" },
@@ -293,7 +297,10 @@ app.MapGet("/api/projects", () => new object[]
     {
         title = "[QRAFT - UP&DOWN] Tick Trading to futures option",
         description = "A high-speed tick trading platform for futures/options across CME, EUREX, and ICE markets.",
-        tech = new[] { "C#, WPF, MySQL" },
+        launched = "Feb. 2017",
+        discontinued = "Mar. 2018",
+        age = "1y 1m",
+        tech = new[] { "C#", ".NET Framework", "WPF", "MySQL"},
         images = new [] { "/images/qraft_und/1.png" },
         details = new[]
         {

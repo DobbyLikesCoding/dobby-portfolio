@@ -9,6 +9,9 @@ type Project = {
   title: string;
   description: string;
   tech: string[];
+  launched?: string;
+  discontinued?: string;
+  age?: string;
   images?: string[];
   web?: string;
   code?: string;
@@ -17,6 +20,58 @@ type Project = {
   tasks?: string[];
   media?: ProjectMediaInput[];
 };
+
+function ProjectMeta({ project }: { project: Project }) {
+  const metaItems = [
+    { key: 'launched', label: 'Launched', value: project.launched, icon: 'launch' as const },
+    { key: 'discontinued', label: 'Discontinued', value: project.discontinued, icon: 'stop' as const },
+    { key: 'age', label: 'Age', value: project.age, icon: 'time' as const },
+  ].filter((item) => !!item.value);
+
+  if (!metaItems.length) return null;
+
+  return (
+    <div className="flex flex-wrap gap-2">
+      {metaItems.map((item) => (
+        <div
+          key={item.key}
+          className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-2.5 py-1 text-[11px] text-slate-200"
+        >
+          <MetaIcon type={item.icon} />
+          <span className="text-slate-400">{item.label}:</span>
+          <span>{item.value}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function MetaIcon({ type }: { type: 'launch' | 'stop' | 'time' }) {
+  if (type === 'launch') {
+    return (
+      <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 text-emerald-300" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+        <path d="M7 17 17 7" />
+        <path d="M9 7h8v8" />
+      </svg>
+    );
+  }
+
+  if (type === 'stop') {
+    return (
+      <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 text-rose-300" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+        <circle cx="12" cy="12" r="8" />
+        <path d="M9 9h6v6H9z" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 text-amber-300" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+      <circle cx="12" cy="12" r="8" />
+      <path d="M12 8v4l3 2" />
+    </svg>
+  );
+}
 
 function toMediaItem(item: ProjectMediaInput): ProjectMedia | null {
   if (typeof item === 'string') {
@@ -153,6 +208,9 @@ function ProjectModal({
             <div>
               <h3 className="text-xl font-semibold">{project.title}</h3>
               <p className="text-slate-300 text-sm mt-2">{project.description}</p>
+              <div className="mt-3">
+                <ProjectMeta project={project} />
+              </div>
             </div>
 
             <button
@@ -426,6 +484,9 @@ export default function Projects() {
                     <p className="text-slate-300 text-sm leading-relaxed mb-3 max-h-[68px] overflow-y-auto pr-1 [scrollbar-width:thin] [scrollbar-color:rgba(148,163,184,0.5)_transparent] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-slate-500/40 hover:[&::-webkit-scrollbar-thumb]:bg-slate-400/60">
                       {activeProject.description}
                     </p>
+                    <div className="mb-3">
+                      <ProjectMeta project={activeProject} />
+                    </div>
                     <div className="flex flex-wrap gap-2 max-h-[92px] overflow-y-auto pr-1 [scrollbar-width:thin] [scrollbar-color:rgba(148,163,184,0.5)_transparent] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-slate-500/40 hover:[&::-webkit-scrollbar-thumb]:bg-slate-400/60">
                       {activeProject.tech.map((t) => (
                         <span key={t} className="text-[11px] px-2 py-1 bg-slate-800 rounded">
