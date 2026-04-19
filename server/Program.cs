@@ -250,6 +250,7 @@ app.MapGet("/api/projects", () => new object[]
         title = "[QRAFT - AXE] AI Execution Engine System",
         description = "A real-time automated order execution platform using reinforcement learning to reduce market impact and transaction costs for institutional-sized orders.",
         launched = "Aug. 2019",
+        age = "6y",
         tech = new[] { "Python", ".NET Core", "Rust", "MySQL", "Redis", "AWS", "Docker", "Apache Pulsar", "WPF", "FIX Protocol", "TCP/IP", "Jenkins", "Kubernetes" },
         images = new [] { "/images/qraft_axe/6.png" },
         web = "https://www.qraftec.com/market-intelligence-execution",
