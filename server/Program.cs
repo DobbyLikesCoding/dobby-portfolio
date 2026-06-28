@@ -283,11 +283,15 @@ app.MapGet("/api/projects", () => new object[]
         { 
             "Processed large-scale market data across 2,300+ stocks to derive supply/demand indicators in real time.",
             "Focused on clear, fast insights for non-institutional investors in a noisy, fast-moving market.",
-            "Result: 500+ Play Store downloads and 1,000+ active customers."
+            "Result: 500+ Play Store downloads and 1,000+ active customers.",
+            "his experience reinforced an important lesson: even a well-engineered system means little unless it solves a problem people truly care about.",
+            "What I learned: A great system is not defined only by technical quality—it succeeds when people actually use it. I learned the importance of thinking about monetization and sustainable growth early. Even with active marketing through YouTube, Instagram, communities, and startup events, user acquisition was the hardest challenge.",
+            "Logic Reusability : This project’s core selection logic was later applied to the AXE system for live operational testing. Using the AXE AI Execution System and ASAQ strategy, the system generated approximately 10% returns ($10K profit on $100K capital) in one month."
+
         },
         tasks = new[] 
         { 
-            "Owned end-to-end delivery: architecture, data analysis, backend, and ops.",
+            "Owned end-to-end product delivery, from ideation and design to architecture, data analysis, backend development, operations, and marketing.",
             "Built the real-time analytics engine and SignalR streaming pipeline.",
             "Shipped Windows client + Android app with consistent UX and low-latency updates.",
             "Early-stage startup: handled planning, build, release operations, and marketing as a solo contributor."
@@ -306,7 +310,8 @@ app.MapGet("/api/projects", () => new object[]
         details = new[]
         {
             "Optimized for low-latency order entry and rapid position management across multiple exchanges.",
-            "Delivered a desktop client focused on speed, reliability, and clarity for retail traders."
+            "Delivered a desktop client focused on speed, reliability, and clarity for retail traders.",
+            "Lessons Learned : This project showed me that building a great product is only one part of success. While the platform delivered a highly intuitive trading experience using Korean brokerage futures and options APIs, its gamified interface created challenges in regulatory perception and B2B adoption. I learned that product design must align not only with user experience, but also with industry expectations and business realities."
         },
         tasks = new[]
         {
