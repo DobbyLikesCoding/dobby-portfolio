@@ -285,7 +285,7 @@ app.MapGet("/api/projects", () => new object[]
             "Focused on clear, fast insights for non-institutional investors in a noisy, fast-moving market.",
             "Result: 500+ Play Store downloads and 1,000+ active customers.",
             "his experience reinforced an important lesson: even a well-engineered system means little unless it solves a problem people truly care about.",
-            "What I learned: A great system is not defined only by technical quality—it succeeds when people actually use it. I learned the importance of thinking about monetization and sustainable growth early. Even with active marketing through YouTube, Instagram, communities, and startup events, user acquisition was the hardest challenge.",
+            "Lessons Learned : A great system is not defined only by technical quality—it succeeds when people actually use it. I learned the importance of thinking about monetization and sustainable growth early. Even with active marketing through YouTube, Instagram, communities, and startup events, user acquisition was the hardest challenge.",
             "Logic Reusability : This project’s core selection logic was later applied to the AXE system for live operational testing. Using the AXE AI Execution System and ASAQ strategy, the system generated approximately 10% returns ($10K profit on $100K capital) in one month."
 
         },
