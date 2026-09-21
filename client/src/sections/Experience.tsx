@@ -43,6 +43,7 @@ const FALLBACK_EXPERIENCE: ExperienceItem[] = [
     role: "B.E., Aerospace Software Engineering",
     period: "Feb 2006",
     description: "Enrolled in an interdisciplinary curriculum combining aerospace engineering and computer science, focusing on software development for aviation systems.",
+    journeySummary: "Studied aerospace software engineering, building the foundation for systems thinking and development.",
     journeyVariant: "major",
     journeyLabel: "Foundation",
     journeySide: "left",
@@ -84,6 +85,7 @@ const FALLBACK_EXPERIENCE: ExperienceItem[] = [
     role: "Solo Pilgrimage",
     period: "Jun 2011 – Aug 2011",
     description: "Completed a 1,000 km solo pilgrimage along the Camino de Santiago, starting in St-Jean-Pied-de-Port, France, and continuing beyond Santiago de Compostela toward Portugal. What started as a simple travel plan eventually became a turning point that shaped my mindset, resilience, and long-term direction in life.",
+    journeySummary: "Completed a 1,000 km solo pilgrimage that reshaped my resilience and long-term direction.",
     journeyVariant: "major",
     journeyLabel: "Turning Point",
     journeySide: "right",
@@ -190,6 +192,7 @@ const FALLBACK_EXPERIENCE: ExperienceItem[] = [
     role: "B.E., Aerospace Software Engineering",
     period: "Feb 2015",
     description: "Graduated with a Bachelor of Engineering in Aerospace Software Engineering.",
+    journeySummary: "Completed a B.E. in Aerospace Software Engineering and committed to building software professionally.",
     journeyVariant: "milestone",
     journeySide: "right",
     highlightText: "This was the point where long-term interest turned into a professional direction.",
@@ -212,6 +215,7 @@ const FALLBACK_EXPERIENCE: ExperienceItem[] = [
     role: "Software Engineer",
     period: "Oct 2014 – Jun 2016",
     description: "Worked on aerospace and defense projects, including a helicopter condition monitoring system, gaining hands-on experience across the full software development life cycle from requirements analysis to deployment.",
+    journeySummary: "Built aerospace and defense software, including a helicopter condition monitoring system, across the full development lifecycle.",
     journeyVariant: "major",
     journeyLabel: "First Production Systems",
     journeySide: "left",
@@ -222,6 +226,7 @@ const FALLBACK_EXPERIENCE: ExperienceItem[] = [
     role: "AXE Team Leader & Senior Software Development Engineer",
     period: "Nov 2016 – Nov 2023",
     description: "Led the AXE team and operated a real-time automated order execution system based on reinforcement learning, ensuring stable, low-latency trading operations for large institutional clients.",
+    journeySummary: "Led the AXE team and operated a reinforcement-learning execution platform for low-latency institutional trading.",
     journeyVariant: "major",
     journeyLabel: "System Ownership",
     journeySide: "right",
@@ -255,6 +260,7 @@ const FALLBACK_EXPERIENCE: ExperienceItem[] = [
     role: "Senior Smart Factory Engineer",
     period: "May 2024 – Present",
     description: "Operated and managed smart factory product traceability systems for EV and ESS battery manufacturing, ensuring stable production by supporting roll map and cell tracking systems across electrode and assembly processes.",
+    journeySummary: "Operate production traceability systems for EV and ESS battery manufacturing across electrode and assembly processes.",
     journeyVariant: "major",
     journeyLabel: "Smart Manufacturing",
     journeySide: "left",
@@ -394,7 +400,7 @@ function MajorChapter({ item, chapterNumber, onOpen }: { item: ExperienceItem; c
       <p className="mt-4 text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-400">{item.type} <span className="px-1.5 text-slate-600">/</span> {item.period}</p>
       <h3 className="mt-3 text-base font-semibold tracking-[0.02em] text-white md:text-[17px]">{item.organization}</h3>
       {item.role && <p className="mt-2 text-sm text-[#9ee7f4]">{item.role}</p>}
-      <p className="mt-3 line-clamp-3 text-sm leading-6 text-slate-200/72">{item.description}</p>
+      <p className="mt-3 text-sm leading-6 text-slate-200/72">{item.journeySummary ?? item.description}</p>
       {showStoryButton && (
         <button
           type="button"
@@ -420,7 +426,7 @@ function CompactMilestone({ item, onOpen }: { item: ExperienceItem; onOpen?: () 
       </div>
       <h3 className="mt-2 text-sm font-semibold text-white">{item.organization}</h3>
       {item.role && <p className="mt-1 text-xs leading-5 text-[#9ee7f4]/90">{item.role}</p>}
-      {item.journeySummary && <p className="mt-1.5 line-clamp-1 text-xs leading-5 text-slate-300/65">{item.journeySummary}</p>}
+      {item.journeySummary && <p className="mt-1.5 text-xs leading-5 text-slate-300/65">{item.journeySummary}</p>}
       {showStoryButton && (
         <button type="button" onClick={onOpen} className="mt-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-300/80 transition hover:text-white">
           Explore Chapter
