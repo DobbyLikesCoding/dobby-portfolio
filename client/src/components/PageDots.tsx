@@ -10,14 +10,25 @@ export default function PageDots({
 
   useEffect(() => {
     const onScroll = () => {
-      const mid = window.scrollY + window.innerHeight / 2;
-      let current = sections[0]?.id ?? '';
-      sections.forEach((s) => {
-        const el = document.getElementById(s.id);
-        if (!el) return;
-        if (mid >= el.offsetTop) current = s.id;
+      const activationLine = window.innerHeight / 2;
+      const renderedSections = sections.flatMap((section) => {
+        const element = document.getElementById(section.id);
+        return element ? [{ id: section.id, rect: element.getBoundingClientRect() }] : [];
       });
-      setActive(current);
+      const containingSection = renderedSections.find(
+        ({ rect }) => rect.top <= activationLine && rect.bottom > activationLine,
+      );
+      const nearestSection = renderedSections.reduce<(typeof renderedSections)[number] | undefined>(
+        (closest, section) => {
+          if (!closest) return section;
+          return Math.abs(section.rect.top - activationLine) < Math.abs(closest.rect.top - activationLine)
+            ? section
+            : closest;
+        },
+        undefined,
+      );
+
+      setActive(containingSection?.id ?? nearestSection?.id ?? sections[0]?.id ?? '');
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
@@ -32,7 +43,7 @@ export default function PageDots({
   return (
     <div
       className={`
-        hidden md:flex flex-col gap-4 fixed right-4 top-1/2 -translate-y-1/2 z-50
+        hidden md:flex flex-col gap-4 fixed right-5 top-1/2 -translate-y-1/2 z-50
         transition-opacity duration-300
         ${active === 'intro' ? 'opacity-0 pointer-events-none' : 'opacity-100'}
       `}
@@ -55,8 +66,8 @@ export default function PageDots({
                 transition
                 duration-150
                 ${isActive
-                  ? 'bg-teal-400 border-transparent shadow-[0_0_12px_rgba(45,212,191,0.4)]'
-                  : 'bg-white/10 border-white/10 hover:bg-white/30'}
+                  ? 'bg-[#86e8f9] border-transparent shadow-[0_0_16px_rgba(134,232,249,0.45)]'
+                  : 'bg-white/10 border-white/12 hover:bg-white/18'}
               `}
             >
               <span className="sr-only">{s.label}</span>
@@ -72,12 +83,12 @@ export default function PageDots({
                 -translate-y-1/2
                 whitespace-nowrap
                 rounded-md
-                bg-slate-900/90
+                bg-[rgba(8,16,25,0.92)]
                 px-2.5
                 py-1
                 text-xs
                 text-slate-100
-                shadow-lg
+                shadow-[0_10px_24px_rgba(0,0,0,0.24)]
                 opacity-0
                 scale-95
                 group-hover:opacity-100

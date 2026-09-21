@@ -3,6 +3,10 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
+  build: {
+    outDir: '../server/wwwroot',
+    emptyOutDir: true,
+  },
   server: {
     host: true,       // 네트워크(폰/다른기기)에서도 접속 가능 (원치 않으면 제거)
     port: 5173,

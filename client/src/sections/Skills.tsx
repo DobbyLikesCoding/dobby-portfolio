@@ -1,14 +1,56 @@
 import { useEffect, useState } from 'react';
+import Reveal from '../components/Reveal';
+import SpaceSectionBackdrop from '../components/SpaceSectionBackdrop';
 
 type SkillsData = {
   development: string[];
-  tools: string[];
-  knowledge: string[];
-  softskill: string[];
+  platformTools: string[];
+  systemsData: string[];
+  engineeringPractice: string[];
 };
 
+const FALLBACK_SKILLS: SkillsData = {
+  development: ['C#', '.NET Core', '.NET Framework', 'Python', 'TypeScript', 'React', 'WPF', 'WinForms', 'C++'],
+  platformTools: ['Docker', 'Kubernetes', 'AWS', 'Jenkins', 'Git / GitHub', 'Linux', 'Windows', 'Grafana', 'Prometheus', 'JIRA'],
+  systemsData: ['System Architecture', 'Distributed Systems', 'TCP/IP', 'REST API', 'Kafka / Pulsar', 'Redis', 'MySQL', 'FIX Protocol', 'Real-Time Data Systems'],
+  engineeringPractice: ['Automation', 'System Design', 'Data Analysis', 'Root Cause Analysis', 'Reliability', 'Observability', 'CI/CD', 'Cross-functional Collaboration', 'Mentorship', 'Technical Leadership'],
+};
+
+function SkillPill({ label }: { label: string }) {
+  return (
+    <span className="inline-flex rounded-full border border-white/10 bg-white/6 px-3.5 py-2 text-[11px] text-slate-100/84 transition hover:border-[#93ebfa]/34 hover:bg-[#93ebfa]/10">
+      {label}
+    </span>
+  );
+}
+
+function SkillGroup({
+  title,
+  items,
+  delayMs,
+}: {
+  title: string;
+  items: string[];
+  delayMs: number;
+}) {
+  return (
+    <Reveal delayMs={delayMs}>
+      <div className="glass-panel h-full rounded-[30px] p-6">
+        <div className="inline-flex rounded-full border border-[#93ebfa]/18 bg-[#93ebfa]/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.26em] text-[#c9f8ff]">
+          {title}
+        </div>
+        <div className="mt-5 flex flex-wrap gap-2.5">
+          {items.map((item) => (
+            <SkillPill key={item} label={item} />
+          ))}
+        </div>
+      </div>
+    </Reveal>
+  );
+}
+
 export default function Skills() {
-  const [skills, setSkills] = useState<SkillsData | null>(null);
+  const [skills, setSkills] = useState<SkillsData>(FALLBACK_SKILLS);
 
   useEffect(() => {
     fetch('/api/skills')
@@ -17,103 +59,30 @@ export default function Skills() {
       .catch(console.error);
   }, []);
 
-  if (!skills) return null;
-
   return (
-    <section id="skills" className="bg-[#111314] text-slate-100 py-16 md:py-20">
-      <div className="max-w-6xl mx-auto px-6 md:px-8">
-        {/* Title */}
-        <h2 className="text-4xl md:text-5xl font-serif tracking-tight">Skills</h2>
-        <div className="mt-3 h-1 w-24 bg-cyan-400/80 rounded-full" />
-
-        {/* ===== Row 1: DEVELOPMENT only ===== */}
-        <div className="mt-12">
-          <div className="flex items-center gap-3">
-            <span className="text-slate-200">⚙️</span>
-            <h3 className="text-sm md:text-base font-extrabold tracking-[0.15em]">
-              DEVELOPMENT
-            </h3>
-          </div>
-
-          <ul
-            className="mt-6 grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-3"
-            aria-label="Development skills"
-          >
-            {skills.development.map((s) => (
-              <li
-                key={s}
-                className="aspect-square rounded-full
-                           border border-white/10
-                           bg-white/[0.015]
-                           text-[11px] sm:text-xs
-                           flex items-center justify-center
-                           text-slate-300
-                           hover:bg-white/[0.04]
-                           transition-colors"
-              >
-                {s}
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* ===== Row 2: TOOLS / KNOWLEDGE / SOFTSKILL (3 columns) ===== */}
-        <div className="mt-16 md:mt-20 grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16">
-          {/* TOOLS */}
-          <div>
-            <div className="flex items-center gap-3">
-              <span className="text-slate-200">🛠️</span>
-              <h3 className="text-sm md:text-base font-extrabold tracking-[0.15em]">
-                TOOLS
-              </h3>
+    <section id="skills" className="section-shell px-4 md:px-8">
+      <SpaceSectionBackdrop variant="medium" />
+      <div className="mx-auto max-w-6xl">
+        <Reveal>
+          <div className="mb-10 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-3xl">
+              <p className="section-kicker">Capabilities</p>
+              <h2 className="section-title text-balance mt-4 text-4xl font-semibold text-white md:text-5xl">
+                Technical depth for building and improving complex systems.
+              </h2>
             </div>
-
-            <ul className="mt-7 space-y-2" aria-label="Tools list">
-              {skills.tools.map((t) => (
-                <li key={t} className="flex items-start gap-3">
-                  <span className="mt-0.5 text-slate-300">✓</span>
-                  <span className="text-sm md:text-base text-slate-300">{t}</span>
-                </li>
-              ))}
-            </ul>
+            <p className="max-w-xl text-sm leading-7 text-slate-300/74 md:text-base">
+              My experience spans software engineering, distributed systems, manufacturing systems, and infrastructure. I use the right tools for the problem — with a focus on automation, maintainability, and real-world operations.
+            </p>
           </div>
+        </Reveal>
 
-          {/* KNOWLEDGE */}
-          <div>
-            <div className="flex items-center gap-3">
-              <span className="text-slate-200">💡</span>
-              <h3 className="text-sm md:text-base font-extrabold tracking-[0.15em]">
-                KNOWLEDGE
-              </h3>
-            </div>
-
-            <ul className="mt-7 space-y-2" aria-label="Knowledge list">
-              {skills.knowledge.map((k) => (
-                <li key={k} className="flex items-start gap-3">
-                  <span className="mt-0.5 text-slate-300">✓</span>
-                  <span className="text-sm md:text-base text-slate-300">{k}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* SOFTSKILL */}
-          <div>
-            <div className="flex items-center gap-3">
-              <span className="text-slate-200">✨</span>
-              <h3 className="text-sm md:text-base font-extrabold tracking-[0.15em]">
-                SOFTSKILL
-              </h3>
-            </div>
-
-            <ul className="mt-7 space-y-2" aria-label="Softskill list">
-              {skills.softskill.map((s) => (
-                <li key={s} className="flex items-start gap-3">
-                  <span className="mt-0.5 text-slate-300">✓</span>
-                  <span className="text-sm md:text-base text-slate-300">{s}</span>
-                </li>
-              ))}
-            </ul>
+        <div className="grid gap-5">
+          <SkillGroup title="Development" items={skills.development} delayMs={80} />
+          <div className="grid gap-5 lg:grid-cols-3">
+            <SkillGroup title="Platform & Tools" items={skills.platformTools} delayMs={140} />
+            <SkillGroup title="Systems & Data" items={skills.systemsData} delayMs={220} />
+            <SkillGroup title="Engineering Practice" items={skills.engineeringPractice} delayMs={300} />
           </div>
         </div>
       </div>

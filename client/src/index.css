@@ -5,13 +5,13 @@
 /* -------------------- 기본 전역 스타일 -------------------- */
 
 :root {
-  font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family: "Inter", "Avenir Next", "Segoe UI", sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #101418;
+  color-scheme: dark;
+  color: #edf6ff;
+  background-color: #081019;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -23,11 +23,16 @@
 
 body {
   margin: 0;
-  background: #101418;
-  color: #e2e8f0;
-  font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  background: #081019;
+  color: #edf6ff;
+  font-family: "Inter", "Avenir Next", "Segoe UI", sans-serif;
   scroll-behavior: smooth;
   min-width: 320px;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+#root {
   min-height: 100vh;
 }
 
@@ -35,11 +40,11 @@ body {
 
 a {
   font-weight: 500;
-  color: #646cff;
+  color: #8fe7fb;
   text-decoration: none;
 }
 a:hover {
-  color: #535bf2;
+  color: #d6f9ff;
 }
 
 /* -------------------- 타이포그래피 -------------------- */
@@ -58,12 +63,12 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: transparent;
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: border-color 0.25s, background-color 0.25s, color 0.25s, transform 0.25s;
 }
 button:hover {
-  border-color: #646cff;
+  border-color: rgba(143, 231, 251, 0.6);
 }
 
 /* hero 아래 스크롤 버튼 래퍼 */
@@ -147,6 +152,417 @@ button:hover {
   animation: bounce-slow 1.6s infinite;
 }
 
+@keyframes float-slow {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -18px, 0);
+  }
+}
+
+@keyframes float-delayed {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(14px, -22px, 0);
+  }
+}
+
+@keyframes pulse-border {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(126, 213, 230, 0.14);
+  }
+  50% {
+    box-shadow: 0 0 0 12px rgba(126, 213, 230, 0);
+  }
+}
+
+@keyframes drift-x {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(22px, -16px, 0) scale(1.04);
+  }
+}
+
+@keyframes atmospheric-pan {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translate3d(22px, -18px, 0) scale(1.08);
+    opacity: 0.82;
+  }
+}
+
+@keyframes cosmic-grain-drift {
+  0% {
+    background-position: 0 0, 0 0, 0 0;
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.5;
+  }
+  100% {
+    background-position: -120px 90px, 100px -60px, -80px 120px;
+    transform: translate3d(-24px, 18px, 0) scale(1.06);
+    opacity: 0.72;
+  }
+}
+
+@keyframes cosmic-particle-surge {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0.96);
+    opacity: 0.26;
+  }
+  45% {
+    opacity: 0.62;
+  }
+  100% {
+    transform: translate3d(-80px, 60px, 0) scale(1.18);
+    opacity: 0.34;
+  }
+}
+
+@keyframes cosmic-particle-fall {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0.92);
+    opacity: 0.12;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    transform: translate3d(-140px, 130px, 0) scale(1.34);
+    opacity: 0.2;
+  }
+}
+
+@keyframes cosmic-current-shift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.04;
+  }
+  50% {
+    opacity: 0.16;
+  }
+  100% {
+    transform: translate3d(-90px, 48px, 0) scale(1.08);
+    opacity: 0.05;
+  }
+}
+
+@keyframes cosmic-aurora-sway {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(14px, -10px, 0) scale(1.04) rotate(-1.5deg);
+  }
+}
+
+@keyframes cosmic-constellation-drift {
+  0% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+  100% {
+    transform: translate3d(-24px, 18px, 0);
+    opacity: 0.12;
+  }
+}
+
+@keyframes shimmer-sweep {
+  0% {
+    transform: translateX(-140%) skewX(-18deg);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.12;
+  }
+  55% {
+    opacity: 0.22;
+  }
+  100% {
+    transform: translateX(180%) skewX(-18deg);
+    opacity: 0;
+  }
+}
+
+@keyframes orbit-slow {
+  0% {
+    transform: rotate(0deg) translateX(8px) rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg) translateX(8px) rotate(-360deg);
+  }
+}
+
+.animate-float-slow {
+  animation: float-slow 10s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: float-delayed 14s ease-in-out infinite;
+}
+
+.animate-pulse-border {
+  animation: pulse-border 2.8s ease-out infinite;
+}
+
+.animate-drift-x {
+  animation: drift-x 12s ease-in-out infinite;
+}
+
+.animate-atmospheric-pan {
+  animation: atmospheric-pan 16s ease-in-out infinite;
+}
+
+.animate-shimmer-sweep {
+  animation: shimmer-sweep 4.8s ease-in-out infinite;
+}
+
+.animate-orbit-slow {
+  animation: orbit-slow 8s linear infinite;
+}
+
+.cosmic-grain {
+  background-repeat: repeat;
+  will-change: transform, opacity, background-position;
+}
+
+.cosmic-grain-base {
+  background-image:
+    radial-gradient(circle at 22% 34%, rgba(111,255,221,0.1) 0 1px, transparent 2px),
+    radial-gradient(circle at 74% 44%, rgba(255,130,196,0.08) 0 1.2px, transparent 2.2px),
+    radial-gradient(circle at 48% 82%, rgba(121,146,255,0.12) 0 1px, transparent 2px);
+  background-size: 14px 14px, 19px 19px, 23px 23px;
+  filter: blur(0.2px) saturate(118%);
+}
+
+.cosmic-grain-drift {
+  background-image:
+    radial-gradient(circle at 14% 28%, rgba(255,255,255,0.14) 0 2px, transparent 4px),
+    radial-gradient(circle at 52% 56%, rgba(126,240,255,0.12) 0 2px, transparent 4px),
+    radial-gradient(circle at 80% 24%, rgba(255,202,180,0.1) 0 2.4px, transparent 5px);
+  background-size: 160px 160px, 220px 220px, 240px 240px;
+  filter: blur(16px) saturate(128%);
+  animation: cosmic-grain-drift 16s linear infinite;
+}
+
+.cosmic-grain-highlight {
+  background-image:
+    radial-gradient(circle at 18% 40%, rgba(70,222,204,0.24) 0 6px, transparent 32px),
+    radial-gradient(circle at 72% 34%, rgba(182,98,197,0.18) 0 8px, transparent 40px),
+    radial-gradient(circle at 54% 78%, rgba(78,168,255,0.18) 0 10px, transparent 44px);
+  background-size: 420px 420px, 520px 520px, 620px 620px;
+  filter: blur(20px);
+  animation: cosmic-grain-drift 24s linear infinite reverse;
+}
+
+.cosmic-particles {
+  background-repeat: repeat;
+  will-change: transform, opacity;
+}
+
+.cosmic-particles-soft {
+  background-image:
+    radial-gradient(circle, rgba(255,255,255,0.4) 0 2px, transparent 5px),
+    radial-gradient(circle, rgba(154,231,255,0.28) 0 2px, transparent 5px),
+    radial-gradient(circle, rgba(255,212,192,0.22) 0 2px, transparent 5px);
+  background-size: 120px 120px, 180px 180px, 220px 220px;
+  filter: blur(10px);
+  animation: cosmic-particle-surge 10s ease-in-out infinite;
+}
+
+.cosmic-particles-near {
+  background-image:
+    radial-gradient(circle, rgba(255,255,255,0.52) 0 3px, transparent 7px),
+    radial-gradient(circle, rgba(136,232,255,0.28) 0 3px, transparent 7px),
+    radial-gradient(circle, rgba(205,141,255,0.18) 0 3px, transparent 7px);
+  background-size: 90px 90px, 130px 130px, 170px 170px;
+  filter: blur(3px);
+  animation: cosmic-particle-fall 8.5s ease-in-out infinite;
+}
+
+.cosmic-aurora {
+  border-radius: 9999px;
+  filter: blur(34px);
+  mix-blend-mode: screen;
+  will-change: transform, opacity;
+  animation: cosmic-aurora-sway 22s ease-in-out infinite;
+}
+
+.cosmic-aurora-top {
+  background:
+    radial-gradient(ellipse at 18% 54%, rgba(116, 243, 225, 0.18), transparent 32%),
+    radial-gradient(ellipse at 52% 44%, rgba(124, 151, 255, 0.16), transparent 34%),
+    radial-gradient(ellipse at 82% 42%, rgba(206, 109, 188, 0.14), transparent 28%);
+}
+
+.cosmic-aurora-bottom {
+  background:
+    radial-gradient(ellipse at 18% 50%, rgba(88, 214, 194, 0.14), transparent 30%),
+    radial-gradient(ellipse at 56% 38%, rgba(255, 180, 120, 0.1), transparent 26%),
+    radial-gradient(ellipse at 82% 52%, rgba(114, 136, 255, 0.12), transparent 30%);
+}
+
+.cosmic-constellation {
+  background-image:
+    radial-gradient(circle at 16% 34%, rgba(255,255,255,0.65) 0 1px, transparent 2px),
+    radial-gradient(circle at 24% 28%, rgba(142,228,255,0.58) 0 1px, transparent 2px),
+    radial-gradient(circle at 64% 22%, rgba(255,255,255,0.54) 0 1px, transparent 2px),
+    radial-gradient(circle at 74% 38%, rgba(160,238,255,0.48) 0 1px, transparent 2px),
+    linear-gradient(118deg, transparent 16%, rgba(156,224,255,0.14) 16.4%, transparent 17%),
+    linear-gradient(62deg, transparent 28%, rgba(171,158,255,0.12) 28.4%, transparent 29%),
+    linear-gradient(132deg, transparent 66%, rgba(255,186,130,0.1) 66.25%, transparent 66.7%);
+  background-size: cover;
+  filter: blur(0.2px);
+  animation: cosmic-constellation-drift 26s ease-in-out infinite;
+}
+
+.cosmic-current {
+  background:
+    linear-gradient(122deg, transparent 0%, rgba(255,255,255,0.06) 34%, transparent 42%),
+    linear-gradient(122deg, transparent 0%, rgba(105,220,255,0.08) 48%, transparent 58%),
+    linear-gradient(122deg, transparent 0%, rgba(203,124,255,0.06) 66%, transparent 76%);
+  filter: blur(2px);
+  mix-blend-mode: screen;
+  animation: cosmic-current-shift 9s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.glass-panel {
+  background: linear-gradient(180deg, rgba(16, 27, 39, 0.84), rgba(10, 18, 28, 0.7));
+  border: 1px solid rgba(216, 237, 255, 0.12);
+  box-shadow: 0 24px 80px rgba(3, 8, 14, 0.28);
+  backdrop-filter: blur(18px);
+}
+
+.interactive-panel {
+  position: relative;
+  isolation: isolate;
+}
+
+.interactive-panel::after {
+  content: "";
+  position: absolute;
+  inset: -30%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.14), transparent);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.interactive-panel:hover::after {
+  opacity: 1;
+  animation: shimmer-sweep 2.6s ease-in-out 1;
+}
+
+.section-shell {
+  position: relative;
+  overflow: hidden;
+  padding: 4rem 0;
+}
+
+#contact.section-shell {
+  padding-bottom: 3.2rem;
+}
+
+@media (min-width: 768px) {
+  .section-shell {
+    padding: 6rem 0;
+  }
+
+  #contact.section-shell {
+    padding-bottom: 4.8rem;
+  }
+}
+
+.section-kicker {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: rgba(216, 244, 255, 0.7);
+}
+
+.section-title {
+  font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", serif;
+  letter-spacing: -0.04em;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
 * {
   -webkit-tap-highlight-color: transparent;
+  box-sizing: border-box;
+}
+/* Keep the Selected Work carousel compact while preserving UI screenshots. */
+@media (min-width: 768px) {
+  #portfolio .glass-panel > .relative.hidden {
+    height: 270px;
+  }
+
+  #portfolio .glass-panel > .relative.hidden > button.absolute:not([aria-label]) {
+    width: 24%;
+    max-width: 230px;
+    opacity: 0.5;
+    transform: scale(0.86);
+  }
+
+  #portfolio .glass-panel > .relative.hidden > button.relative.z-10 {
+    width: 67%;
+    max-width: 690px;
+  }
+
+  #portfolio .glass-panel > .relative.hidden > button.relative.z-10 img,
+  #portfolio .glass-panel > .relative.hidden > button.relative.z-10 > div {
+    height: 264px;
+  }
+
+  #portfolio .glass-panel + article {
+    position: relative;
+    display: block;
+  }
+
+  #portfolio .glass-panel + article > div.max-w-3xl {
+    max-width: none;
+    display: grid;
+    grid-template-columns: minmax(0, 64%) minmax(0, 36%);
+    column-gap: 3rem;
+  }
+
+  #portfolio .glass-panel + article > div.max-w-3xl > :is(:nth-child(1), :nth-child(2), :nth-child(3), :nth-child(5)) {
+    grid-column: 1;
+  }
+
+  #portfolio .glass-panel + article > div.max-w-3xl > .project-proof {
+    grid-column: 2;
+    grid-row: 2 / span 3;
+    align-self: end;
+  }
+
+  #portfolio .glass-panel + article > button {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 36%;
+  }
 }
