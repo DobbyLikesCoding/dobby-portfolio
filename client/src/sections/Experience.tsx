@@ -1,5 +1,5 @@
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Reveal from "../components/Reveal";
 import SpaceSectionBackdrop from "../components/SpaceSectionBackdrop";
 import TiltCard from "../components/TiltCard";
@@ -7,6 +7,7 @@ import TiltCard from "../components/TiltCard";
 const RESUME_FILE = "/files/Resume_sunghyun.pdf";
 
 type ExperienceItem = {
+  id?: string;
   type?: string;
   organization: string;
   role?: string;
@@ -23,6 +24,7 @@ type ExperienceItem = {
   details?: string[];
   media?: string[];
   storyBlocks?: StoryBlock[];
+  journey?: JourneyMetadata;
 };
 
 type StoryBlock =
@@ -35,9 +37,83 @@ type StoryBlock =
 
 type JourneyVariant = "major" | "milestone";
 type JourneySide = "left" | "right";
+type JourneyRole = "turning-point" | "supporting";
+type JourneyNodeType = "education" | "employment" | "service" | "personal" | "transition";
+type JourneyMetadata = {
+  nodeType: JourneyNodeType;
+  narrativeRole: JourneyRole;
+  startDate: string;
+  endDate?: string;
+  label: string;
+  chronologyIndex?: number;
+  groupId?: string;
+  relatedExperienceIds?: string[];
+  relatedDomainIds?: string[];
+  relatedCapabilityIds?: string[];
+};
+
+type LegacyJourneyMetadata = {
+  role: JourneyRole;
+  start: string;
+  end?: string;
+  networkLabel: string;
+  relatedTo?: string[];
+  domains?: string[];
+  capabilities?: string[];
+};
+
+type NetworkNodeKind = "primary" | "supporting" | "domain" | "capability" | "identity";
+type CareerNetworkNode = {
+  id: string;
+  kind: NetworkNodeKind;
+  label: string;
+  centerX: number;
+  centerY: number;
+  width: number;
+  height: number;
+  experienceId?: string;
+};
+type CareerNetworkEdge = {
+  id: string;
+  from: string;
+  to: string;
+  kind: "chronology" | "supporting" | "domain" | "capability" | "convergence";
+};
+
+const NETWORK_VIEWBOX = { width: 1280, height: 500 };
+const CHRONOLOGY_PATH_IDS = ["hanseo-start", "army", "mbc", "camino", "hanseo-return", "north-west", "hanseo-graduation", "pixoneer", "qraft", "us-relocation", "lges"] as const;
+
+const NETWORK_LAYOUT: Record<string, Pick<CareerNetworkNode, "centerX" | "centerY">> = {
+  "hanseo-start": { centerX: 70, centerY: 342 },
+  army: { centerX: 163, centerY: 298 },
+  mbc: { centerX: 254, centerY: 254 },
+  camino: { centerX: 375, centerY: 276 },
+  "hanseo-return": { centerX: 505, centerY: 226 },
+  "north-west": { centerX: 646, centerY: 258 },
+  "hanseo-resume": { centerX: 570, centerY: 404 },
+  "hanseo-graduation": { centerX: 770, centerY: 320 },
+  pixoneer: { centerX: 860, centerY: 300 },
+  qraft: { centerX: 955, centerY: 222 },
+  "us-relocation": { centerX: 1080, centerY: 266 },
+  lges: { centerX: 1202, centerY: 218 },
+};
+
+const JOURNEY_CONCEPTS: Array<Omit<CareerNetworkNode, "width" | "height">> = [
+  { id: "aerospace", kind: "domain", label: "AEROSPACE & DEFENSE", centerX: 105, centerY: 62 },
+  { id: "live-operations", kind: "domain", label: "LIVE OPERATIONS", centerX: 265, centerY: 62 },
+  { id: "global-perspective", kind: "domain", label: "GLOBAL PERSPECTIVE", centerX: 430, centerY: 62 },
+  { id: "full-lifecycle", kind: "capability", label: "FULL-LIFECYCLE DELIVERY", centerX: 615, centerY: 62 },
+  { id: "real-time-systems", kind: "domain", label: "REAL-TIME SYSTEMS", centerX: 790, centerY: 62 },
+  { id: "system-ownership", kind: "capability", label: "SYSTEM OWNERSHIP", centerX: 950, centerY: 62 },
+  { id: "smart-manufacturing", kind: "domain", label: "SMART MANUFACTURING", centerX: 1130, centerY: 62 },
+  { id: "systems-thinking", kind: "identity", label: "SYSTEMS THINKING", centerX: 800, centerY: 448 },
+  { id: "practical-automation", kind: "identity", label: "PRACTICAL AUTOMATION", centerX: 1010, centerY: 448 },
+  { id: "real-world-impact", kind: "identity", label: "REAL-WORLD IMPACT", centerX: 1180, centerY: 448 },
+];
 
 const FALLBACK_EXPERIENCE: ExperienceItem[] = [
   {
+    id: "hanseo-start",
     type: "Education",
     organization: "HANSEO University, South Korea",
     role: "B.E., Aerospace Software Engineering",
@@ -60,6 +136,7 @@ const FALLBACK_EXPERIENCE: ExperienceItem[] = [
     ],
   },
   {
+    id: "army",
     type: "Service",
     organization: "Republic of Korea Army",
     role: "Wireless Communications Specialist (Sergeant, Honorable Discharge)",
@@ -70,24 +147,26 @@ const FALLBACK_EXPERIENCE: ExperienceItem[] = [
     journeySummary: "Built discipline and collaborative problem-solving under operational constraints.",
   },
   {
+    id: "mbc",
     type: "Professional",
     organization: "MBC (Munhwa Broadcasting Corporation), South Korea",
     role: "Broadcast Technician",
     period: "May 2009 – May 2011",
     description: "Maintained broadcast and studio equipment and supported editorial room operations, ensuring stable on-air broadcasting and technical reliability.",
-    journeyVariant: "milestone",
+    journeyVariant: "major",
+    journeyLabel: "Operational Reliability",
     journeySide: "left",
     journeySummary: "Learned operational reliability in live broadcast environments.",
   },
   {
+    id: "camino",
     type: "Personal",
     organization: "Camino de Santiago, Europe",
     role: "Solo Pilgrimage",
     period: "Jun 2011 – Aug 2011",
     description: "Completed a 1,000 km solo pilgrimage along the Camino de Santiago, starting in St-Jean-Pied-de-Port, France, and continuing beyond Santiago de Compostela toward Portugal. What started as a simple travel plan eventually became a turning point that shaped my mindset, resilience, and long-term direction in life.",
     journeySummary: "Completed a 1,000 km solo pilgrimage that reshaped my resilience and long-term direction.",
-    journeyVariant: "major",
-    journeyLabel: "Turning Point",
+    journeyVariant: "milestone",
     journeySide: "right",
     highlightText: "What started as a simple trip became the turning point that shaped the path of my life.",
     storyBlocks: [
@@ -164,6 +243,19 @@ const FALLBACK_EXPERIENCE: ExperienceItem[] = [
     ],
   },
   {
+    id: "hanseo-return",
+    type: "Education",
+    organization: "HANSEO University, South Korea",
+    role: "Return to Studies",
+    period: "Feb 2012",
+    description: "Returned to Hanseo University to continue the aerospace software engineering program.",
+    journeySummary: "Returned to studies with a clearer direction toward software engineering.",
+    journeyVariant: "major",
+    journeyLabel: "Return to Studies",
+    journeySide: "left",
+  },
+  {
+    id: "north-west",
     type: "Education",
     organization: "North-West University, Mafikeng, South Africa",
     role: "Exchange Student, Computer Science and Electronics",
@@ -187,6 +279,18 @@ const FALLBACK_EXPERIENCE: ExperienceItem[] = [
     ],
   },
   {
+    id: "hanseo-resume",
+    type: "Education",
+    organization: "HANSEO University, South Korea",
+    role: "Continued Studies",
+    period: "2014",
+    description: "Continued the aerospace software engineering program after the international exchange.",
+    journeySummary: "Returned to the degree path and carried a broader technical perspective forward.",
+    journeyVariant: "milestone",
+    journeySide: "right",
+  },
+  {
+    id: "hanseo-graduation",
     type: "Education",
     organization: "HANSEO University, South Korea",
     role: "B.E., Aerospace Software Engineering",
@@ -210,6 +314,7 @@ const FALLBACK_EXPERIENCE: ExperienceItem[] = [
     ],
   },
   {
+    id: "pixoneer",
     type: "Professional",
     organization: "Pixoneer Geomatics",
     role: "Software Engineer",
@@ -221,6 +326,7 @@ const FALLBACK_EXPERIENCE: ExperienceItem[] = [
     journeySide: "left",
   },
   {
+    id: "qraft",
     type: "Professional",
     organization: "QRAFT Technologies",
     role: "AXE Team Leader & Senior Software Development Engineer",
@@ -246,6 +352,7 @@ const FALLBACK_EXPERIENCE: ExperienceItem[] = [
     ],
   },
   {
+    id: "us-relocation",
     type: "Transition",
     organization: "Relocation",
     period: "Dec 2023 - Apr 2024",
@@ -255,10 +362,11 @@ const FALLBACK_EXPERIENCE: ExperienceItem[] = [
     journeySummary: "A transition into the next chapter in the United States.",
   },
   {
+    id: "lges",
     type: "Professional",
     organization: "LG Energy Solution Michigan",
     role: "Senior Smart Factory Engineer",
-    period: "May 2024 – Present",
+    period: "May 2025 – Present",
     description: "Operated and managed smart factory product traceability systems for EV and ESS battery manufacturing, ensuring stable production by supporting roll map and cell tracking systems across electrode and assembly processes.",
     journeySummary: "Operate production traceability systems for EV and ESS battery manufacturing across electrode and assembly processes.",
     journeyVariant: "major",
@@ -281,17 +389,144 @@ const FALLBACK_EXPERIENCE: ExperienceItem[] = [
   },
 ];
 
+const JOURNEY_METADATA: Record<string, JourneyMetadata> = {
+  "hanseo-start": { nodeType: "education", narrativeRole: "supporting", startDate: "2006-02", label: "HANSEO\nFOUNDATION", chronologyIndex: 1, groupId: "hanseo", relatedExperienceIds: ["hanseo-return"], relatedDomainIds: ["aerospace"], relatedCapabilityIds: ["systems-thinking"] },
+  army: { nodeType: "service", narrativeRole: "supporting", startDate: "2007-04", endDate: "2009-03", label: "ARMY", chronologyIndex: 2, relatedExperienceIds: ["camino"], relatedDomainIds: ["live-operations"] },
+  mbc: { nodeType: "employment", narrativeRole: "supporting", startDate: "2009-05", endDate: "2011-05", label: "MBC", chronologyIndex: 3, relatedExperienceIds: ["camino"], relatedDomainIds: ["live-operations"] },
+  camino: { nodeType: "personal", narrativeRole: "turning-point", startDate: "2011-06", endDate: "2011-08", label: "CAMINO\nDE SANTIAGO", chronologyIndex: 4, relatedDomainIds: ["global-perspective"], relatedCapabilityIds: ["systems-thinking"] },
+  "hanseo-return": { nodeType: "education", narrativeRole: "turning-point", startDate: "2012-02", label: "HANSEO\nRETURN", chronologyIndex: 5, groupId: "hanseo", relatedDomainIds: ["aerospace"], relatedCapabilityIds: ["systems-thinking"] },
+  "north-west": { nodeType: "education", narrativeRole: "turning-point", startDate: "2013-02", endDate: "2013-12", label: "NORTH-WEST\nUNIVERSITY", chronologyIndex: 6, relatedDomainIds: ["global-perspective"] },
+  "hanseo-resume": { nodeType: "education", narrativeRole: "supporting", startDate: "2014", label: "HANSEO\nCONTINUED", groupId: "hanseo", relatedExperienceIds: ["north-west", "hanseo-graduation"], relatedDomainIds: ["aerospace"] },
+  "hanseo-graduation": { nodeType: "education", narrativeRole: "supporting", startDate: "2015-02", label: "HANSEO\nGRADUATION", chronologyIndex: 7, groupId: "hanseo", relatedExperienceIds: ["pixoneer"], relatedCapabilityIds: ["full-lifecycle"] },
+  pixoneer: { nodeType: "employment", narrativeRole: "supporting", startDate: "2014-10", endDate: "2016-06", label: "PIXONEER", chronologyIndex: 8, relatedExperienceIds: ["qraft"], relatedDomainIds: ["aerospace"], relatedCapabilityIds: ["full-lifecycle"] },
+  qraft: { nodeType: "employment", narrativeRole: "turning-point", startDate: "2016-11", endDate: "2023-11", label: "QRAFT", chronologyIndex: 9, relatedDomainIds: ["real-time-systems"], relatedCapabilityIds: ["system-ownership", "full-lifecycle"] },
+  "us-relocation": { nodeType: "transition", narrativeRole: "turning-point", startDate: "2023-12", endDate: "2024-04", label: "U.S.\nRELOCATION", chronologyIndex: 10, relatedDomainIds: ["global-perspective"] },
+  lges: { nodeType: "employment", narrativeRole: "turning-point", startDate: "2025-05", label: "LG ENERGY\nSOLUTION", chronologyIndex: 11, relatedDomainIds: ["smart-manufacturing"], relatedCapabilityIds: ["practical-automation", "real-world-impact"] },
+};
+
+function normalizeJourneyMetadata(value: JourneyMetadata | LegacyJourneyMetadata | undefined, experienceType?: string): JourneyMetadata | undefined {
+  if (!value) return undefined;
+  if ("narrativeRole" in value) return value;
+
+  const nodeTypeByExperienceType: Record<string, JourneyNodeType> = {
+    Education: "education",
+    Professional: "employment",
+    Service: "service",
+    Personal: "personal",
+    Transition: "transition",
+  };
+
+  return {
+    nodeType: nodeTypeByExperienceType[experienceType ?? ""] ?? "employment",
+    narrativeRole: value.role,
+    startDate: value.start,
+    endDate: value.end,
+    label: value.networkLabel,
+    relatedExperienceIds: value.relatedTo,
+    relatedDomainIds: value.domains,
+    relatedCapabilityIds: value.capabilities,
+  };
+}
+
+function getNetworkNodeDimensions(kind: NetworkNodeKind, label: string) {
+  const longestLine = Math.max(...label.split("\n").map((line) => line.length));
+  const lineCount = label.split("\n").length;
+  const height = kind === "primary" ? (lineCount > 1 ? 70 : 60) : kind === "identity" ? 42 : kind === "supporting" ? (lineCount > 1 ? 44 : 34) : 34;
+  const minimum = kind === "primary" ? 124 : kind === "identity" ? 138 : kind === "capability" ? 116 : kind === "domain" ? 104 : 72;
+  const characterWidth = kind === "primary" ? 7.8 : kind === "identity" ? 6.4 : kind === "supporting" ? 6.1 : 5.7;
+  return { width: Math.max(minimum, longestLine * characterWidth + 30), height };
+}
+
+type NetworkPoint = { x: number; y: number };
+
+function getPillBoundaryPoint(node: CareerNetworkNode, toward: CareerNetworkNode): NetworkPoint {
+  const deltaX = toward.centerX - node.centerX;
+  const deltaY = toward.centerY - node.centerY;
+  const halfWidth = node.width / 2;
+  const radius = Math.min(node.height / 2, halfWidth);
+  const straightHalfWidth = Math.max(0, halfWidth - radius);
+
+  if (Math.abs(deltaX) < 0.0001) {
+    return { x: node.centerX, y: node.centerY + Math.sign(deltaY || 1) * radius };
+  }
+
+  const side = Math.sign(deltaX);
+  if (Math.abs(deltaY) > 0.0001) {
+    const topBottomDistance = radius / Math.abs(deltaY);
+    const topBottomX = topBottomDistance * deltaX;
+    if (Math.abs(topBottomX) <= straightHalfWidth) {
+      return { x: node.centerX + topBottomX, y: node.centerY + Math.sign(deltaY) * radius };
+    }
+  }
+
+  const capCenterX = side * straightHalfWidth;
+  const quadraticA = deltaX * deltaX + deltaY * deltaY;
+  const quadraticB = -2 * capCenterX * deltaX;
+  const quadraticC = capCenterX * capCenterX - radius * radius;
+  const discriminant = Math.max(0, quadraticB * quadraticB - 4 * quadraticA * quadraticC);
+  const distance = (-quadraticB + Math.sqrt(discriminant)) / (2 * quadraticA);
+
+  return { x: node.centerX + distance * deltaX, y: node.centerY + distance * deltaY };
+}
+
+function isOnPillBoundary(point: NetworkPoint, node: CareerNetworkNode) {
+  const relativeX = Math.abs(point.x - node.centerX);
+  const relativeY = point.y - node.centerY;
+  const radius = Math.min(node.height / 2, node.width / 2);
+  const straightHalfWidth = Math.max(0, node.width / 2 - radius);
+  const signedDistance = Math.hypot(Math.max(relativeX - straightHalfWidth, 0), relativeY) - radius;
+  return Math.abs(signedDistance) < 0.01;
+}
+
+function validateNetworkGeometry(nodesById: Map<string, CareerNetworkNode>, edges: CareerNetworkEdge[]) {
+  const chronologyEdges = edges.filter((edge) => edge.kind === "chronology");
+  const expectedEdges = CHRONOLOGY_PATH_IDS.slice(1).map((target, index) => ({ from: CHRONOLOGY_PATH_IDS[index], to: target }));
+
+  if (chronologyEdges.length !== expectedEdges.length) {
+    throw new Error("Journey geometry requires one edge for each consecutive chronological chapter.");
+  }
+
+  expectedEdges.forEach(({ from, to }) => {
+    const source = nodesById.get(from);
+    const target = nodesById.get(to);
+    const edge = chronologyEdges.find((candidate) => candidate.from === from && candidate.to === to);
+    if (!source || !target || !edge) throw new Error(`Journey geometry is missing ${from} → ${to}.`);
+
+    const start = getPillBoundaryPoint(source, target);
+    const end = getPillBoundaryPoint(target, source);
+    if (!isOnPillBoundary(start, source) || !isOnPillBoundary(end, target)) {
+      throw new Error(`Journey geometry detached ${from} → ${to} from a node boundary.`);
+    }
+  });
+
+  edges.filter((edge) => edge.kind !== "chronology").forEach((edge) => {
+    const source = nodesById.get(edge.from);
+    const target = nodesById.get(edge.to);
+    if (!source || !target) throw new Error(`Journey geometry has an orphaned ${edge.kind} edge.`);
+    if (!isOnPillBoundary(getPillBoundaryPoint(source, target), source) || !isOnPillBoundary(getPillBoundaryPoint(target, source), target)) {
+      throw new Error(`Journey geometry detached ${edge.kind} edge ${edge.id}.`);
+    }
+  });
+}
+
 function canOpenExperienceModal(item: ExperienceItem) {
   return !!(item.storyBlocks?.length || item.media?.length || item.details?.length);
 }
 
 function withJourneyMetadata(items: ExperienceItem[]) {
-  return items.map((item, index) => {
-    const fallback = FALLBACK_EXPERIENCE[index];
+  const fallbackById = new Map(FALLBACK_EXPERIENCE.map((item) => [item.id, item]));
+  const receivedIds = new Set(items.map((item) => item.id).filter(Boolean));
+  const completeItems = [...items, ...FALLBACK_EXPERIENCE.filter((item) => item.id && !receivedIds.has(item.id))];
+
+  return completeItems.map((item, index) => {
+    const fallback = (item.id ? fallbackById.get(item.id) : undefined) ?? FALLBACK_EXPERIENCE[index];
+    const fallbackJourney = normalizeJourneyMetadata(fallback?.journey, fallback?.type) ?? (item.id ? JOURNEY_METADATA[item.id] : undefined);
+    const receivedJourney = normalizeJourneyMetadata(item.journey, item.type);
 
     return {
       ...fallback,
       ...item,
+      journey: receivedJourney ? { ...fallbackJourney, ...receivedJourney } : fallbackJourney,
       journeyVariant: item.journeyVariant ?? fallback?.journeyVariant ?? "milestone",
       journeyLabel: item.journeyLabel ?? fallback?.journeyLabel,
       journeySide: item.journeySide ?? fallback?.journeySide ?? (index % 2 === 0 ? "left" : "right"),
@@ -351,6 +586,7 @@ function ExperienceTypeBadge({ type }: { type?: string }) {
 }
 
 function getJourneyVariant(item: ExperienceItem): JourneyVariant {
+  if (item.journey) return item.journey.narrativeRole === "turning-point" ? "major" : "milestone";
   return item.journeyVariant ?? "milestone";
 }
 
@@ -453,9 +689,334 @@ function JourneyNow() {
   );
 }
 
+function CareerNetwork({
+  items,
+  selectedNodeId,
+  hoveredNodeId,
+  onSelect,
+  onHover,
+  onReset,
+  onExplore,
+}: {
+  items: ExperienceItem[];
+  selectedNodeId: string | null;
+  hoveredNodeId: string | null;
+  onSelect: (nodeId: string) => void;
+  onHover: (nodeId: string | null) => void;
+  onReset: () => void;
+  onExplore: (item: ExperienceItem) => void;
+}) {
+  const prefersReducedMotion = useReducedMotion();
+  const networkRef = useRef<HTMLDivElement | null>(null);
+  const hoverLeaveTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const { experienceNodes, conceptNodes, networkEdges, nodesById } = useMemo(() => {
+    const journeyItems = items.filter((item) => item.id && item.journey && NETWORK_LAYOUT[item.id]);
+    const experienceNodes = journeyItems.map((item) => {
+      const layout = NETWORK_LAYOUT[item.id!];
+      const kind: NetworkNodeKind = item.journey!.narrativeRole === "turning-point" ? "primary" : "supporting";
+      return {
+        id: item.id!,
+        experienceId: item.id!,
+        kind,
+        label: item.journey!.label,
+        ...getNetworkNodeDimensions(kind, item.journey!.label),
+        ...layout,
+      } satisfies CareerNetworkNode;
+    });
+    const usedConceptIds = new Set(journeyItems.flatMap((item) => [...(item.journey?.relatedDomainIds ?? []), ...(item.journey?.relatedCapabilityIds ?? [])]));
+    const conceptNodes = JOURNEY_CONCEPTS
+      .filter((node) => usedConceptIds.has(node.id))
+      .map((node) => ({ ...node, ...getNetworkNodeDimensions(node.kind, node.label) }));
+    const chronologicalNodes = journeyItems
+      .filter((item) => item.journey?.chronologyIndex !== undefined)
+      .sort((a, b) => a.journey!.chronologyIndex! - b.journey!.chronologyIndex!);
+    const networkEdges: CareerNetworkEdge[] = chronologicalNodes.slice(1).map((item, index) => ({ id: `path-${chronologicalNodes[index].id}-${item.id}`, from: chronologicalNodes[index].id!, to: item.id!, kind: "chronology" }));
+
+    journeyItems.forEach((item) => {
+      const source = item.id!;
+      item.journey?.relatedExperienceIds?.forEach((target) => networkEdges.push({ id: `support-${source}-${target}`, from: source, to: target, kind: "supporting" }));
+      item.journey?.relatedDomainIds?.forEach((target) => networkEdges.push({ id: `domain-${source}-${target}`, from: source, to: target, kind: "domain" }));
+      item.journey?.relatedCapabilityIds?.forEach((target) => networkEdges.push({ id: `capability-${source}-${target}`, from: source, to: target, kind: "capability" }));
+    });
+
+    const nodes = [...experienceNodes, ...conceptNodes];
+    const nodesById = new Map(nodes.map((node) => [node.id, node]));
+    const validNetworkEdges = networkEdges.filter((edge) => nodesById.has(edge.from) && nodesById.has(edge.to));
+    if (import.meta.env.DEV) validateNetworkGeometry(nodesById, validNetworkEdges);
+    return { experienceNodes, conceptNodes, networkEdges: validNetworkEdges, nodesById };
+  }, [items]);
+  const activeNodeId = selectedNodeId ?? hoveredNodeId;
+  const activeNode = activeNodeId ? nodesById.get(activeNodeId) : undefined;
+  const activeItem = activeNode?.experienceId ? items.find((item) => item.id === activeNode.experienceId) : undefined;
+  const connectedNodeIds = new Set<string>();
+
+  if (activeNodeId) {
+    connectedNodeIds.add(activeNodeId);
+    networkEdges.forEach((edge) => {
+      if (edge.from === activeNodeId || edge.to === activeNodeId) {
+        connectedNodeIds.add(edge.from);
+        connectedNodeIds.add(edge.to);
+      }
+    });
+  }
+
+  function edgePath(edge: CareerNetworkEdge) {
+    const from = nodesById.get(edge.from)!;
+    const to = nodesById.get(edge.to)!;
+    const start = getPillBoundaryPoint(from, to);
+    const end = getPillBoundaryPoint(to, from);
+    if (edge.kind === "chronology") {
+      const deltaX = end.x - start.x;
+      return `M ${start.x} ${start.y} C ${start.x + deltaX * 0.34} ${start.y}, ${end.x - deltaX * 0.34} ${end.y}, ${end.x} ${end.y}`;
+    }
+
+    const midpointX = (start.x + end.x) / 2;
+    const bend = edge.kind === "supporting" ? 14 : start.y < end.y ? -20 : 20;
+    return `M ${start.x} ${start.y} Q ${midpointX} ${(start.y + end.y) / 2 + bend} ${end.x} ${end.y}`;
+  }
+
+  function nodeOpacity(node: CareerNetworkNode) {
+    if (!activeNodeId) return 1;
+    return connectedNodeIds.has(node.id) ? 1 : 0.2;
+  }
+
+  function edgeOpacity(edge: CareerNetworkEdge) {
+    const base = edge.kind === "chronology" ? 0.78 : edge.kind === "supporting" ? 0.25 : edge.kind === "domain" ? 0.22 : edge.kind === "convergence" ? 0.2 : 0.15;
+    if (!activeNodeId) return base;
+    return edge.from === activeNodeId || edge.to === activeNodeId ? 1 : 0.08;
+  }
+
+  const canExplore = activeItem && activeItem.showStoryLink !== false && canOpenExperienceModal(activeItem);
+  const floatingPanelPosition = activeNode
+    ? {
+        left: activeNode.centerX > NETWORK_VIEWBOX.width * 0.7
+          ? Math.max(18, activeNode.centerX - activeNode.width / 2 - 278)
+          : Math.min(NETWORK_VIEWBOX.width - 268, activeNode.centerX + activeNode.width / 2 + 18),
+        top: activeNode.kind === "primary"
+          ? Math.max(72, activeNode.centerY - 210)
+          : Math.min(Math.max(132, activeNode.centerY - 104), NETWORK_VIEWBOX.height - 166),
+      }
+    : null;
+
+  function cancelHoverLeave() {
+    if (hoverLeaveTimeout.current) {
+      clearTimeout(hoverLeaveTimeout.current);
+      hoverLeaveTimeout.current = null;
+    }
+  }
+
+  function beginHover(nodeId: string) {
+    cancelHoverLeave();
+    if (!selectedNodeId) onHover(nodeId);
+  }
+
+  function scheduleHoverClear() {
+    cancelHoverLeave();
+    if (selectedNodeId) return;
+    hoverLeaveTimeout.current = setTimeout(() => onHover(null), 120);
+  }
+
+  useEffect(() => () => cancelHoverLeave(), []);
+
+  useEffect(() => {
+    if (!selectedNodeId) return;
+
+    const clearOnOutsidePointer = (event: PointerEvent) => {
+      if (!networkRef.current?.contains(event.target as Node)) onReset();
+    };
+
+    document.addEventListener("pointerdown", clearOnOutsidePointer);
+    return () => document.removeEventListener("pointerdown", clearOnOutsidePointer);
+  }, [onReset, selectedNodeId]);
+
+  return (
+    <div className="hidden xl:block">
+      <Reveal>
+        <div className="mx-auto max-w-none text-center">
+          <p className="section-kicker">Journey</p>
+          <h2 className="section-title mt-4 whitespace-nowrap text-5xl font-semibold text-white">
+            Different experiences, one connected journey.
+          </h2>
+          <p className="mt-4 text-lg leading-8 text-slate-200/76">
+            Each step contributed to who I am and how I approach engineering today.
+          </p>
+        </div>
+      </Reveal>
+
+      <Reveal delayMs={100}>
+        <div className="glass-panel relative mx-auto mt-8 w-full max-w-[1280px] overflow-hidden rounded-[32px] border-white/12 bg-[linear-gradient(145deg,rgba(11,23,36,0.84),rgba(5,12,21,0.72))] p-5 xl:p-6">
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_16%_22%,rgba(134,232,249,0.12),transparent_22%),radial-gradient(circle_at_88%_72%,rgba(148,163,255,0.1),transparent_24%)]" />
+          <div className="relative flex items-center justify-between gap-6">
+            <div>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.25em] text-[#a6eaf6]">Career Network</p>
+              <p className="mt-1.5 text-sm text-slate-300/72">Six defining turning points, connected by the experiences that shaped my perspective.</p>
+            </div>
+            {selectedNodeId ? (
+              <button type="button" onClick={onReset} className="rounded-full border border-white/14 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-200 transition hover:border-[#8feaf8]/40 hover:text-white">
+                <span aria-hidden="true" className="mr-1.5">×</span> Clear focus
+              </button>
+            ) : null}
+          </div>
+
+          <div
+            ref={networkRef}
+            className="relative mx-auto mt-4 aspect-[1280/500] w-full max-w-[1240px]"
+            onPointerDown={(event) => {
+              if (event.target === event.currentTarget) onReset();
+            }}
+          >
+            <svg
+              viewBox={`0 0 ${NETWORK_VIEWBOX.width} ${NETWORK_VIEWBOX.height}`}
+              className="absolute inset-0 h-full w-full overflow-visible"
+              onPointerDown={(event) => {
+                if (event.target === event.currentTarget) onReset();
+              }}
+            >
+              {networkEdges.filter((edge) => edge.kind === "chronology").map((edge) => (
+                <path key={`${edge.id}-glow`} d={edgePath(edge)} fill="none" stroke="rgba(94,234,212,0.14)" strokeWidth="6" strokeLinecap="round" style={{ filter: "blur(4px)" }} />
+              ))}
+              {networkEdges.map((edge, index) => {
+                const stroke = edge.kind === "chronology" ? "rgba(143,234,248,0.96)" : edge.kind === "supporting" ? "rgba(203,213,225,0.42)" : edge.kind === "domain" ? "rgba(168,215,231,0.56)" : edge.kind === "convergence" ? "rgba(143,234,248,0.44)" : "rgba(184,221,239,0.36)";
+                return (
+                  <motion.path
+                    key={edge.id}
+                    d={edgePath(edge)}
+                    fill="none"
+                    stroke={stroke}
+                    strokeWidth={edge.kind === "chronology" ? 2 : edge.kind === "domain" ? 1 : 0.75}
+                    strokeDasharray={edge.kind === "supporting" ? "3 6" : edge.kind === "capability" ? "3 5" : undefined}
+                    strokeLinecap="round"
+                    initial={prefersReducedMotion ? false : { pathLength: 0, opacity: 0 }}
+                    animate={{ pathLength: 1, opacity: edgeOpacity(edge) }}
+                    transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.8, delay: index * 0.022, ease: "easeOut" }}
+                  />
+                );
+              })}
+              {conceptNodes.map((node, index) => {
+                const lines = node.label.split("\n");
+                return (
+                  <motion.g key={node.id} pointerEvents="none" animate={{ opacity: nodeOpacity(node) }} transition={{ duration: prefersReducedMotion ? 0 : 0.28, delay: prefersReducedMotion ? 0 : index * 0.012 }}>
+                    <rect x={node.centerX - node.width / 2} y={node.centerY - node.height / 2} width={node.width} height={node.height} rx={node.height / 2} fill={node.kind === "identity" ? "rgba(30,77,91,0.28)" : "rgba(9,20,31,0.88)"} stroke={node.kind === "identity" ? "rgba(143,234,248,0.28)" : "rgba(143,234,248,0.18)"} />
+                    <text x={node.centerX} y={node.centerY - ((lines.length - 1) * 5.5)} textAnchor="middle" fill={node.kind === "identity" ? "rgba(219,248,252,0.82)" : node.kind === "domain" ? "rgba(185,238,247,0.68)" : "rgba(226,232,240,0.62)"} fontSize={node.kind === "identity" ? 9.5 : 8.2} fontWeight="600" letterSpacing={node.kind === "identity" ? 1.1 : 0.8}>
+                      {lines.map((line, lineIndex) => <tspan key={line} x={node.centerX} dy={lineIndex === 0 ? 0 : 12}>{line}</tspan>)}
+                    </text>
+                  </motion.g>
+                );
+              })}
+              {experienceNodes.map((node, index) => {
+                const selected = node.id === selectedNodeId;
+                const focused = selected || hoveredNodeId === node.id;
+                const lines = node.label.split("\n");
+                const isTurningPoint = node.kind === "primary";
+                const nodeFill = selected
+                  ? "rgba(39,118,136,0.5)"
+                  : focused && isTurningPoint
+                    ? "rgba(24,90,108,0.82)"
+                    : isTurningPoint
+                      ? "rgba(14,62,76,0.78)"
+                      : "rgba(8,19,30,0.88)";
+                const nodeStroke = selected
+                  ? "rgba(184,247,255,0.94)"
+                  : focused && isTurningPoint
+                    ? "rgba(140,238,248,0.84)"
+                    : isTurningPoint
+                      ? "rgba(111,224,237,0.62)"
+                      : focused
+                        ? "rgba(143,234,248,0.54)"
+                        : "rgba(143,234,248,0.2)";
+                const nodeGlow = selected
+                  ? "drop-shadow(0 0 14px rgba(94,234,212,0.34))"
+                  : focused && isTurningPoint
+                    ? "drop-shadow(0 0 10px rgba(94,234,212,0.27))"
+                    : isTurningPoint
+                      ? "drop-shadow(0 0 7px rgba(94,234,212,0.16))"
+                      : focused
+                        ? "drop-shadow(0 0 5px rgba(94,234,212,0.14))"
+                        : undefined;
+                return (
+                  <motion.g
+                    key={node.id}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`Focus ${node.label.replace("\n", " ")} journey chapter`}
+                    aria-pressed={selected}
+                    onClick={() => onSelect(node.id)}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        onSelect(node.id);
+                      }
+                    }}
+                    onMouseEnter={() => beginHover(node.id)}
+                    onMouseLeave={scheduleHoverClear}
+                    onFocus={() => beginHover(node.id)}
+                    onBlur={scheduleHoverClear}
+                    initial={prefersReducedMotion ? false : { opacity: 0 }}
+                    animate={{ opacity: nodeOpacity(node) }}
+                    transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.3, delay: index * 0.06 }}
+                    className="cursor-pointer outline-none"
+                  >
+                    <rect
+                      x={node.centerX - node.width / 2}
+                      y={node.centerY - node.height / 2}
+                      width={node.width}
+                      height={node.height}
+                      rx={isTurningPoint ? node.height / 2 : 18}
+                      fill={nodeFill}
+                      stroke={nodeStroke}
+                      strokeWidth={selected ? 1.6 : focused && isTurningPoint ? 1.45 : isTurningPoint ? 1.2 : focused ? 1.15 : 0.85}
+                      style={{ filter: nodeGlow }}
+                    />
+                    <text
+                      x={node.centerX}
+                      y={node.centerY - ((lines.length - 1) * (isTurningPoint ? 7 : 5))}
+                      textAnchor="middle"
+                      fill={selected || focused || isTurningPoint ? "#e8fdff" : "rgba(226,232,240,0.68)"}
+                      fontSize={isTurningPoint ? 12 : 8.5}
+                      fontWeight="600"
+                      letterSpacing={isTurningPoint ? 1.45 : 1}
+                      pointerEvents="none"
+                    >
+                      {lines.map((line, lineIndex) => <tspan key={line} x={node.centerX} dy={lineIndex === 0 ? 0 : isTurningPoint ? 15 : 11}>{line}</tspan>)}
+                    </text>
+                  </motion.g>
+                );
+              })}
+            </svg>
+
+            {activeItem && activeNode && floatingPanelPosition ? (
+              <motion.article
+                initial={prefersReducedMotion ? false : { opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: prefersReducedMotion ? 0 : 0.18 }}
+                onMouseEnter={cancelHoverLeave}
+                onMouseLeave={scheduleHoverClear}
+                className="absolute z-20 w-[250px] rounded-2xl border border-[#8feaf8]/24 bg-[rgba(7,17,28,0.96)] p-4 shadow-[0_18px_42px_rgba(0,0,0,0.3)] backdrop-blur-xl"
+                style={{ left: `${(floatingPanelPosition.left / NETWORK_VIEWBOX.width) * 100}%`, top: `${(floatingPanelPosition.top / NETWORK_VIEWBOX.height) * 100}%` }}
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <p className="text-[9px] font-semibold uppercase tracking-[0.18em] text-[#a6eaf6]">{selectedNodeId ? "Pinned chapter" : activeItem.type}</p>
+                  {selectedNodeId ? <button type="button" onClick={onReset} aria-label="Clear journey focus" className="text-sm leading-none text-slate-400 transition hover:text-white">×</button> : null}
+                </div>
+                <h3 className="mt-2 text-sm font-semibold leading-5 text-white">{activeItem.organization}</h3>
+                <p className="mt-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-400">{activeItem.period}</p>
+                {activeItem.role ? <p className="mt-2 text-xs leading-5 text-[#a6eaf6]">{activeItem.role}</p> : null}
+                <p className="mt-2 text-xs leading-5 text-slate-200/72">{activeItem.journeySummary ?? activeItem.description}</p>
+                {canExplore ? <button type="button" onClick={() => onExplore(activeItem)} className="mt-3 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#dffbff] transition hover:text-white">Explore Chapter →</button> : null}
+              </motion.article>
+            ) : null}
+          </div>
+        </div>
+      </Reveal>
+    </div>
+  );
+}
+
 export default function Experience() {
-  const [items, setItems] = useState<ExperienceItem[]>(FALLBACK_EXPERIENCE);
+  const [items, setItems] = useState<ExperienceItem[]>(() => withJourneyMetadata(FALLBACK_EXPERIENCE));
   const [selectedItem, setSelectedItem] = useState<ExperienceItem | null>(null);
+  const [selectedNetworkNodeId, setSelectedNetworkNodeId] = useState<string | null>(null);
+  const [hoveredNetworkNodeId, setHoveredNetworkNodeId] = useState<string | null>(null);
   const timelineRef = useRef<HTMLDivElement | null>(null);
   const prefersReducedMotion = useReducedMotion();
   const { scrollYProgress } = useScroll({
@@ -492,19 +1053,46 @@ export default function Experience() {
     };
   }, [selectedItem]);
 
+  useEffect(() => {
+    if (!selectedNetworkNodeId || selectedItem) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setSelectedNetworkNodeId(null);
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [selectedNetworkNodeId, selectedItem]);
+
   return (
     <section id="experience" className="section-shell px-4 md:px-8">
       <SpaceSectionBackdrop variant="medium" />
 
-      <div className="relative mx-auto max-w-6xl">
+      <CareerNetwork
+        items={items}
+        selectedNodeId={selectedNetworkNodeId}
+        hoveredNodeId={hoveredNetworkNodeId}
+        onSelect={(nodeId) => {
+          setHoveredNetworkNodeId(null);
+          setSelectedNetworkNodeId((currentNodeId) => currentNodeId === nodeId ? null : nodeId);
+        }}
+        onHover={setHoveredNetworkNodeId}
+        onReset={() => {
+          setHoveredNetworkNodeId(null);
+          setSelectedNetworkNodeId(null);
+        }}
+        onExplore={setSelectedItem}
+      />
+
+      <div className="relative mx-auto max-w-6xl xl:hidden">
         <Reveal>
           <div className="mx-auto max-w-3xl text-center">
             <p className="section-kicker">Journey</p>
             <h2 className="section-title text-balance mt-4 text-4xl font-semibold text-white md:text-5xl">
-              From aerospace to trading to manufacturing — one system at a time.
+              Different experiences, one connected journey.
             </h2>
             <p className="mt-4 text-base leading-7 text-slate-200/76 md:text-lg md:leading-8">
-              Each chapter expanded how I think about systems, operations, and the people who depend on them.
+              Each step contributed to who I am and how I approach engineering today.
             </p>
           </div>
         </Reveal>

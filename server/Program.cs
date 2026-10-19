@@ -119,12 +119,14 @@ app.MapGet("/api/skills", () => new
 app.MapGet("/api/experience", () => new object[]
 {
     new {
+    id = "hanseo-start",
     type = "Education",
     organization = "HANSEO University, South Korea",
     role = "B.E., Aerospace Software Engineering",
     period = "Feb 2006",
     description = "Enrolled in an interdisciplinary curriculum combining aerospace engineering and computer science, focusing on software development for aviation systems.",
     journeySummary = "Studied aerospace software engineering, building the foundation for systems thinking and development.",
+    journey = new { nodeType = "education", narrativeRole = "supporting", startDate = "2006-02", label = "HANSEO\nFOUNDATION", chronologyIndex = 1, groupId = "hanseo", relatedExperienceIds = new[] { "hanseo-return" }, relatedDomainIds = new[] { "aerospace" }, relatedCapabilityIds = new[] { "systems-thinking" } },
     journeyVariant = "major",
     journeyLabel = "Foundation",
     journeySide = "left",
@@ -143,6 +145,7 @@ app.MapGet("/api/experience", () => new object[]
     },
 
     new {
+    id = "army",
     type = "Service",
     organization = "Republic of Korea Army",
     role = "Wireless Communications Specialist (Sergeant, Honorable Discharge)",
@@ -151,20 +154,25 @@ app.MapGet("/api/experience", () => new object[]
     journeyVariant = "milestone",
     journeySide = "right",
     journeySummary = "Built discipline and collaborative problem-solving under operational constraints."
+    , journey = new { nodeType = "service", narrativeRole = "supporting", startDate = "2007-04", endDate = "2009-03", label = "ARMY", chronologyIndex = 2, relatedExperienceIds = new[] { "camino" }, relatedDomainIds = new[] { "live-operations" } }
     },
 
     new {
+    id = "mbc",
     type = "Professional",
     organization = "MBC (Munhwa Broadcasting Corporation), South Korea",
     role = "Broadcast Technician",
     period = "May 2009 – May 2011",
     description = "Maintained broadcast and studio equipment and supported editorial room operations, ensuring stable on-air broadcasting and technical reliability.",
-    journeyVariant = "milestone",
+    journeyVariant = "major",
+    journeyLabel = "Operational Reliability",
     journeySide = "left",
     journeySummary = "Learned operational reliability in live broadcast environments."
+    , journey = new { nodeType = "employment", narrativeRole = "supporting", startDate = "2009-05", endDate = "2011-05", label = "MBC", chronologyIndex = 3, relatedExperienceIds = new[] { "camino" }, relatedDomainIds = new[] { "live-operations" } }
     },
 
     new {
+    id = "camino",
     type = "Personal",
     organization = "Camino de Santiago, Europe",
     role = "Solo Pilgrimage",
@@ -172,8 +180,8 @@ app.MapGet("/api/experience", () => new object[]
     highlightText = "What started as a simple trip became the turning point that shaped the path of my life.",
     description = "Completed a 1,000 km solo pilgrimage along the Camino de Santiago, starting in St-Jean-Pied-de-Port, France, and continuing beyond Santiago de Compostela toward Portugal. What started as a simple travel plan eventually became a turning point that shaped my mindset, resilience, and long-term direction in life.",
     journeySummary = "Completed a 1,000 km solo pilgrimage that reshaped my resilience and long-term direction.",
-    journeyVariant = "major",
-    journeyLabel = "Turning Point",
+    journey = new { nodeType = "personal", narrativeRole = "turning-point", startDate = "2011-06", endDate = "2011-08", label = "CAMINO\nDE SANTIAGO", chronologyIndex = 4, relatedDomainIds = new[] { "global-perspective" }, relatedCapabilityIds = new[] { "systems-thinking" } },
+    journeyVariant = "milestone",
     journeySide = "right",
     storyBlocks = new object[]
     {
@@ -261,6 +269,21 @@ app.MapGet("/api/experience", () => new object[]
         }
     }},
     new {
+    id = "hanseo-return",
+    type = "Education",
+    organization = "HANSEO University, South Korea",
+    role = "Return to Studies",
+    period = "Feb 2012",
+    description = "Returned to Hanseo University to continue the aerospace software engineering program.",
+    journeySummary = "Returned to studies with a clearer direction toward software engineering.",
+    journeyVariant = "major",
+    journeyLabel = "Return to Studies",
+    journeySide = "left",
+    journey = new { nodeType = "education", narrativeRole = "turning-point", startDate = "2012-02", label = "HANSEO\nRETURN", chronologyIndex = 5, groupId = "hanseo", relatedDomainIds = new[] { "aerospace" }, relatedCapabilityIds = new[] { "systems-thinking" } }
+    },
+
+    new {
+    id = "north-west",
     type = "Education",
     organization = "North-West University, Mafikeng, South Africa",
     role = "Exchange Student, Computer Science and Electronics",
@@ -269,6 +292,7 @@ app.MapGet("/api/experience", () => new object[]
     journeyVariant = "milestone",
     journeySide = "left",
     journeySummary = "Expanded technical perspective through an international academic year.",
+    journey = new { nodeType = "education", narrativeRole = "turning-point", startDate = "2013-02", endDate = "2013-12", label = "NORTH-WEST\nUNIVERSITY", chronologyIndex = 6, relatedDomainIds = new[] { "global-perspective" } },
     highlightText = "A year abroad widened both my technical perspective and my sense of how big the world could be.",
     storyBlocks = new object[]
     {
@@ -286,12 +310,27 @@ app.MapGet("/api/experience", () => new object[]
     },
 
     new {
+    id = "hanseo-resume",
+    type = "Education",
+    organization = "HANSEO University, South Korea",
+    role = "Continued Studies",
+    period = "2014",
+    description = "Continued the aerospace software engineering program after the international exchange.",
+    journeySummary = "Returned to the degree path and carried a broader technical perspective forward.",
+    journeyVariant = "milestone",
+    journeySide = "right",
+    journey = new { nodeType = "education", narrativeRole = "supporting", startDate = "2014", label = "HANSEO\nCONTINUED", groupId = "hanseo", relatedExperienceIds = new[] { "north-west", "hanseo-graduation" }, relatedDomainIds = new[] { "aerospace" } }
+    },
+
+    new {
+    id = "hanseo-graduation",
     type = "Education",
     organization = "HANSEO University, South Korea",
     role = "B.E., Aerospace Software Engineering",
     period = "Feb 2015",
     description = "Graduated with a Bachelor of Engineering in Aerospace Software Engineering.",
     journeySummary = "Completed a B.E. in Aerospace Software Engineering and committed to building software professionally.",
+    journey = new { nodeType = "education", narrativeRole = "supporting", startDate = "2015-02", label = "HANSEO\nGRADUATION", chronologyIndex = 7, groupId = "hanseo", relatedExperienceIds = new[] { "pixoneer" }, relatedCapabilityIds = new[] { "full-lifecycle" } },
     journeyVariant = "milestone",
     journeySide = "right",
     highlightText = "This was the point where long-term interest turned into a professional direction.",
@@ -311,24 +350,28 @@ app.MapGet("/api/experience", () => new object[]
     },
 
     new {
+    id = "pixoneer",
     type = "Professional",
     organization = "Pixoneer Geomatics",
     role = "Software Engineer",
     period = "Oct 2014 – Jun 2016",
     description = "Worked on aerospace and defense projects, including a helicopter condition monitoring system, gaining hands-on experience across the full software development life cycle from requirements analysis to deployment.",
     journeySummary = "Built aerospace and defense software, including a helicopter condition monitoring system, across the full development lifecycle.",
+    journey = new { nodeType = "employment", narrativeRole = "supporting", startDate = "2014-10", endDate = "2016-06", label = "PIXONEER", chronologyIndex = 8, relatedExperienceIds = new[] { "qraft" }, relatedDomainIds = new[] { "aerospace" }, relatedCapabilityIds = new[] { "full-lifecycle" } },
     journeyVariant = "major",
     journeyLabel = "First Production Systems",
     journeySide = "left"
     },
 
     new {
+    id = "qraft",
     type = "Professional",
     organization = "QRAFT Technologies",
     role = "AXE Team Leader & Senior Software Development Engineer",
     period = "Nov 2016 – Nov 2023",
     description = "Led the AXE team and operated a real-time automated order execution system based on reinforcement learning, ensuring stable, low-latency trading operations for large institutional clients.",
     journeySummary = "Led the AXE team and operated a reinforcement-learning execution platform for low-latency institutional trading.",
+    journey = new { nodeType = "employment", narrativeRole = "turning-point", startDate = "2016-11", endDate = "2023-11", label = "QRAFT", chronologyIndex = 9, relatedDomainIds = new[] { "real-time-systems" }, relatedCapabilityIds = new[] { "system-ownership", "full-lifecycle" } },
     journeyVariant = "major",
     journeyLabel = "System Ownership",
     journeySide = "right",
@@ -350,6 +393,7 @@ app.MapGet("/api/experience", () => new object[]
     },
     new
     {
+        id = "us-relocation",
         type = "Transition",
         organization = "Relocation",
         period = "Dec 2023 - Apr 2024",
@@ -357,14 +401,17 @@ app.MapGet("/api/experience", () => new object[]
         journeyVariant = "milestone",
         journeySide = "left",
         journeySummary = "A transition into the next chapter in the United States."
+        , journey = new { nodeType = "transition", narrativeRole = "turning-point", startDate = "2023-12", endDate = "2024-04", label = "U.S.\nRELOCATION", chronologyIndex = 10, relatedDomainIds = new[] { "global-perspective" } }
     },
     new {
+    id = "lges",
     type = "Professional",
     organization = "LG Energy Solution Michigan",
     role = "Senior Smart Factory Engineer",
-    period = "May 2024 – Present",
+    period = "May 2025 – Present",
     description = "Operated and managed smart factory product traceability systems for EV and ESS battery manufacturing, ensuring stable production by supporting roll map and cell tracking systems across electrode and assembly processes.",
     journeySummary = "Operate production traceability systems for EV and ESS battery manufacturing across electrode and assembly processes.",
+    journey = new { nodeType = "employment", narrativeRole = "turning-point", startDate = "2025-05", label = "LG ENERGY\nSOLUTION", chronologyIndex = 11, relatedDomainIds = new[] { "smart-manufacturing" }, relatedCapabilityIds = new[] { "practical-automation", "real-world-impact" } },
     journeyVariant = "major",
     journeyLabel = "Smart Manufacturing",
     journeySide = "left",
@@ -476,6 +523,63 @@ app.MapGet("/api/projects", () => new object[]
         tech = new[] { "C#", ".NET Framework", "WPF", "MySQL"},
         images = new [] { "/images/qraft_und/1.png" },
         media = new[] { "/images/qraft_und/1.png", "/images/qraft_und/demo.mp4" },
+    },
+    new
+    {
+        company = "LG Energy Solution Michigan",
+        product = "MON's Club",
+        title = "Manufacturing Operations & Automation Platform",
+        category = "Smart Manufacturing",
+        role = "Technical Project Lead · System Architect · Full-Stack Engineer",
+        description = "An evolving manufacturing platform that connects independently operating monitoring systems, production data, and operational workflows under a shared architecture for analysis and automation.",
+        tech = new[] { "C#", ".NET", ".NET Framework 4.8", ".NET 10", "WPF", "XAML", "Python", "MariaDB", "MySqlConnector", "TCP/IP", "SMB", "Async I/O", "MVVM", "WebView2", "MahApps.Metro", "CommunityToolkit.Mvvm" },
+        plannedTech = new[] { "Docker", "RabbitMQ", "Redis", "NVIDIA DGX Spark", "LLM", "RAG" },
+        caseStudy = new
+        {
+            problem = "Specialized manufacturing systems have evolved around different processes and operational needs, each with its own responsibilities, data flows, and infrastructure. As these systems grow, scaling them independently makes integration, operation, and future automation increasingly difficult.",
+            roleDescription = "I lead the technical direction from identifying operational bottlenecks to designing and building the infrastructure, data, backend, and application layers.",
+            responsibilities = new[]
+            {
+                "Problem Discovery",
+                "Architecture",
+                "Infrastructure",
+                "Backend & Data",
+                "Applications",
+                "Automation"
+            },
+            ecosystem = new[]
+            {
+                new { name = "VIMON", subtitle = "Vision Inspection & Defect Monitoring", contribution = "Architecture · Core Development", description = "Incrementally collects Vision inspection results from distributed production PCs and monitors NG events, changes, thresholds, alerts, and operational reports." },
+                new { name = "CELLMON", subtitle = "Manufacturing Operations & Quality Monitoring", contribution = "Architecture · Core Development", description = "Integrates equipment state, process issues, quality anomalies, OCR evidence, and PLC logs to support operational monitoring and investigation." },
+                new { name = "ROLLMON", subtitle = "Electrode Process Monitoring", contribution = "Concept · Architecture · Database Design", description = "I defined the initial concept, system architecture, and database direction for electrode-process monitoring, with application implementation handled by another engineer." },
+                new { name = "ILMON", subtitle = "Operational Work Management", contribution = "Existing System · Planned Integration", description = "An existing system for operational work history and contractor work schedule management, planned for integration into the future MON's Club shared infrastructure." }
+            },
+            engineeringDecisions = new[]
+            {
+                new { system = "VIMON", title = "Incremental ingestion", explanation = "Process only newly appended data using persistent byte-offset checkpoints." },
+                new { system = "VIMON", title = "Safe concurrent reads", explanation = "Retry incomplete trailing rows while Vision equipment continues writing." },
+                new { system = "VIMON", title = "Transactional recovery", explanation = "Commit inspection data and checkpoints in the same database transaction." },
+                new { system = "VIMON", title = "Controlled concurrency", explanation = "Bound access by equipment IP while streaming reads and batching writes." },
+                new { system = "VIMON", title = "Headless reporting", explanation = "Generate dashboard reports without requiring the monitoring UI." },
+                new { system = "CELLMON", title = "Investigation workflow", explanation = "Move from high-level conditions to equipment, evidence, raw data, and recorded findings." },
+                new { system = "CELLMON", title = "Large PLC log visualization", explanation = "Combine streaming, virtualization, and peak-preserving downsampling for large PLC logs." },
+                new { system = "CELLMON", title = "Context-aware alerts", explanation = "Use priority, event age, and duplicate state to control notifications." },
+                new { system = "CELLMON", title = "Reliable message relay", explanation = "Use framing, message IDs, ACKs, and a bounded queue across constrained networks." },
+                new { system = "CELLMON", title = "Investigation context", explanation = "Preserve active filters and results while operators navigate between views." }
+            },
+            architectureEvolution = new[]
+            {
+                new { stage = "Current", title = "Specialized Operational Systems", status = "current", description = "VIMON, CELLMON, ROLLMON, and ILMON serve different manufacturing and operational needs with specialized responsibilities and infrastructure.", capabilities = Array.Empty<string>() },
+                new { stage = "Next Phase", title = "Shared Platform Foundation", status = "planned", description = "MON’s Club is evolving toward shared server infrastructure and clearer service boundaries so independently operating systems can share common integration, communication, and operational foundations.", capabilities = new[] { "Dedicated server infrastructure", "Microservices architecture", "Docker", "RabbitMQ", "Redis" } },
+                new { stage = "Future", title = "AI-Assisted Manufacturing Intelligence", status = "future", description = "The longer-term direction is an AI-assisted layer for retrieving and reasoning over manufacturing data, operational history, and engineering knowledge to support investigation and analysis.", capabilities = new[] { "NVIDIA DGX Spark", "AI infrastructure", "LLM", "RAG", "Manufacturing knowledge retrieval", "AI-assisted investigation and analysis" } }
+            },
+            technologyGroups = new[]
+            {
+                new { title = "Language & Application", technologies = new[] { "C#", "Python", ".NET", "WPF", "XAML" } },
+                new { title = "Data & Integration", technologies = new[] { "MariaDB", "TCP/IP", "SMB", "Async I/O" } },
+                new { title = "Application Architecture", technologies = new[] { "MVVM", "WebView2" } }
+            }
+        }
     }
 });
 
