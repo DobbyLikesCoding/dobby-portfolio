@@ -13,7 +13,7 @@ import CosmicVoyageBackground from '../components/CosmicVoyageBackground';
 import Reveal from '../components/Reveal';
 import TiltCard from '../components/TiltCard';
 
-const RESUME_FILE = '/files/Resume_sunghyun.pdf';
+const RESUME_FILE = '/files/Sunghyun_Chang_Resume.pdf';
 const HERO_VIDEO = '/videos/bigbang-space-journey-intro.mp4';
 const HERO_POSTER = '/videos/bigbang-space-journey-poster.jpg';
 
