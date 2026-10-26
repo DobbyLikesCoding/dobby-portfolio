@@ -4,7 +4,7 @@ import Reveal from "../components/Reveal";
 import SpaceSectionBackdrop from "../components/SpaceSectionBackdrop";
 import TiltCard from "../components/TiltCard";
 
-const RESUME_FILE = "/files/Resume_sunghyun.pdf";
+const RESUME_FILE = "/files/Sunghyun_Chang_Resume.pdf";
 
 type ExperienceItem = {
   id?: string;
@@ -46,7 +46,6 @@ type JourneyMetadata = {
   endDate?: string;
   label: string;
   chronologyIndex?: number;
-  relatedProjectTitle?: string;
   groupId?: string;
   relatedExperienceIds?: string[];
   relatedDomainIds?: string[];
@@ -63,7 +62,7 @@ type LegacyJourneyMetadata = {
   capabilities?: string[];
 };
 
-type NetworkNodeKind = "primary" | "supporting" | "domain" | "capability" | "identity" | "project";
+type NetworkNodeKind = "primary" | "supporting" | "domain" | "capability" | "identity";
 type CareerNetworkNode = {
   id: string;
   kind: NetworkNodeKind;
@@ -73,13 +72,12 @@ type CareerNetworkNode = {
   width: number;
   height: number;
   experienceId?: string;
-  projectTitle?: string;
 };
 type CareerNetworkEdge = {
   id: string;
   from: string;
   to: string;
-  kind: "chronology" | "supporting" | "domain" | "capability" | "convergence" | "project";
+  kind: "chronology" | "supporting" | "domain" | "capability" | "convergence";
 };
 
 const NETWORK_VIEWBOX = { width: 1280, height: 500 };
@@ -101,55 +99,16 @@ const NETWORK_LAYOUT: Record<string, Pick<CareerNetworkNode, "centerX" | "center
 };
 
 const JOURNEY_CONCEPTS: Array<Omit<CareerNetworkNode, "width" | "height">> = [
-  { id: "aerospace", kind: "domain", label: "AEROSPACE & DEFENSE", centerX: 132, centerY: 126 },
-  { id: "live-operations", kind: "domain", label: "LIVE OPERATIONS", centerX: 288, centerY: 166 },
-  { id: "global-perspective", kind: "domain", label: "GLOBAL PERSPECTIVE", centerX: 502, centerY: 100 },
-  { id: "full-lifecycle", kind: "capability", label: "FULL-LIFECYCLE DELIVERY", centerX: 592, centerY: 458 },
-  { id: "real-time-systems", kind: "domain", label: "REAL-TIME SYSTEMS", centerX: 846, centerY: 112 },
-  { id: "system-ownership", kind: "capability", label: "SYSTEM OWNERSHIP", centerX: 1032, centerY: 366 },
-  { id: "smart-manufacturing", kind: "domain", label: "SMART MANUFACTURING", centerX: 1160, centerY: 68 },
-  { id: "systems-thinking", kind: "identity", label: "SYSTEMS THINKING", centerX: 770, centerY: 454 },
-  { id: "practical-automation", kind: "identity", label: "PRACTICAL AUTOMATION", centerX: 974, centerY: 448 },
-  { id: "real-world-impact", kind: "identity", label: "REAL-WORLD IMPACT", centerX: 1174, centerY: 432 },
-];
-
-const JOURNEY_PROJECT_NODES: Array<Omit<CareerNetworkNode, "width" | "height"> & { sourceExperienceId: string }> = [
-  {
-    id: "asaq",
-    kind: "project",
-    label: "ASAQ",
-    projectTitle: "Real-Time Supply & Demand Analytics",
-    sourceExperienceId: "qraft",
-    centerX: 900,
-    centerY: 170,
-  },
-  {
-    id: "ai-execution",
-    kind: "project",
-    label: "AI EXECUTION ENGINE",
-    projectTitle: "AI Execution Engine",
-    sourceExperienceId: "qraft",
-    centerX: 988,
-    centerY: 118,
-  },
-  {
-    id: "futures-options",
-    kind: "project",
-    label: "FUTURES & OPTIONS",
-    projectTitle: "Futures & Options Trading Platform",
-    sourceExperienceId: "qraft",
-    centerX: 1060,
-    centerY: 170,
-  },
-  {
-    id: "mons-club",
-    kind: "project",
-    label: "MON'S CLUB",
-    projectTitle: "Manufacturing Operations & Automation Platform",
-    sourceExperienceId: "lges",
-    centerX: 1125,
-    centerY: 124,
-  },
+  { id: "aerospace", kind: "domain", label: "AEROSPACE & DEFENSE", centerX: 105, centerY: 62 },
+  { id: "live-operations", kind: "domain", label: "LIVE OPERATIONS", centerX: 265, centerY: 62 },
+  { id: "global-perspective", kind: "domain", label: "GLOBAL PERSPECTIVE", centerX: 430, centerY: 62 },
+  { id: "full-lifecycle", kind: "capability", label: "FULL-LIFECYCLE DELIVERY", centerX: 615, centerY: 62 },
+  { id: "real-time-systems", kind: "domain", label: "REAL-TIME SYSTEMS", centerX: 790, centerY: 62 },
+  { id: "system-ownership", kind: "capability", label: "SYSTEM OWNERSHIP", centerX: 950, centerY: 62 },
+  { id: "smart-manufacturing", kind: "domain", label: "SMART MANUFACTURING", centerX: 1130, centerY: 62 },
+  { id: "systems-thinking", kind: "identity", label: "SYSTEMS THINKING", centerX: 800, centerY: 448 },
+  { id: "practical-automation", kind: "identity", label: "PRACTICAL AUTOMATION", centerX: 1010, centerY: 448 },
+  { id: "real-world-impact", kind: "identity", label: "REAL-WORLD IMPACT", centerX: 1180, centerY: 448 },
 ];
 
 const FALLBACK_EXPERIENCE: ExperienceItem[] = [
@@ -440,9 +399,9 @@ const JOURNEY_METADATA: Record<string, JourneyMetadata> = {
   "hanseo-resume": { nodeType: "education", narrativeRole: "supporting", startDate: "2014", label: "HANSEO\nCONTINUED", groupId: "hanseo", relatedExperienceIds: ["north-west", "hanseo-graduation"], relatedDomainIds: ["aerospace"] },
   "hanseo-graduation": { nodeType: "education", narrativeRole: "supporting", startDate: "2015-02", label: "HANSEO\nGRADUATION", chronologyIndex: 7, groupId: "hanseo", relatedExperienceIds: ["pixoneer"], relatedCapabilityIds: ["full-lifecycle"] },
   pixoneer: { nodeType: "employment", narrativeRole: "supporting", startDate: "2014-10", endDate: "2016-06", label: "PIXONEER", chronologyIndex: 8, relatedExperienceIds: ["qraft"], relatedDomainIds: ["aerospace"], relatedCapabilityIds: ["full-lifecycle"] },
-  qraft: { nodeType: "employment", narrativeRole: "turning-point", startDate: "2016-11", endDate: "2023-11", label: "QRAFT", chronologyIndex: 9, relatedProjectTitle: "AI Execution Engine", relatedDomainIds: ["real-time-systems"], relatedCapabilityIds: ["system-ownership", "full-lifecycle"] },
+  qraft: { nodeType: "employment", narrativeRole: "turning-point", startDate: "2016-11", endDate: "2023-11", label: "QRAFT", chronologyIndex: 9, relatedDomainIds: ["real-time-systems"], relatedCapabilityIds: ["system-ownership", "full-lifecycle"] },
   "us-relocation": { nodeType: "transition", narrativeRole: "turning-point", startDate: "2023-12", endDate: "2024-04", label: "U.S.\nRELOCATION", chronologyIndex: 10, relatedDomainIds: ["global-perspective"] },
-  lges: { nodeType: "employment", narrativeRole: "turning-point", startDate: "2025-05", label: "LG ENERGY\nSOLUTION", chronologyIndex: 11, relatedProjectTitle: "Manufacturing Operations & Automation Platform", relatedDomainIds: ["smart-manufacturing"], relatedCapabilityIds: ["practical-automation", "real-world-impact"] },
+  lges: { nodeType: "employment", narrativeRole: "turning-point", startDate: "2025-05", label: "LG ENERGY\nSOLUTION", chronologyIndex: 11, relatedDomainIds: ["smart-manufacturing"], relatedCapabilityIds: ["practical-automation", "real-world-impact"] },
 };
 
 function normalizeJourneyMetadata(value: JourneyMetadata | LegacyJourneyMetadata | undefined, experienceType?: string): JourneyMetadata | undefined {
@@ -472,9 +431,9 @@ function normalizeJourneyMetadata(value: JourneyMetadata | LegacyJourneyMetadata
 function getNetworkNodeDimensions(kind: NetworkNodeKind, label: string) {
   const longestLine = Math.max(...label.split("\n").map((line) => line.length));
   const lineCount = label.split("\n").length;
-  const height = kind === "primary" ? (lineCount > 1 ? 70 : 60) : kind === "identity" ? 42 : kind === "project" ? 36 : kind === "supporting" ? (lineCount > 1 ? 44 : 34) : 34;
-  const minimum = kind === "primary" ? 124 : kind === "identity" ? 138 : kind === "project" ? 102 : kind === "capability" ? 116 : kind === "domain" ? 104 : 72;
-  const characterWidth = kind === "primary" ? 7.8 : kind === "identity" ? 6.4 : kind === "project" ? 6.2 : kind === "supporting" ? 6.1 : 5.7;
+  const height = kind === "primary" ? (lineCount > 1 ? 70 : 60) : kind === "identity" ? 42 : kind === "supporting" ? (lineCount > 1 ? 44 : 34) : 34;
+  const minimum = kind === "primary" ? 124 : kind === "identity" ? 138 : kind === "capability" ? 116 : kind === "domain" ? 104 : 72;
+  const characterWidth = kind === "primary" ? 7.8 : kind === "identity" ? 6.4 : kind === "supporting" ? 6.1 : 5.7;
   return { width: Math.max(minimum, longestLine * characterWidth + 30), height };
 }
 
@@ -554,11 +513,6 @@ function canOpenExperienceModal(item: ExperienceItem) {
   return !!(item.storyBlocks?.length || item.media?.length || item.details?.length);
 }
 
-function getJourneyActionLabel(item: ExperienceItem) {
-  if (item.journey?.relatedProjectTitle) return "View Selected Work";
-  return canOpenExperienceModal(item) ? "Explore Chapter" : undefined;
-}
-
 function withJourneyMetadata(items: ExperienceItem[]) {
   const fallbackById = new Map(FALLBACK_EXPERIENCE.map((item) => [item.id, item]));
   const receivedIds = new Set(items.map((item) => item.id).filter(Boolean));
@@ -621,21 +575,6 @@ function StoryArrowIcon() {
   );
 }
 
-function JourneyProjectCapsule({ title, onClick }: { title: string; onClick: () => void }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-label={`View ${title} in Selected Work`}
-      className="group mt-4 inline-flex max-w-full items-center gap-2 rounded-full border border-[#8feaf8]/28 bg-[#86e8f9]/[0.08] px-3 py-1.5 text-left text-[10px] font-semibold uppercase tracking-[0.12em] text-[#dffbff] transition hover:-translate-y-0.5 hover:border-[#8feaf8]/48 hover:bg-[#86e8f9]/[0.14] hover:text-white"
-    >
-      <span className="text-[#8feaf8]/72">Selected Work</span>
-      <span className="truncate">{title}</span>
-      <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">→</span>
-    </button>
-  );
-}
-
 function ExperienceTypeBadge({ type }: { type?: string }) {
   if (!type) return null;
 
@@ -675,10 +614,8 @@ function TimelineNode({
   );
 }
 
-function MajorChapter({ item, chapterNumber, actionLabel, onAction }: { item: ExperienceItem; chapterNumber: number; actionLabel?: string; onAction?: () => void }) {
-  const projectTitle = item.journey?.relatedProjectTitle;
-  const showProjectLink = !!projectTitle && !!onAction;
-  const showAction = !showProjectLink && !!onAction && !!actionLabel && item.showStoryLink !== false;
+function MajorChapter({ item, chapterNumber, onOpen }: { item: ExperienceItem; chapterNumber: number; onOpen?: () => void }) {
+  const showStoryButton = !!onOpen && item.showStoryLink !== false;
 
   return (
     <TiltCard
@@ -700,25 +637,22 @@ function MajorChapter({ item, chapterNumber, actionLabel, onAction }: { item: Ex
       <h3 className="mt-3 text-base font-semibold tracking-[0.02em] text-white md:text-[17px]">{item.organization}</h3>
       {item.role && <p className="mt-2 text-sm text-[#9ee7f4]">{item.role}</p>}
       <p className="mt-3 text-sm leading-6 text-slate-200/72">{item.journeySummary ?? item.description}</p>
-      {showAction && (
+      {showStoryButton && (
         <button
           type="button"
-          onClick={onAction}
+          onClick={onOpen}
           className="group mt-4 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#dffbff] transition hover:text-white"
         >
-          <span>{actionLabel}</span>
+          <span>Explore Chapter</span>
           <span className="transition-transform group-hover:translate-x-0.5"><StoryArrowIcon /></span>
         </button>
       )}
-      {showProjectLink && <JourneyProjectCapsule title={projectTitle} onClick={onAction} />}
     </TiltCard>
   );
 }
 
-function CompactMilestone({ item, actionLabel, onAction }: { item: ExperienceItem; actionLabel?: string; onAction?: () => void }) {
-  const projectTitle = item.journey?.relatedProjectTitle;
-  const showProjectLink = !!projectTitle && !!onAction;
-  const showAction = !showProjectLink && !!onAction && !!actionLabel && item.showStoryLink !== false;
+function CompactMilestone({ item, onOpen }: { item: ExperienceItem; onOpen?: () => void }) {
+  const showStoryButton = !!onOpen && item.showStoryLink !== false;
 
   return (
     <div className="max-w-[315px] py-1">
@@ -729,12 +663,11 @@ function CompactMilestone({ item, actionLabel, onAction }: { item: ExperienceIte
       <h3 className="mt-2 text-sm font-semibold text-white">{item.organization}</h3>
       {item.role && <p className="mt-1 text-xs leading-5 text-[#9ee7f4]/90">{item.role}</p>}
       {item.journeySummary && <p className="mt-1.5 text-xs leading-5 text-slate-300/65">{item.journeySummary}</p>}
-      {showAction && (
-        <button type="button" onClick={onAction} className="mt-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-300/80 transition hover:text-white">
-          {actionLabel}
+      {showStoryButton && (
+        <button type="button" onClick={onOpen} className="mt-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-300/80 transition hover:text-white">
+          Explore Chapter
         </button>
       )}
-      {showProjectLink && <JourneyProjectCapsule title={projectTitle} onClick={onAction} />}
     </div>
   );
 }
@@ -763,8 +696,7 @@ function CareerNetwork({
   onSelect,
   onHover,
   onReset,
-  onAction,
-  onProjectSelect,
+  onExplore,
 }: {
   items: ExperienceItem[];
   selectedNodeId: string | null;
@@ -772,13 +704,12 @@ function CareerNetwork({
   onSelect: (nodeId: string) => void;
   onHover: (nodeId: string | null) => void;
   onReset: () => void;
-  onAction: (item: ExperienceItem) => void;
-  onProjectSelect: (projectTitle: string) => void;
+  onExplore: (item: ExperienceItem) => void;
 }) {
   const prefersReducedMotion = useReducedMotion();
   const networkRef = useRef<HTMLDivElement | null>(null);
   const hoverLeaveTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const { experienceNodes, conceptNodes, projectNodes, networkEdges, nodesById } = useMemo(() => {
+  const { experienceNodes, conceptNodes, networkEdges, nodesById } = useMemo(() => {
     const journeyItems = items.filter((item) => item.id && item.journey && NETWORK_LAYOUT[item.id]);
     const experienceNodes = journeyItems.map((item) => {
       const layout = NETWORK_LAYOUT[item.id!];
@@ -796,9 +727,6 @@ function CareerNetwork({
     const conceptNodes = JOURNEY_CONCEPTS
       .filter((node) => usedConceptIds.has(node.id))
       .map((node) => ({ ...node, ...getNetworkNodeDimensions(node.kind, node.label) }));
-    const projectNodes = JOURNEY_PROJECT_NODES
-      .filter((node) => journeyItems.some((item) => item.id === node.sourceExperienceId))
-      .map((node) => ({ ...node, ...getNetworkNodeDimensions(node.kind, node.label) }));
     const chronologicalNodes = journeyItems
       .filter((item) => item.journey?.chronologyIndex !== undefined)
       .sort((a, b) => a.journey!.chronologyIndex! - b.journey!.chronologyIndex!);
@@ -810,15 +738,12 @@ function CareerNetwork({
       item.journey?.relatedDomainIds?.forEach((target) => networkEdges.push({ id: `domain-${source}-${target}`, from: source, to: target, kind: "domain" }));
       item.journey?.relatedCapabilityIds?.forEach((target) => networkEdges.push({ id: `capability-${source}-${target}`, from: source, to: target, kind: "capability" }));
     });
-    projectNodes.forEach((node) => {
-      networkEdges.push({ id: `project-${node.sourceExperienceId}-${node.id}`, from: node.sourceExperienceId, to: node.id, kind: "project" });
-    });
 
-    const nodes = [...experienceNodes, ...conceptNodes, ...projectNodes];
+    const nodes = [...experienceNodes, ...conceptNodes];
     const nodesById = new Map(nodes.map((node) => [node.id, node]));
     const validNetworkEdges = networkEdges.filter((edge) => nodesById.has(edge.from) && nodesById.has(edge.to));
     if (import.meta.env.DEV) validateNetworkGeometry(nodesById, validNetworkEdges);
-    return { experienceNodes, conceptNodes, projectNodes, networkEdges: validNetworkEdges, nodesById };
+    return { experienceNodes, conceptNodes, networkEdges: validNetworkEdges, nodesById };
   }, [items]);
   const activeNodeId = selectedNodeId ?? hoveredNodeId;
   const activeNode = activeNodeId ? nodesById.get(activeNodeId) : undefined;
@@ -846,7 +771,7 @@ function CareerNetwork({
     }
 
     const midpointX = (start.x + end.x) / 2;
-    const bend = edge.kind === "project" ? -28 : edge.kind === "supporting" ? 14 : start.y < end.y ? -20 : 20;
+    const bend = edge.kind === "supporting" ? 14 : start.y < end.y ? -20 : 20;
     return `M ${start.x} ${start.y} Q ${midpointX} ${(start.y + end.y) / 2 + bend} ${end.x} ${end.y}`;
   }
 
@@ -856,12 +781,12 @@ function CareerNetwork({
   }
 
   function edgeOpacity(edge: CareerNetworkEdge) {
-    const base = edge.kind === "chronology" ? 0.78 : edge.kind === "project" ? 0.66 : edge.kind === "supporting" ? 0.32 : edge.kind === "domain" ? 0.42 : edge.kind === "convergence" ? 0.34 : 0.36;
+    const base = edge.kind === "chronology" ? 0.78 : edge.kind === "supporting" ? 0.25 : edge.kind === "domain" ? 0.22 : edge.kind === "convergence" ? 0.2 : 0.15;
     if (!activeNodeId) return base;
     return edge.from === activeNodeId || edge.to === activeNodeId ? 1 : 0.08;
   }
 
-  const actionLabel = activeItem ? getJourneyActionLabel(activeItem) : undefined;
+  const canExplore = activeItem && activeItem.showStoryLink !== false && canOpenExperienceModal(activeItem);
   const floatingPanelPosition = activeNode
     ? {
         left: activeNode.centerX > NETWORK_VIEWBOX.width * 0.7
@@ -951,14 +876,14 @@ function CareerNetwork({
                 <path key={`${edge.id}-glow`} d={edgePath(edge)} fill="none" stroke="rgba(94,234,212,0.14)" strokeWidth="6" strokeLinecap="round" style={{ filter: "blur(4px)" }} />
               ))}
               {networkEdges.map((edge, index) => {
-                const stroke = edge.kind === "chronology" ? "rgba(143,234,248,0.96)" : edge.kind === "project" ? "rgba(116,232,245,0.78)" : edge.kind === "supporting" ? "rgba(203,213,225,0.5)" : edge.kind === "domain" ? "rgba(103,218,241,0.7)" : edge.kind === "convergence" ? "rgba(129,234,217,0.62)" : "rgba(182,164,255,0.64)";
+                const stroke = edge.kind === "chronology" ? "rgba(143,234,248,0.96)" : edge.kind === "supporting" ? "rgba(203,213,225,0.42)" : edge.kind === "domain" ? "rgba(168,215,231,0.56)" : edge.kind === "convergence" ? "rgba(143,234,248,0.44)" : "rgba(184,221,239,0.36)";
                 return (
                   <motion.path
                     key={edge.id}
                     d={edgePath(edge)}
                     fill="none"
                     stroke={stroke}
-                    strokeWidth={edge.kind === "chronology" ? 2 : edge.kind === "project" ? 1.25 : edge.kind === "domain" ? 1.15 : edge.kind === "capability" ? 1.05 : 0.9}
+                    strokeWidth={edge.kind === "chronology" ? 2 : edge.kind === "domain" ? 1 : 0.75}
                     strokeDasharray={edge.kind === "supporting" ? "3 6" : edge.kind === "capability" ? "3 5" : undefined}
                     strokeLinecap="round"
                     initial={prefersReducedMotion ? false : { pathLength: 0, opacity: 0 }}
@@ -969,69 +894,11 @@ function CareerNetwork({
               })}
               {conceptNodes.map((node, index) => {
                 const lines = node.label.split("\n");
-                const isDomain = node.kind === "domain";
-                const isIdentity = node.kind === "identity";
-                const fill = isIdentity
-                  ? "rgba(22,93,94,0.48)"
-                  : isDomain
-                    ? "rgba(15,67,84,0.7)"
-                    : "rgba(52,52,100,0.54)";
-                const stroke = isIdentity
-                  ? "rgba(121,236,215,0.52)"
-                  : isDomain
-                    ? "rgba(104,220,241,0.48)"
-                    : "rgba(178,165,255,0.46)";
-                const text = isIdentity
-                  ? "rgba(226,255,250,0.92)"
-                  : isDomain
-                    ? "rgba(205,248,255,0.9)"
-                    : "rgba(232,229,255,0.88)";
                 return (
                   <motion.g key={node.id} pointerEvents="none" animate={{ opacity: nodeOpacity(node) }} transition={{ duration: prefersReducedMotion ? 0 : 0.28, delay: prefersReducedMotion ? 0 : index * 0.012 }}>
-                    <rect x={node.centerX - node.width / 2} y={node.centerY - node.height / 2} width={node.width} height={node.height} rx={node.height / 2} fill={fill} stroke={stroke} strokeWidth="1" style={{ filter: isIdentity ? "drop-shadow(0 0 6px rgba(94,234,212,0.14))" : isDomain ? "drop-shadow(0 0 5px rgba(103,218,241,0.1))" : "drop-shadow(0 0 5px rgba(167,139,250,0.1))" }} />
-                    <text x={node.centerX} y={node.centerY - ((lines.length - 1) * 5.5)} textAnchor="middle" fill={text} fontSize={isIdentity ? 10 : 8.9} fontWeight="600" letterSpacing={isIdentity ? 1.15 : 0.9}>
+                    <rect x={node.centerX - node.width / 2} y={node.centerY - node.height / 2} width={node.width} height={node.height} rx={node.height / 2} fill={node.kind === "identity" ? "rgba(30,77,91,0.28)" : "rgba(9,20,31,0.88)"} stroke={node.kind === "identity" ? "rgba(143,234,248,0.28)" : "rgba(143,234,248,0.18)"} />
+                    <text x={node.centerX} y={node.centerY - ((lines.length - 1) * 5.5)} textAnchor="middle" fill={node.kind === "identity" ? "rgba(219,248,252,0.82)" : node.kind === "domain" ? "rgba(185,238,247,0.68)" : "rgba(226,232,240,0.62)"} fontSize={node.kind === "identity" ? 9.5 : 8.2} fontWeight="600" letterSpacing={node.kind === "identity" ? 1.1 : 0.8}>
                       {lines.map((line, lineIndex) => <tspan key={line} x={node.centerX} dy={lineIndex === 0 ? 0 : 12}>{line}</tspan>)}
-                    </text>
-                  </motion.g>
-                );
-              })}
-              {projectNodes.map((node, index) => {
-                const focused = hoveredNodeId === node.id;
-                return (
-                  <motion.g
-                    key={node.id}
-                    role="link"
-                    tabIndex={0}
-                    aria-label={`View ${node.projectTitle} in Selected Work`}
-                    onClick={() => node.projectTitle && onProjectSelect(node.projectTitle)}
-                    onKeyDown={(event) => {
-                      if ((event.key === "Enter" || event.key === " ") && node.projectTitle) {
-                        event.preventDefault();
-                        onProjectSelect(node.projectTitle);
-                      }
-                    }}
-                    onMouseEnter={() => onHover(node.id)}
-                    onMouseLeave={scheduleHoverClear}
-                    onFocus={() => onHover(node.id)}
-                    onBlur={scheduleHoverClear}
-                    initial={prefersReducedMotion ? false : { opacity: 0 }}
-                    animate={{ opacity: nodeOpacity(node) }}
-                    transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.3, delay: 0.15 + index * 0.04 }}
-                    className="cursor-pointer outline-none"
-                  >
-                    <rect
-                      x={node.centerX - node.width / 2}
-                      y={node.centerY - node.height / 2}
-                      width={node.width}
-                      height={node.height}
-                      rx={node.height / 2}
-                      fill={focused ? "rgba(32,110,125,0.92)" : "rgba(17,72,86,0.9)"}
-                      stroke={focused ? "rgba(194,250,255,0.94)" : "rgba(128,234,247,0.76)"}
-                      strokeWidth={focused ? 1.35 : 1}
-                      style={{ filter: focused ? "drop-shadow(0 0 10px rgba(94,234,212,0.32))" : "drop-shadow(0 0 6px rgba(94,234,212,0.18))" }}
-                    />
-                    <text x={node.centerX} y={node.centerY + 3} textAnchor="middle" fill="#e8fdff" fontSize="8.8" fontWeight="600" letterSpacing="1.15" pointerEvents="none">
-                      {node.label}
                     </text>
                   </motion.g>
                 );
@@ -1105,9 +972,9 @@ function CareerNetwork({
                       y={node.centerY - ((lines.length - 1) * (isTurningPoint ? 7 : 5))}
                       textAnchor="middle"
                       fill={selected || focused || isTurningPoint ? "#e8fdff" : "rgba(226,232,240,0.68)"}
-                      fontSize={isTurningPoint ? 12 : 9.2}
+                      fontSize={isTurningPoint ? 12 : 8.5}
                       fontWeight="600"
-                      letterSpacing={isTurningPoint ? 1.45 : 1.05}
+                      letterSpacing={isTurningPoint ? 1.45 : 1}
                       pointerEvents="none"
                     >
                       {lines.map((line, lineIndex) => <tspan key={line} x={node.centerX} dy={lineIndex === 0 ? 0 : isTurningPoint ? 15 : 11}>{line}</tspan>)}
@@ -1135,9 +1002,7 @@ function CareerNetwork({
                 <p className="mt-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-400">{activeItem.period}</p>
                 {activeItem.role ? <p className="mt-2 text-xs leading-5 text-[#a6eaf6]">{activeItem.role}</p> : null}
                 <p className="mt-2 text-xs leading-5 text-slate-200/72">{activeItem.journeySummary ?? activeItem.description}</p>
-                {activeItem.journey?.relatedProjectTitle
-                  ? <JourneyProjectCapsule title={activeItem.journey.relatedProjectTitle} onClick={() => onAction(activeItem)} />
-                  : actionLabel ? <button type="button" onClick={() => onAction(activeItem)} className="mt-3 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#dffbff] transition hover:text-white">{actionLabel} →</button> : null}
+                {canExplore ? <button type="button" onClick={() => onExplore(activeItem)} className="mt-3 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#dffbff] transition hover:text-white">Explore Chapter →</button> : null}
               </motion.article>
             ) : null}
           </div>
@@ -1199,23 +1064,6 @@ export default function Experience() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [selectedNetworkNodeId, selectedItem]);
 
-  function selectWorkProject(projectTitle: string) {
-    window.dispatchEvent(new CustomEvent("portfolio:select-project", { detail: { title: projectTitle } }));
-    document.getElementById("portfolio")?.scrollIntoView({ behavior: "smooth", block: "start" });
-    setHoveredNetworkNodeId(null);
-    setSelectedNetworkNodeId(null);
-  }
-
-  function handleJourneyAction(item: ExperienceItem) {
-    const projectTitle = item.journey?.relatedProjectTitle;
-    if (projectTitle) {
-      selectWorkProject(projectTitle);
-      return;
-    }
-
-    setSelectedItem(item);
-  }
-
   return (
     <section id="experience" className="section-shell px-4 md:px-8">
       <SpaceSectionBackdrop variant="medium" />
@@ -1233,8 +1081,7 @@ export default function Experience() {
           setHoveredNetworkNodeId(null);
           setSelectedNetworkNodeId(null);
         }}
-        onAction={handleJourneyAction}
-        onProjectSelect={selectWorkProject}
+        onExplore={setSelectedItem}
       />
 
       <div className="relative mx-auto max-w-6xl xl:hidden">
@@ -1273,11 +1120,11 @@ export default function Experience() {
           <div className="relative">
             {items.map((exp, i) => {
               const variant = getJourneyVariant(exp);
-              const actionLabel = getJourneyActionLabel(exp);
+              const canOpen = canOpenExperienceModal(exp);
               const majorIndex = items.slice(0, i + 1).filter((item) => getJourneyVariant(item) === "major").length;
               const side = exp.journeySide ?? (majorIndex % 2 === 1 ? "left" : "right");
               const previousVariant = i > 0 ? getJourneyVariant(items[i - 1]) : undefined;
-              const onAction = actionLabel ? () => handleJourneyAction(exp) : undefined;
+              const onOpen = canOpen ? () => setSelectedItem(exp) : undefined;
               const spacing = i === 0
                 ? ""
                 : variant === "milestone" && previousVariant === "milestone"
@@ -1292,13 +1139,13 @@ export default function Experience() {
                     <div className="hidden lg:block">
                       {variant === "major" && side === "left" && (
                         <div className="flex items-start justify-end pt-5">
-                          <MajorChapter item={exp} chapterNumber={majorIndex} actionLabel={actionLabel} onAction={onAction} />
+                          <MajorChapter item={exp} chapterNumber={majorIndex} onOpen={onOpen} />
                           <span aria-hidden="true" className="mt-[22px] h-px w-7 shrink-0 bg-gradient-to-r from-white/8 to-[#9de5f1]/35" />
                         </div>
                       )}
                       {variant === "milestone" && side === "left" && (
                         <div className="flex items-start justify-end pt-0.5">
-                          <CompactMilestone item={exp} actionLabel={actionLabel} onAction={onAction} />
+                          <CompactMilestone item={exp} onOpen={onOpen} />
                           <span aria-hidden="true" className="mt-4 h-px w-7 shrink-0 bg-gradient-to-r from-white/8 to-[#9de5f1]/26" />
                         </div>
                       )}
@@ -1309,21 +1156,21 @@ export default function Experience() {
                         side === "right" && (
                           <div className="flex items-start pt-5">
                             <span aria-hidden="true" className="mt-[22px] h-px w-7 shrink-0 bg-gradient-to-l from-white/8 to-[#9de5f1]/35" />
-                            <MajorChapter item={exp} chapterNumber={majorIndex} actionLabel={actionLabel} onAction={onAction} />
+                            <MajorChapter item={exp} chapterNumber={majorIndex} onOpen={onOpen} />
                           </div>
                         )
                       ) : (
                         side === "right" && (
                           <div className="flex items-start pt-0.5">
                             <span aria-hidden="true" className="mt-4 h-px w-7 shrink-0 bg-gradient-to-l from-white/8 to-[#9de5f1]/26" />
-                            <CompactMilestone item={exp} actionLabel={actionLabel} onAction={onAction} />
+                            <CompactMilestone item={exp} onOpen={onOpen} />
                           </div>
                         )
                       )}
                     </div>
                     <div className="relative pl-10 lg:hidden">
                       <div className="absolute left-0 top-4"><TimelineNode variant={variant} chapterNumber={majorIndex} isCurrent={exp.isCurrent} /></div>
-                      {variant === "major" ? <MajorChapter item={exp} chapterNumber={majorIndex} actionLabel={actionLabel} onAction={onAction} /> : <CompactMilestone item={exp} actionLabel={actionLabel} onAction={onAction} />}
+                      {variant === "major" ? <MajorChapter item={exp} chapterNumber={majorIndex} onOpen={onOpen} /> : <CompactMilestone item={exp} onOpen={onOpen} />}
                     </div>
                   </div>
                 </Reveal>
