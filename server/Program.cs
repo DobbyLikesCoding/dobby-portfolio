@@ -521,8 +521,8 @@ app.MapGet("/api/projects", () => new object[]
         discontinued = "Mar 2018",
         age = "1Y 1M",
         tech = new[] { "C#", ".NET Framework", "WPF", "MySQL"},
-        images = new [] { "/images/qraft_und/1.png" },
-        media = new[] { "/images/qraft_und/1.png", "/images/qraft_und/demo.mp4" },
+        images = new [] { "/images/qraft_und/cover.png" },
+        media = new[] { "/images/qraft_und/cover.png", "/images/qraft_und/1.png", "/images/qraft_und/demo.mp4" },
     },
     new
     {

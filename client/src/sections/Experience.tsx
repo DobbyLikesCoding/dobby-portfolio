@@ -101,13 +101,13 @@ const NETWORK_LAYOUT: Record<string, Pick<CareerNetworkNode, "centerX" | "center
 };
 
 const JOURNEY_CONCEPTS: Array<Omit<CareerNetworkNode, "width" | "height">> = [
-  { id: "aerospace", kind: "domain", label: "AEROSPACE & DEFENSE", centerX: 132, centerY: 126 },
+  { id: "aerospace", kind: "domain", label: "AEROSPACE & DEFENSE", centerX: 132, centerY: 98 },
   { id: "live-operations", kind: "domain", label: "LIVE OPERATIONS", centerX: 288, centerY: 166 },
-  { id: "global-perspective", kind: "domain", label: "GLOBAL PERSPECTIVE", centerX: 502, centerY: 100 },
+  { id: "global-perspective", kind: "domain", label: "GLOBAL PERSPECTIVE", centerX: 502, centerY: 56 },
   { id: "full-lifecycle", kind: "capability", label: "FULL-LIFECYCLE DELIVERY", centerX: 592, centerY: 458 },
-  { id: "real-time-systems", kind: "domain", label: "REAL-TIME SYSTEMS", centerX: 846, centerY: 112 },
+  { id: "real-time-systems", kind: "domain", label: "REAL-TIME SYSTEMS", centerX: 846, centerY: 68 },
   { id: "system-ownership", kind: "capability", label: "SYSTEM OWNERSHIP", centerX: 1032, centerY: 366 },
-  { id: "smart-manufacturing", kind: "domain", label: "SMART MANUFACTURING", centerX: 1160, centerY: 68 },
+  { id: "smart-manufacturing", kind: "domain", label: "SMART MANUFACTURING", centerX: 1160, centerY: 38 },
   { id: "systems-thinking", kind: "identity", label: "SYSTEMS THINKING", centerX: 770, centerY: 454 },
   { id: "practical-automation", kind: "identity", label: "PRACTICAL AUTOMATION", centerX: 974, centerY: 448 },
   { id: "real-world-impact", kind: "identity", label: "REAL-WORLD IMPACT", centerX: 1174, centerY: 432 },
@@ -120,8 +120,8 @@ const JOURNEY_PROJECT_NODES: Array<Omit<CareerNetworkNode, "width" | "height"> &
     label: "ASAQ",
     projectTitle: "Real-Time Supply & Demand Analytics",
     sourceExperienceId: "qraft",
-    centerX: 900,
-    centerY: 170,
+    centerX: 850,
+    centerY: 186,
   },
   {
     id: "ai-execution",
@@ -129,8 +129,8 @@ const JOURNEY_PROJECT_NODES: Array<Omit<CareerNetworkNode, "width" | "height"> &
     label: "AI EXECUTION ENGINE",
     projectTitle: "AI Execution Engine",
     sourceExperienceId: "qraft",
-    centerX: 988,
-    centerY: 118,
+    centerX: 992,
+    centerY: 46,
   },
   {
     id: "futures-options",
@@ -138,8 +138,8 @@ const JOURNEY_PROJECT_NODES: Array<Omit<CareerNetworkNode, "width" | "height"> &
     label: "FUTURES & OPTIONS",
     projectTitle: "Futures & Options Trading Platform",
     sourceExperienceId: "qraft",
-    centerX: 1060,
-    centerY: 170,
+    centerX: 1082,
+    centerY: 188,
   },
   {
     id: "mons-club",
@@ -148,7 +148,7 @@ const JOURNEY_PROJECT_NODES: Array<Omit<CareerNetworkNode, "width" | "height"> &
     projectTitle: "Manufacturing Operations & Automation Platform",
     sourceExperienceId: "lges",
     centerX: 1125,
-    centerY: 124,
+    centerY: 88,
   },
 ];
 
@@ -852,24 +852,22 @@ function CareerNetwork({
 
   function nodeOpacity(node: CareerNetworkNode) {
     if (!activeNodeId) return 1;
-    return connectedNodeIds.has(node.id) ? 1 : 0.2;
+    if (connectedNodeIds.has(node.id)) return 1;
+    return selectedNodeId ? 0.4 : 0.3;
   }
 
   function edgeOpacity(edge: CareerNetworkEdge) {
-    const base = edge.kind === "chronology" ? 0.78 : edge.kind === "project" ? 0.66 : edge.kind === "supporting" ? 0.32 : edge.kind === "domain" ? 0.42 : edge.kind === "convergence" ? 0.34 : 0.36;
+    const base = edge.kind === "chronology" ? 0.78 : edge.kind === "project" ? 0.66 : edge.kind === "supporting" ? 0.22 : edge.kind === "domain" ? 0.42 : edge.kind === "convergence" ? 0.3 : 0.25;
     if (!activeNodeId) return base;
-    return edge.from === activeNodeId || edge.to === activeNodeId ? 1 : 0.08;
+    return edge.from === activeNodeId || edge.to === activeNodeId ? 1 : selectedNodeId ? 0.16 : 0.11;
   }
 
   const actionLabel = activeItem ? getJourneyActionLabel(activeItem) : undefined;
+  // Keep chapter detail out of the central chronology by docking it on the opposite side.
   const floatingPanelPosition = activeNode
     ? {
-        left: activeNode.centerX > NETWORK_VIEWBOX.width * 0.7
-          ? Math.max(18, activeNode.centerX - activeNode.width / 2 - 278)
-          : Math.min(NETWORK_VIEWBOX.width - 268, activeNode.centerX + activeNode.width / 2 + 18),
-        top: activeNode.kind === "primary"
-          ? Math.max(72, activeNode.centerY - 210)
-          : Math.min(Math.max(132, activeNode.centerY - 104), NETWORK_VIEWBOX.height - 166),
+        left: activeNode.centerX >= NETWORK_VIEWBOX.width / 2 ? 18 : NETWORK_VIEWBOX.width - 250,
+        top: 18,
       }
     : null;
 
@@ -905,7 +903,7 @@ function CareerNetwork({
   }, [onReset, selectedNodeId]);
 
   return (
-    <div className="hidden xl:block">
+    <div className="hidden pt-10 xl:block">
       <Reveal>
         <div className="mx-auto max-w-none text-center">
           <p className="section-kicker">Journey</p>
@@ -919,34 +917,65 @@ function CareerNetwork({
       </Reveal>
 
       <Reveal delayMs={100}>
-        <div className="glass-panel relative mx-auto mt-8 w-full max-w-[1280px] overflow-hidden rounded-[32px] border-white/12 bg-[linear-gradient(145deg,rgba(11,23,36,0.84),rgba(5,12,21,0.72))] p-5 xl:p-6">
+        <div className="glass-panel relative mx-auto mt-8 w-full max-w-[1280px] overflow-hidden rounded-[32px] border-white/12 bg-[linear-gradient(145deg,rgba(11,23,36,0.84),rgba(5,12,21,0.72))] p-4 xl:p-5">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_16%_22%,rgba(134,232,249,0.12),transparent_22%),radial-gradient(circle_at_88%_72%,rgba(148,163,255,0.1),transparent_24%)]" />
-          <div className="relative flex items-center justify-between gap-6">
-            <div>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.25em] text-[#a6eaf6]">Career Network</p>
-              <p className="mt-1.5 text-sm text-slate-300/72">Six defining turning points, connected by the experiences that shaped my perspective.</p>
-            </div>
-            {selectedNodeId ? (
-              <button type="button" onClick={onReset} className="rounded-full border border-white/14 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-200 transition hover:border-[#8feaf8]/40 hover:text-white">
-                <span aria-hidden="true" className="mr-1.5">×</span> Clear focus
-              </button>
-            ) : null}
-          </div>
-
           <div
             ref={networkRef}
-            className="relative mx-auto mt-4 aspect-[1280/500] w-full max-w-[1240px]"
+            className="relative mx-auto aspect-[1280/520] w-full max-w-[1240px]"
             onPointerDown={(event) => {
               if (event.target === event.currentTarget) onReset();
             }}
           >
             <svg
               viewBox={`0 0 ${NETWORK_VIEWBOX.width} ${NETWORK_VIEWBOX.height}`}
+              preserveAspectRatio="none"
               className="absolute inset-0 h-full w-full overflow-visible"
               onPointerDown={(event) => {
                 if (event.target === event.currentTarget) onReset();
               }}
             >
+              <defs>
+                <linearGradient id="journey-primary-surface" x1="0" y1="0" x2="0.8" y2="1">
+                  <stop offset="0" stopColor="rgba(42,132,151,0.96)" />
+                  <stop offset="0.44" stopColor="rgba(16,79,96,0.92)" />
+                  <stop offset="1" stopColor="rgba(8,42,57,0.94)" />
+                </linearGradient>
+                <linearGradient id="journey-primary-selected" x1="0" y1="0" x2="0.8" y2="1">
+                  <stop offset="0" stopColor="rgba(75,173,188,0.98)" />
+                  <stop offset="0.5" stopColor="rgba(27,103,121,0.96)" />
+                  <stop offset="1" stopColor="rgba(12,60,75,0.98)" />
+                </linearGradient>
+                <linearGradient id="journey-supporting-surface" x1="0" y1="0" x2="0.8" y2="1">
+                  <stop offset="0" stopColor="rgba(21,49,66,0.96)" />
+                  <stop offset="1" stopColor="rgba(6,18,30,0.96)" />
+                </linearGradient>
+                <linearGradient id="journey-domain-surface" x1="0" y1="0" x2="0.8" y2="1">
+                  <stop offset="0" stopColor="rgba(25,98,116,0.9)" />
+                  <stop offset="1" stopColor="rgba(8,47,65,0.94)" />
+                </linearGradient>
+                <linearGradient id="journey-capability-surface" x1="0" y1="0" x2="0.8" y2="1">
+                  <stop offset="0" stopColor="rgba(82,72,148,0.84)" />
+                  <stop offset="1" stopColor="rgba(39,33,88,0.92)" />
+                </linearGradient>
+                <linearGradient id="journey-identity-surface" x1="0" y1="0" x2="0.8" y2="1">
+                  <stop offset="0" stopColor="rgba(34,120,112,0.84)" />
+                  <stop offset="1" stopColor="rgba(14,68,70,0.92)" />
+                </linearGradient>
+                <linearGradient id="journey-project-surface" x1="0" y1="0" x2="0.8" y2="1">
+                  <stop offset="0" stopColor="rgba(38,126,142,0.98)" />
+                  <stop offset="0.48" stopColor="rgba(16,78,95,0.98)" />
+                  <stop offset="1" stopColor="rgba(7,44,60,0.98)" />
+                </linearGradient>
+                <linearGradient id="journey-project-hover" x1="0" y1="0" x2="0.8" y2="1">
+                  <stop offset="0" stopColor="rgba(65,158,173,0.98)" />
+                  <stop offset="1" stopColor="rgba(19,89,103,0.98)" />
+                </linearGradient>
+                <linearGradient id="journey-surface-glint" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stopColor="#e6feff" stopOpacity="0.3" />
+                  <stop offset="0.3" stopColor="#b5f7ff" stopOpacity="0.08" />
+                  <stop offset="0.56" stopColor="#b5f7ff" stopOpacity="0" />
+                </linearGradient>
+              </defs>
               {networkEdges.filter((edge) => edge.kind === "chronology").map((edge) => (
                 <path key={`${edge.id}-glow`} d={edgePath(edge)} fill="none" stroke="rgba(94,234,212,0.14)" strokeWidth="6" strokeLinecap="round" style={{ filter: "blur(4px)" }} />
               ))}
@@ -972,10 +1001,10 @@ function CareerNetwork({
                 const isDomain = node.kind === "domain";
                 const isIdentity = node.kind === "identity";
                 const fill = isIdentity
-                  ? "rgba(22,93,94,0.48)"
+                  ? "url(#journey-identity-surface)"
                   : isDomain
-                    ? "rgba(15,67,84,0.7)"
-                    : "rgba(52,52,100,0.54)";
+                    ? "url(#journey-domain-surface)"
+                    : "url(#journey-capability-surface)";
                 const stroke = isIdentity
                   ? "rgba(121,236,215,0.52)"
                   : isDomain
@@ -986,9 +1015,18 @@ function CareerNetwork({
                   : isDomain
                     ? "rgba(205,248,255,0.9)"
                     : "rgba(232,229,255,0.88)";
+                const depthFill = isIdentity
+                  ? "rgba(6,47,51,0.9)"
+                  : isDomain
+                    ? "rgba(4,35,50,0.92)"
+                    : "rgba(27,23,64,0.9)";
                 return (
                   <motion.g key={node.id} pointerEvents="none" animate={{ opacity: nodeOpacity(node) }} transition={{ duration: prefersReducedMotion ? 0 : 0.28, delay: prefersReducedMotion ? 0 : index * 0.012 }}>
+                    <ellipse cx={node.centerX} cy={node.centerY + node.height / 2 + 5} rx={node.width * 0.38} ry="3" fill="rgba(0,0,0,0.34)" style={{ filter: "blur(3px)" }} />
+                    <rect x={node.centerX - node.width / 2} y={node.centerY - node.height / 2 + 5} width={node.width} height={node.height} rx={node.height / 2} fill="rgba(0,0,0,0.5)" />
+                    <rect x={node.centerX - node.width / 2} y={node.centerY - node.height / 2 + 2.5} width={node.width} height={node.height} rx={node.height / 2} fill={depthFill} stroke="rgba(0,0,0,0.44)" strokeWidth="1" />
                     <rect x={node.centerX - node.width / 2} y={node.centerY - node.height / 2} width={node.width} height={node.height} rx={node.height / 2} fill={fill} stroke={stroke} strokeWidth="1" style={{ filter: isIdentity ? "drop-shadow(0 0 6px rgba(94,234,212,0.14))" : isDomain ? "drop-shadow(0 0 5px rgba(103,218,241,0.1))" : "drop-shadow(0 0 5px rgba(167,139,250,0.1))" }} />
+                    <rect x={node.centerX - node.width / 2 + 1.5} y={node.centerY - node.height / 2 + 1.5} width={node.width - 3} height={node.height - 3} rx={(node.height - 3) / 2} fill="url(#journey-surface-glint)" pointerEvents="none" />
                     <text x={node.centerX} y={node.centerY - ((lines.length - 1) * 5.5)} textAnchor="middle" fill={text} fontSize={isIdentity ? 10 : 8.9} fontWeight="600" letterSpacing={isIdentity ? 1.15 : 0.9}>
                       {lines.map((line, lineIndex) => <tspan key={line} x={node.centerX} dy={lineIndex === 0 ? 0 : 12}>{line}</tspan>)}
                     </text>
@@ -1019,17 +1057,37 @@ function CareerNetwork({
                     transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.3, delay: 0.15 + index * 0.04 }}
                     className="cursor-pointer outline-none"
                   >
+                    <ellipse cx={node.centerX} cy={node.centerY + node.height / 2 + 6} rx={node.width * 0.4} ry="3.5" fill="rgba(0,0,0,0.38)" style={{ filter: "blur(4px)" }} />
+                    <rect
+                      x={node.centerX - node.width / 2}
+                      y={node.centerY - node.height / 2 + 7}
+                      width={node.width}
+                      height={node.height}
+                      rx="10"
+                      fill="rgba(0,34,44,0.78)"
+                    />
+                    <rect
+                      x={node.centerX - node.width / 2}
+                      y={node.centerY - node.height / 2 + 3.5}
+                      width={node.width}
+                      height={node.height}
+                      rx="10"
+                      fill="rgba(4,43,55,0.94)"
+                      stroke="rgba(0,0,0,0.48)"
+                      strokeWidth="1"
+                    />
                     <rect
                       x={node.centerX - node.width / 2}
                       y={node.centerY - node.height / 2}
                       width={node.width}
                       height={node.height}
-                      rx={node.height / 2}
-                      fill={focused ? "rgba(32,110,125,0.92)" : "rgba(17,72,86,0.9)"}
+                      rx="10"
+                      fill={focused ? "url(#journey-project-hover)" : "url(#journey-project-surface)"}
                       stroke={focused ? "rgba(194,250,255,0.94)" : "rgba(128,234,247,0.76)"}
-                      strokeWidth={focused ? 1.35 : 1}
-                      style={{ filter: focused ? "drop-shadow(0 0 10px rgba(94,234,212,0.32))" : "drop-shadow(0 0 6px rgba(94,234,212,0.18))" }}
+                      strokeWidth={focused ? 1.35 : 1.1}
+                      style={{ filter: focused ? "drop-shadow(0 0 10px rgba(94,234,212,0.32))" : "drop-shadow(0 0 7px rgba(94,234,212,0.2))" }}
                     />
+                    <rect x={node.centerX - node.width / 2 + 1.5} y={node.centerY - node.height / 2 + 1.5} width={node.width - 3} height={node.height - 3} rx="8" fill="url(#journey-surface-glint)" pointerEvents="none" />
                     <text x={node.centerX} y={node.centerY + 3} textAnchor="middle" fill="#e8fdff" fontSize="8.8" fontWeight="600" letterSpacing="1.15" pointerEvents="none">
                       {node.label}
                     </text>
@@ -1041,13 +1099,11 @@ function CareerNetwork({
                 const focused = selected || hoveredNodeId === node.id;
                 const lines = node.label.split("\n");
                 const isTurningPoint = node.kind === "primary";
-                const nodeFill = selected
-                  ? "rgba(39,118,136,0.5)"
-                  : focused && isTurningPoint
-                    ? "rgba(24,90,108,0.82)"
-                    : isTurningPoint
-                      ? "rgba(14,62,76,0.78)"
-                      : "rgba(8,19,30,0.88)";
+                const nodeFill = selected || (focused && isTurningPoint)
+                  ? "url(#journey-primary-selected)"
+                  : isTurningPoint
+                    ? "url(#journey-primary-surface)"
+                    : "url(#journey-supporting-surface)";
                 const nodeStroke = selected
                   ? "rgba(184,247,255,0.94)"
                   : focused && isTurningPoint
@@ -1058,14 +1114,19 @@ function CareerNetwork({
                         ? "rgba(143,234,248,0.54)"
                         : "rgba(143,234,248,0.2)";
                 const nodeGlow = selected
-                  ? "drop-shadow(0 0 14px rgba(94,234,212,0.34))"
+                  ? "drop-shadow(0 0 16px rgba(94,234,212,0.38))"
                   : focused && isTurningPoint
-                    ? "drop-shadow(0 0 10px rgba(94,234,212,0.27))"
+                    ? "drop-shadow(0 0 12px rgba(94,234,212,0.3))"
                     : isTurningPoint
-                      ? "drop-shadow(0 0 7px rgba(94,234,212,0.16))"
+                      ? "drop-shadow(0 0 9px rgba(94,234,212,0.2))"
                       : focused
                         ? "drop-shadow(0 0 5px rgba(94,234,212,0.14))"
                         : undefined;
+                const depthFill = isTurningPoint
+                  ? selected || focused
+                    ? "rgba(7,57,69,0.96)"
+                    : "rgba(5,43,55,0.96)"
+                  : "rgba(3,13,24,0.94)";
                 return (
                   <motion.g
                     key={node.id}
@@ -1089,6 +1150,25 @@ function CareerNetwork({
                     transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.3, delay: index * 0.06 }}
                     className="cursor-pointer outline-none"
                   >
+                    {isTurningPoint ? <ellipse cx={node.centerX} cy={node.centerY + node.height / 2 + 9} rx={node.width * 0.42} ry="5" fill="rgba(0,0,0,0.42)" style={{ filter: "blur(5px)" }} /> : null}
+                    <rect
+                      x={node.centerX - node.width / 2}
+                      y={node.centerY - node.height / 2 + (isTurningPoint ? 10 : 5)}
+                      width={node.width}
+                      height={node.height}
+                      rx={isTurningPoint ? node.height / 2 : 18}
+                      fill={isTurningPoint ? "rgba(0,23,35,0.72)" : "rgba(0,0,0,0.5)"}
+                    />
+                    <rect
+                      x={node.centerX - node.width / 2}
+                      y={node.centerY - node.height / 2 + (isTurningPoint ? 5 : 2.5)}
+                      width={node.width}
+                      height={node.height}
+                      rx={isTurningPoint ? node.height / 2 : 18}
+                      fill={depthFill}
+                      stroke="rgba(0,0,0,0.48)"
+                      strokeWidth="1"
+                    />
                     <rect
                       x={node.centerX - node.width / 2}
                       y={node.centerY - node.height / 2}
@@ -1100,6 +1180,7 @@ function CareerNetwork({
                       strokeWidth={selected ? 1.6 : focused && isTurningPoint ? 1.45 : isTurningPoint ? 1.2 : focused ? 1.15 : 0.85}
                       style={{ filter: nodeGlow }}
                     />
+                    <rect x={node.centerX - node.width / 2 + 2} y={node.centerY - node.height / 2 + 2} width={node.width - 4} height={node.height - 4} rx={isTurningPoint ? (node.height - 4) / 2 : 16} fill="url(#journey-surface-glint)" pointerEvents="none" />
                     <text
                       x={node.centerX}
                       y={node.centerY - ((lines.length - 1) * (isTurningPoint ? 7 : 5))}
@@ -1124,7 +1205,7 @@ function CareerNetwork({
                 transition={{ duration: prefersReducedMotion ? 0 : 0.18 }}
                 onMouseEnter={cancelHoverLeave}
                 onMouseLeave={scheduleHoverClear}
-                className="absolute z-20 w-[250px] rounded-2xl border border-[#8feaf8]/24 bg-[rgba(7,17,28,0.96)] p-4 shadow-[0_18px_42px_rgba(0,0,0,0.3)] backdrop-blur-xl"
+                className="absolute z-20 w-[232px] rounded-2xl border border-[#8feaf8]/24 bg-[rgba(7,17,28,0.9)] p-4 shadow-[0_18px_42px_rgba(0,0,0,0.26)] backdrop-blur-xl"
                 style={{ left: `${(floatingPanelPosition.left / NETWORK_VIEWBOX.width) * 100}%`, top: `${(floatingPanelPosition.top / NETWORK_VIEWBOX.height) * 100}%` }}
               >
                 <div className="flex items-start justify-between gap-3">
@@ -1136,7 +1217,7 @@ function CareerNetwork({
                 {activeItem.role ? <p className="mt-2 text-xs leading-5 text-[#a6eaf6]">{activeItem.role}</p> : null}
                 <p className="mt-2 text-xs leading-5 text-slate-200/72">{activeItem.journeySummary ?? activeItem.description}</p>
                 {activeItem.journey?.relatedProjectTitle
-                  ? <JourneyProjectCapsule title={activeItem.journey.relatedProjectTitle} onClick={() => onAction(activeItem)} />
+                  ? <button type="button" onClick={() => onAction(activeItem)} className="group mt-3 inline-flex max-w-full items-center gap-1.5 whitespace-nowrap text-left text-[9px] font-semibold uppercase tracking-[0.09em] text-[#dffbff] transition hover:text-white"><span>View {activeItem.journey.relatedProjectTitle}</span><span aria-hidden="true" className="shrink-0 transition-transform group-hover:translate-x-0.5">→</span></button>
                   : actionLabel ? <button type="button" onClick={() => onAction(activeItem)} className="mt-3 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#dffbff] transition hover:text-white">{actionLabel} →</button> : null}
               </motion.article>
             ) : null}
@@ -1217,7 +1298,7 @@ export default function Experience() {
   }
 
   return (
-    <section id="experience" className="section-shell px-4 md:px-8">
+    <section id="experience" className="section-shell scroll-mt-32 px-4 md:px-8">
       <SpaceSectionBackdrop variant="medium" />
 
       <CareerNetwork
