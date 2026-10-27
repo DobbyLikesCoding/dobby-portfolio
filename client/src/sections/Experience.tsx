@@ -1303,7 +1303,7 @@ export default function Experience() {
   }
 
   return (
-    <section id="experience" className="section-shell scroll-mt-32 px-4 md:px-8">
+    <section id="experience" className="section-shell page-gutter scroll-mt-32">
       <SpaceSectionBackdrop variant="medium" />
 
       <CareerNetwork

@@ -111,7 +111,7 @@ export default function Intro() {
       id="intro"
       ref={sectionRef}
       onPointerMove={handlePointerMove}
-      className="relative flex min-h-screen items-center overflow-hidden px-4 pb-12 pt-24 md:px-8 md:pb-20 md:pt-32"
+      className="page-gutter relative flex min-h-0 items-start overflow-hidden pb-16 pt-24 md:min-h-screen md:items-center md:pb-20 md:pt-32"
     >
       <CosmicVoyageBackground y={backgroundY} scale={backgroundScale} />
       {!prefersReducedMotion && (

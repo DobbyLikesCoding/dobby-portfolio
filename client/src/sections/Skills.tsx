@@ -60,7 +60,7 @@ export default function Skills() {
   }, []);
 
   return (
-    <section id="skills" className="section-shell px-4 md:px-8">
+    <section id="skills" className="section-shell page-gutter">
       <SpaceSectionBackdrop variant="medium" />
       <div className="mx-auto max-w-6xl">
         <Reveal>

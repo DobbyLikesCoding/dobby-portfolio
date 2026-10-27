@@ -58,7 +58,7 @@ export default function About() {
   }, []);
 
   return (
-    <section id="about" className="section-shell px-4 md:px-8">
+    <section id="about" className="section-shell page-gutter">
       <SpaceSectionBackdrop variant="medium" />
       <div className="mx-auto max-w-6xl space-y-5">
         <Reveal>

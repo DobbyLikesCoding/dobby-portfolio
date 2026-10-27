@@ -91,7 +91,7 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      className="section-shell px-4 text-slate-100 md:px-8"
+      className="section-shell page-gutter text-slate-100"
     >
       <SpaceSectionBackdrop variant="medium" />
 

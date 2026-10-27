@@ -101,7 +101,7 @@ export default function WhatIDo() {
   }, []);
 
   return (
-    <section id="what-i-do" className="section-shell px-4 md:px-8">
+    <section id="what-i-do" className="section-shell page-gutter">
       <SpaceSectionBackdrop variant="medium" />
       <div className="mx-auto max-w-6xl">
         <Reveal>
