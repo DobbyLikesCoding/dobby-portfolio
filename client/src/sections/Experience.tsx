@@ -936,14 +936,14 @@ function CareerNetwork({
             >
               <defs>
                 <linearGradient id="journey-primary-surface" x1="0" y1="0" x2="0.8" y2="1">
-                  <stop offset="0" stopColor="rgba(42,132,151,0.96)" />
-                  <stop offset="0.44" stopColor="rgba(16,79,96,0.92)" />
-                  <stop offset="1" stopColor="rgba(8,42,57,0.94)" />
+                  <stop offset="0" stopColor="rgba(100,85,180,0.96)" />
+                  <stop offset="0.44" stopColor="rgba(60,48,125,0.94)" />
+                  <stop offset="1" stopColor="rgba(33,25,82,0.96)" />
                 </linearGradient>
                 <linearGradient id="journey-primary-selected" x1="0" y1="0" x2="0.8" y2="1">
-                  <stop offset="0" stopColor="rgba(75,173,188,0.98)" />
-                  <stop offset="0.5" stopColor="rgba(27,103,121,0.96)" />
-                  <stop offset="1" stopColor="rgba(12,60,75,0.98)" />
+                  <stop offset="0" stopColor="rgba(135,118,220,0.98)" />
+                  <stop offset="0.5" stopColor="rgba(78,63,158,0.97)" />
+                  <stop offset="1" stopColor="rgba(43,33,108,0.98)" />
                 </linearGradient>
                 <linearGradient id="journey-supporting-surface" x1="0" y1="0" x2="0.8" y2="1">
                   <stop offset="0" stopColor="rgba(21,49,66,0.96)" />
@@ -954,8 +954,8 @@ function CareerNetwork({
                   <stop offset="1" stopColor="rgba(8,47,65,0.94)" />
                 </linearGradient>
                 <linearGradient id="journey-capability-surface" x1="0" y1="0" x2="0.8" y2="1">
-                  <stop offset="0" stopColor="rgba(82,72,148,0.84)" />
-                  <stop offset="1" stopColor="rgba(39,33,88,0.92)" />
+                  <stop offset="0" stopColor="rgba(42,132,151,0.92)" />
+                  <stop offset="1" stopColor="rgba(8,42,57,0.95)" />
                 </linearGradient>
                 <linearGradient id="journey-identity-surface" x1="0" y1="0" x2="0.8" y2="1">
                   <stop offset="0" stopColor="rgba(34,120,112,0.84)" />
@@ -974,6 +974,11 @@ function CareerNetwork({
                   <stop offset="0" stopColor="#e6feff" stopOpacity="0.3" />
                   <stop offset="0.3" stopColor="#b5f7ff" stopOpacity="0.08" />
                   <stop offset="0.56" stopColor="#b5f7ff" stopOpacity="0" />
+                </linearGradient>
+                <linearGradient id="journey-primary-glint" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stopColor="#f5f1ff" stopOpacity="0.38" />
+                  <stop offset="0.32" stopColor="#d9ccff" stopOpacity="0.12" />
+                  <stop offset="0.58" stopColor="#d9ccff" stopOpacity="0" />
                 </linearGradient>
               </defs>
               {networkEdges.filter((edge) => edge.kind === "chronology").map((edge) => (
@@ -1009,23 +1014,23 @@ function CareerNetwork({
                   ? "rgba(121,236,215,0.52)"
                   : isDomain
                     ? "rgba(104,220,241,0.48)"
-                    : "rgba(178,165,255,0.46)";
+                    : "rgba(104,220,241,0.5)";
                 const text = isIdentity
                   ? "rgba(226,255,250,0.92)"
                   : isDomain
                     ? "rgba(205,248,255,0.9)"
-                    : "rgba(232,229,255,0.88)";
+                    : "rgba(205,248,255,0.9)";
                 const depthFill = isIdentity
                   ? "rgba(6,47,51,0.9)"
                   : isDomain
                     ? "rgba(4,35,50,0.92)"
-                    : "rgba(27,23,64,0.9)";
+                    : "rgba(5,43,55,0.92)";
                 return (
                   <motion.g key={node.id} pointerEvents="none" animate={{ opacity: nodeOpacity(node) }} transition={{ duration: prefersReducedMotion ? 0 : 0.28, delay: prefersReducedMotion ? 0 : index * 0.012 }}>
                     <ellipse cx={node.centerX} cy={node.centerY + node.height / 2 + 5} rx={node.width * 0.38} ry="3" fill="rgba(0,0,0,0.34)" style={{ filter: "blur(3px)" }} />
                     <rect x={node.centerX - node.width / 2} y={node.centerY - node.height / 2 + 5} width={node.width} height={node.height} rx={node.height / 2} fill="rgba(0,0,0,0.5)" />
                     <rect x={node.centerX - node.width / 2} y={node.centerY - node.height / 2 + 2.5} width={node.width} height={node.height} rx={node.height / 2} fill={depthFill} stroke="rgba(0,0,0,0.44)" strokeWidth="1" />
-                    <rect x={node.centerX - node.width / 2} y={node.centerY - node.height / 2} width={node.width} height={node.height} rx={node.height / 2} fill={fill} stroke={stroke} strokeWidth="1" style={{ filter: isIdentity ? "drop-shadow(0 0 6px rgba(94,234,212,0.14))" : isDomain ? "drop-shadow(0 0 5px rgba(103,218,241,0.1))" : "drop-shadow(0 0 5px rgba(167,139,250,0.1))" }} />
+                    <rect x={node.centerX - node.width / 2} y={node.centerY - node.height / 2} width={node.width} height={node.height} rx={node.height / 2} fill={fill} stroke={stroke} strokeWidth="1" style={{ filter: isIdentity ? "drop-shadow(0 0 6px rgba(94,234,212,0.14))" : isDomain ? "drop-shadow(0 0 5px rgba(103,218,241,0.1))" : "drop-shadow(0 0 5px rgba(103,218,241,0.12))" }} />
                     <rect x={node.centerX - node.width / 2 + 1.5} y={node.centerY - node.height / 2 + 1.5} width={node.width - 3} height={node.height - 3} rx={(node.height - 3) / 2} fill="url(#journey-surface-glint)" pointerEvents="none" />
                     <text x={node.centerX} y={node.centerY - ((lines.length - 1) * 5.5)} textAnchor="middle" fill={text} fontSize={isIdentity ? 10 : 8.9} fontWeight="600" letterSpacing={isIdentity ? 1.15 : 0.9}>
                       {lines.map((line, lineIndex) => <tspan key={line} x={node.centerX} dy={lineIndex === 0 ? 0 : 12}>{line}</tspan>)}
@@ -1105,27 +1110,27 @@ function CareerNetwork({
                     ? "url(#journey-primary-surface)"
                     : "url(#journey-supporting-surface)";
                 const nodeStroke = selected
-                  ? "rgba(184,247,255,0.94)"
+                  ? "rgba(231,224,255,0.96)"
                   : focused && isTurningPoint
-                    ? "rgba(140,238,248,0.84)"
+                    ? "rgba(207,195,255,0.88)"
                     : isTurningPoint
-                      ? "rgba(111,224,237,0.62)"
+                      ? "rgba(182,166,255,0.7)"
                       : focused
                         ? "rgba(143,234,248,0.54)"
                         : "rgba(143,234,248,0.2)";
                 const nodeGlow = selected
-                  ? "drop-shadow(0 0 16px rgba(94,234,212,0.38))"
+                  ? "drop-shadow(0 0 16px rgba(167,139,250,0.42))"
                   : focused && isTurningPoint
-                    ? "drop-shadow(0 0 12px rgba(94,234,212,0.3))"
+                    ? "drop-shadow(0 0 12px rgba(167,139,250,0.34))"
                     : isTurningPoint
-                      ? "drop-shadow(0 0 9px rgba(94,234,212,0.2))"
+                      ? "drop-shadow(0 0 9px rgba(167,139,250,0.24))"
                       : focused
                         ? "drop-shadow(0 0 5px rgba(94,234,212,0.14))"
                         : undefined;
                 const depthFill = isTurningPoint
                   ? selected || focused
-                    ? "rgba(7,57,69,0.96)"
-                    : "rgba(5,43,55,0.96)"
+                    ? "rgba(47,36,112,0.97)"
+                    : "rgba(34,25,82,0.97)"
                   : "rgba(3,13,24,0.94)";
                 return (
                   <motion.g
@@ -1150,10 +1155,10 @@ function CareerNetwork({
                     transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.3, delay: index * 0.06 }}
                     className="cursor-pointer outline-none"
                   >
-                    {isTurningPoint ? <ellipse cx={node.centerX} cy={node.centerY + node.height / 2 + 9} rx={node.width * 0.42} ry="5" fill="rgba(0,0,0,0.42)" style={{ filter: "blur(5px)" }} /> : null}
+                    {isTurningPoint ? <ellipse cx={node.centerX} cy={node.centerY + node.height / 2 + 11} rx={node.width * 0.42} ry="5.5" fill="rgba(0,0,0,0.42)" style={{ filter: "blur(5px)" }} /> : null}
                     <rect
                       x={node.centerX - node.width / 2}
-                      y={node.centerY - node.height / 2 + (isTurningPoint ? 10 : 5)}
+                      y={node.centerY - node.height / 2 + (isTurningPoint ? 13 : 5)}
                       width={node.width}
                       height={node.height}
                       rx={isTurningPoint ? node.height / 2 : 18}
@@ -1161,7 +1166,7 @@ function CareerNetwork({
                     />
                     <rect
                       x={node.centerX - node.width / 2}
-                      y={node.centerY - node.height / 2 + (isTurningPoint ? 5 : 2.5)}
+                      y={node.centerY - node.height / 2 + (isTurningPoint ? 6.5 : 2.5)}
                       width={node.width}
                       height={node.height}
                       rx={isTurningPoint ? node.height / 2 : 18}
@@ -1180,7 +1185,7 @@ function CareerNetwork({
                       strokeWidth={selected ? 1.6 : focused && isTurningPoint ? 1.45 : isTurningPoint ? 1.2 : focused ? 1.15 : 0.85}
                       style={{ filter: nodeGlow }}
                     />
-                    <rect x={node.centerX - node.width / 2 + 2} y={node.centerY - node.height / 2 + 2} width={node.width - 4} height={node.height - 4} rx={isTurningPoint ? (node.height - 4) / 2 : 16} fill="url(#journey-surface-glint)" pointerEvents="none" />
+                    <rect x={node.centerX - node.width / 2 + 2} y={node.centerY - node.height / 2 + 2} width={node.width - 4} height={node.height - 4} rx={isTurningPoint ? (node.height - 4) / 2 : 16} fill={isTurningPoint ? "url(#journey-primary-glint)" : "url(#journey-surface-glint)"} pointerEvents="none" />
                     <text
                       x={node.centerX}
                       y={node.centerY - ((lines.length - 1) * (isTurningPoint ? 7 : 5))}
