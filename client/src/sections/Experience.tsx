@@ -627,11 +627,11 @@ function JourneyProjectCapsule({ title, onClick }: { title: string; onClick: () 
       type="button"
       onClick={onClick}
       aria-label={`View ${title} in Selected Work`}
-      className="group mt-4 inline-flex max-w-full items-center gap-2 rounded-full border border-[#8feaf8]/28 bg-[#86e8f9]/[0.08] px-3 py-1.5 text-left text-[10px] font-semibold uppercase tracking-[0.12em] text-[#dffbff] transition hover:-translate-y-0.5 hover:border-[#8feaf8]/48 hover:bg-[#86e8f9]/[0.14] hover:text-white"
+      className="group mt-4 grid w-full max-w-full grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 rounded-[18px] border border-[#8feaf8]/28 bg-[#86e8f9]/[0.08] px-3 py-2 text-left text-[10px] font-semibold uppercase tracking-[0.12em] text-[#dffbff] transition hover:-translate-y-0.5 hover:border-[#8feaf8]/48 hover:bg-[#86e8f9]/[0.14] hover:text-white sm:inline-flex sm:w-auto sm:rounded-full sm:py-1.5"
     >
       <span className="text-[#8feaf8]/72">Selected Work</span>
-      <span className="truncate">{title}</span>
-      <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">→</span>
+      <span className="min-w-0 break-words leading-4 sm:truncate">{title}</span>
+      <span aria-hidden="true" className="shrink-0 transition-transform group-hover:translate-x-0.5">→</span>
     </button>
   );
 }
@@ -683,7 +683,7 @@ function MajorChapter({ item, chapterNumber, actionLabel, onAction }: { item: Ex
   return (
     <TiltCard
       className={[
-        "glass-panel relative w-full max-w-[450px] overflow-hidden rounded-[28px] border-white/14 bg-[linear-gradient(135deg,rgba(16,31,45,0.82),rgba(8,17,28,0.7)_68%,rgba(18,39,52,0.55))] px-5 py-5 backdrop-blur-md md:px-6 md:py-6",
+        "glass-panel relative min-w-0 w-full max-w-[450px] overflow-hidden rounded-[28px] border-white/14 bg-[linear-gradient(135deg,rgba(16,31,45,0.82),rgba(8,17,28,0.7)_68%,rgba(18,39,52,0.55))] px-5 py-5 backdrop-blur-md md:px-6 md:py-6",
         item.isCurrent ? "border-[#9de5f1]/30" : "",
       ].join(" ")}
       disabled
@@ -1374,7 +1374,7 @@ export default function Experience() {
 
               return (
                 <Reveal key={`${exp.organization}-${exp.period}`} delayMs={i * 40} className={spacing}>
-                  <div className="relative grid items-start lg:grid-cols-[minmax(0,1fr)_92px_minmax(0,1fr)]">
+                  <div className="relative grid min-w-0 grid-cols-[minmax(0,1fr)] items-start lg:grid-cols-[minmax(0,1fr)_92px_minmax(0,1fr)]">
                     <div className="hidden lg:block">
                       {variant === "major" && side === "left" && (
                         <div className="flex items-start justify-end pt-5">
@@ -1407,7 +1407,7 @@ export default function Experience() {
                         )
                       )}
                     </div>
-                    <div className="relative pl-10 lg:hidden">
+                    <div className="relative min-w-0 pl-10 lg:hidden">
                       <div className="absolute left-0 top-4"><TimelineNode variant={variant} chapterNumber={majorIndex} isCurrent={exp.isCurrent} /></div>
                       {variant === "major" ? <MajorChapter item={exp} chapterNumber={majorIndex} actionLabel={actionLabel} onAction={onAction} /> : <CompactMilestone item={exp} actionLabel={actionLabel} onAction={onAction} />}
                     </div>

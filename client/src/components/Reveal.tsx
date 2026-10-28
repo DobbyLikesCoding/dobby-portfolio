@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { motion } from 'framer-motion';
+import useIsMobileViewport from './useIsMobileViewport';
 
 type RevealProps = {
   children: ReactNode;
@@ -12,10 +13,16 @@ export default function Reveal({
   className = '',
   delayMs = 0,
 }: RevealProps) {
+  const isMobile = useIsMobileViewport();
   const ref = useRef<HTMLDivElement | null>(null);
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(isMobile);
 
   useEffect(() => {
+    if (isMobile) {
+      setVisible(true);
+      return;
+    }
+
     const node = ref.current;
     if (!node) return;
 
@@ -31,7 +38,7 @@ export default function Reveal({
     observer.observe(node);
 
     return () => observer.disconnect();
-  }, []);
+  }, [isMobile]);
 
   return (
     <motion.div
@@ -43,8 +50,8 @@ export default function Reveal({
           : { opacity: 0, y: 28, scale: 0.975, filter: 'blur(8px)' }
       }
       transition={{
-        duration: 0.9,
-        delay: delayMs / 1000,
+        duration: isMobile ? 0 : 0.9,
+        delay: isMobile ? 0 : delayMs / 1000,
         ease: [0.22, 1, 0.36, 1],
       }}
       className={['will-change-transform', className].join(' ')}

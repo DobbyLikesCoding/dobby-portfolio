@@ -1,14 +1,20 @@
+import { lazy, Suspense, type ReactNode } from 'react';
 import Intro from './sections/Intro';
-import About from './sections/About';
-import WhatIDo from './sections/WhatIDo';
-import Skills from './sections/Skills';
-import Experience from './sections/Experience';
-import Portfolio from './sections/Projects';
-import Contact from './sections/Contact';
 import PageDots from './components/PageDots';
 import Footer from './components/Footer';
 import TopNav from './components/TopNav';
 import SharedSectionsBackground from './components/SharedSectionsBackground';
+
+const About = lazy(() => import('./sections/About'));
+const WhatIDo = lazy(() => import('./sections/WhatIDo'));
+const Skills = lazy(() => import('./sections/Skills'));
+const Experience = lazy(() => import('./sections/Experience'));
+const Portfolio = lazy(() => import('./sections/Projects'));
+const Contact = lazy(() => import('./sections/Contact'));
+
+function DeferredSection({ id, children }: { id: string; children: ReactNode }) {
+  return <Suspense fallback={<div id={id} aria-hidden="true" />}>{children}</Suspense>;
+}
 
 function App() {
   return (
@@ -39,12 +45,12 @@ function App() {
       <main className="relative z-10">
         <Intro />
         <div className="relative z-10">
-          <About />
-          <WhatIDo />
-          <Skills />
-          <Experience />
-          <Portfolio />
-          <Contact />
+          <DeferredSection id="about"><About /></DeferredSection>
+          <DeferredSection id="what-i-do"><WhatIDo /></DeferredSection>
+          <DeferredSection id="skills"><Skills /></DeferredSection>
+          <DeferredSection id="experience"><Experience /></DeferredSection>
+          <DeferredSection id="portfolio"><Portfolio /></DeferredSection>
+          <DeferredSection id="contact"><Contact /></DeferredSection>
           <Footer />
         </div>
       </main>

@@ -12,6 +12,7 @@ import { useEffect, useRef, useState } from 'react';
 import CosmicVoyageBackground from '../components/CosmicVoyageBackground';
 import Reveal from '../components/Reveal';
 import TiltCard from '../components/TiltCard';
+import useIsMobileViewport from '../components/useIsMobileViewport';
 
 const RESUME_FILE = '/files/Sunghyun_Chang_Resume.pdf';
 const HERO_VIDEO = '/videos/bigbang-space-journey-intro.mp4';
@@ -69,6 +70,7 @@ export default function Intro() {
   const [intro, setIntro] = useState<IntroData>(FALLBACK_INTRO);
   const sectionRef = useRef<HTMLElement | null>(null);
   const prefersReducedMotion = useReducedMotion();
+  const isMobile = useIsMobileViewport();
   const pointerX = useMotionValue(50);
   const pointerY = useMotionValue(35);
   const smoothX = useSpring(pointerX, { stiffness: 120, damping: 20, mass: 0.35 });
@@ -114,7 +116,7 @@ export default function Intro() {
       className="page-gutter relative flex min-h-0 items-start overflow-hidden pb-16 pt-24 md:min-h-screen md:items-center md:pb-20 md:pt-32"
     >
       <CosmicVoyageBackground y={backgroundY} scale={backgroundScale} />
-      {!prefersReducedMotion && (
+      {!prefersReducedMotion && !isMobile && (
         <motion.video
           aria-hidden="true"
           autoPlay

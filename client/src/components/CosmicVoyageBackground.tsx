@@ -1,4 +1,5 @@
 import { motion, type MotionValue, useReducedMotion } from 'framer-motion';
+import useIsMobileViewport from './useIsMobileViewport';
 
 type CosmicVoyageBackgroundProps = {
   y: MotionValue<number>;
@@ -10,6 +11,8 @@ export default function CosmicVoyageBackground({
   scale,
 }: CosmicVoyageBackgroundProps) {
   const prefersReducedMotion = useReducedMotion();
+  const isMobile = useIsMobileViewport();
+  const allowAnimation = !prefersReducedMotion && !isMobile;
 
   return (
     <motion.div
@@ -23,13 +26,13 @@ export default function CosmicVoyageBackground({
       <motion.div
         className="absolute inset-[-8%] mix-blend-screen opacity-70"
         animate={
-          prefersReducedMotion
-            ? undefined
-            : {
+          allowAnimation
+            ? {
                 x: [0, -40, 18, 0],
                 y: [0, 22, -12, 0],
                 scale: [1, 1.04, 1.08, 1.02],
               }
+            : undefined
         }
         transition={{ duration: 16, repeat: Infinity, ease: 'easeInOut' }}
       >
@@ -39,13 +42,13 @@ export default function CosmicVoyageBackground({
       <motion.div
         className="absolute inset-[-12%] mix-blend-lighten opacity-52"
         animate={
-          prefersReducedMotion
-            ? undefined
-            : {
+          allowAnimation
+            ? {
                 x: [0, 34, -20, 0],
                 y: [0, -20, 14, 0],
                 scale: [1.02, 1.08, 1.02],
               }
+            : undefined
         }
         transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut' }}
       >
@@ -54,47 +57,47 @@ export default function CosmicVoyageBackground({
 
       <motion.div
         className="absolute inset-x-[-12%] top-[4%] h-[38%] cosmic-aurora cosmic-aurora-top"
-        animate={prefersReducedMotion ? undefined : { x: [0, -28, 14, 0], y: [0, 8, -6, 0], opacity: [0.32, 0.5, 0.36, 0.32] }}
+        animate={allowAnimation ? { x: [0, -28, 14, 0], y: [0, 8, -6, 0], opacity: [0.32, 0.5, 0.36, 0.32] } : undefined}
         transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
       />
       <motion.div
         className="absolute bottom-[-8%] right-[-8%] h-[44%] w-[60%] cosmic-aurora cosmic-aurora-bottom"
-        animate={prefersReducedMotion ? undefined : { x: [0, 18, -10, 0], y: [0, -10, 6, 0], opacity: [0.22, 0.38, 0.26, 0.22] }}
+        animate={allowAnimation ? { x: [0, 18, -10, 0], y: [0, -10, 6, 0], opacity: [0.22, 0.38, 0.26, 0.22] } : undefined}
         transition={{ duration: 24, repeat: Infinity, ease: 'easeInOut' }}
       />
 
       <div className="cosmic-grain cosmic-grain-base absolute inset-0 opacity-[0.68]" />
-      <div className="cosmic-grain cosmic-grain-drift absolute inset-[-10%] opacity-[0.54] mix-blend-screen" />
-      <div className="cosmic-grain cosmic-grain-highlight absolute inset-[-4%] opacity-[0.34] mix-blend-lighten" />
+      <div className="cosmic-grain cosmic-grain-drift absolute inset-[-10%] hidden opacity-[0.54] mix-blend-screen md:block" />
+      <div className="cosmic-grain cosmic-grain-highlight absolute inset-[-4%] hidden opacity-[0.34] mix-blend-lighten md:block" />
 
-      <div className="cosmic-particles cosmic-particles-soft absolute inset-0 opacity-45" />
-      <div className="cosmic-particles cosmic-particles-near absolute inset-[-6%] opacity-55" />
-      <div className="cosmic-constellation absolute inset-0 opacity-[0.18]" />
+      <div className="cosmic-particles cosmic-particles-soft absolute inset-0 hidden opacity-45 md:block" />
+      <div className="cosmic-particles cosmic-particles-near absolute inset-[-6%] hidden opacity-55 md:block" />
+      <div className="cosmic-constellation absolute inset-0 hidden opacity-[0.18] md:block" />
 
       <motion.div
         className="absolute left-[-14%] top-[34%] h-[44vw] w-[44vw] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.28)_0%,rgba(170,222,255,0.22)_18%,rgba(103,175,220,0.12)_38%,transparent_66%)] blur-[20px] mix-blend-screen"
         animate={
-          prefersReducedMotion
-            ? undefined
-            : {
+          allowAnimation
+            ? {
                 x: [0, 18, -12, 0],
                 y: [0, -12, 8, 0],
                 scale: [0.84, 1.08, 0.96, 0.84],
                 opacity: [0.14, 0.42, 0.22, 0.14],
               }
+            : undefined
         }
         transition={{ duration: 8.5, repeat: Infinity, ease: [0.22, 1, 0.36, 1] }}
       />
       <motion.div
         className="absolute right-[-18%] top-[6%] h-[58vw] w-[52vw] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.1)_0%,rgba(189,200,255,0.1)_18%,rgba(115,76,148,0.12)_34%,transparent_68%)] blur-[56px]"
         animate={
-          prefersReducedMotion
-            ? undefined
-            : {
+          allowAnimation
+            ? {
                 x: [0, -42, 14, 0],
                 y: [0, 18, -10, 0],
                 opacity: [0.28, 0.38, 0.24, 0.28],
               }
+            : undefined
         }
         transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}
       />
@@ -102,17 +105,17 @@ export default function CosmicVoyageBackground({
       <motion.div
         className="absolute left-[10%] top-[20%] h-44 w-44 rounded-full bg-[radial-gradient(circle,rgba(255,248,232,0.86)_0%,rgba(145,228,255,0.38)_24%,rgba(84,122,184,0.14)_48%,transparent_72%)] mix-blend-screen"
         animate={
-          prefersReducedMotion
-            ? undefined
-            : {
+          allowAnimation
+            ? {
                 scale: [0.42, 1.06, 0.76, 0.42],
                 opacity: [0.06, 0.24, 0.1, 0.06],
               }
+            : undefined
         }
         transition={{ duration: 7.2, repeat: Infinity, ease: [0.22, 1, 0.36, 1] }}
       />
 
-      <div className="cosmic-current absolute inset-0" />
+      <div className="cosmic-current absolute inset-0 hidden md:block" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_24%,rgba(255,255,255,0.08),transparent_8%),radial-gradient(circle_at_64%_44%,rgba(145,228,255,0.08),transparent_10%),radial-gradient(circle_at_74%_70%,rgba(255,184,120,0.06),transparent_12%)] blur-2xl" />
       <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(4,8,16,0.14),transparent_22%,transparent_76%,rgba(4,8,16,0.18))]" />
     </motion.div>

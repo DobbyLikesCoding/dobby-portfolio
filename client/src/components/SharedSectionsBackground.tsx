@@ -1,12 +1,14 @@
 import { useReducedMotion } from 'framer-motion';
+import useIsMobileViewport from './useIsMobileViewport';
 
 export default function SharedSectionsBackground() {
   const prefersReducedMotion = useReducedMotion();
+  const isMobile = useIsMobileViewport();
 
   return (
     <div aria-hidden="true" className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
       <div className="absolute inset-0 bg-[linear-gradient(180deg,#030611_0%,#060d17_34%,#08101a_66%,#050912_100%)]" />
-      {!prefersReducedMotion && (
+      {!prefersReducedMotion && !isMobile && (
         <video
           autoPlay
           muted
