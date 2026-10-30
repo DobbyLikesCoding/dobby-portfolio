@@ -13,7 +13,12 @@ const Portfolio = lazy(() => import('./sections/Projects'));
 const Contact = lazy(() => import('./sections/Contact'));
 
 function DeferredSection({ id, children }: { id: string; children: ReactNode }) {
-  return <Suspense fallback={<div id={id} aria-hidden="true" />}>{children}</Suspense>;
+  // Keep the navigation target in the DOM while the section code is loading.
+  return (
+    <div id={id} className="scroll-mt-32">
+      <Suspense fallback={<div aria-hidden="true" />}>{children}</Suspense>
+    </div>
+  );
 }
 
 function App() {

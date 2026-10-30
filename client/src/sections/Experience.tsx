@@ -1222,7 +1222,7 @@ function CareerNetwork({
                 {activeItem.role ? <p className="mt-2 text-xs leading-5 text-[#a6eaf6]">{activeItem.role}</p> : null}
                 <p className="mt-2 text-xs leading-5 text-slate-200/72">{activeItem.journeySummary ?? activeItem.description}</p>
                 {activeItem.journey?.relatedProjectTitle
-                  ? <button type="button" onClick={() => onAction(activeItem)} className="group mt-3 inline-flex max-w-full items-center gap-1.5 whitespace-nowrap text-left text-[9px] font-semibold uppercase tracking-[0.09em] text-[#dffbff] transition hover:text-white"><span>View {activeItem.journey.relatedProjectTitle}</span><span aria-hidden="true" className="shrink-0 transition-transform group-hover:translate-x-0.5">→</span></button>
+                  ? <button type="button" onClick={() => onAction(activeItem)} className="group mt-3 inline-flex max-w-full items-center gap-1.5 text-left text-[9px] font-semibold uppercase tracking-[0.09em] text-[#dffbff] transition hover:text-white"><span>{actionLabel}</span><span aria-hidden="true" className="shrink-0 transition-transform group-hover:translate-x-0.5">→</span></button>
                   : actionLabel ? <button type="button" onClick={() => onAction(activeItem)} className="mt-3 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#dffbff] transition hover:text-white">{actionLabel} →</button> : null}
               </motion.article>
             ) : null}
@@ -1303,7 +1303,7 @@ export default function Experience() {
   }
 
   return (
-    <section id="experience" className="section-shell page-gutter scroll-mt-32">
+    <section className="section-shell page-gutter">
       <SpaceSectionBackdrop variant="medium" />
 
       <CareerNetwork
@@ -1460,15 +1460,15 @@ function ExperienceModal({
   const hasStoryBlocks = storyBlocks.length > 0;
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto p-4 md:p-6">
+    <div className="fixed inset-0 z-[60] grid h-[100dvh] place-items-start overflow-hidden px-4 pb-4 pt-[5.5rem] md:px-6 md:pb-6 md:pt-24">
       <button
         aria-label="Close modal overlay"
         onClick={onClose}
         className="absolute inset-0 bg-black/70"
       />
 
-      <div className="relative mx-auto my-6 w-full max-w-4xl">
-        <div className="max-h-[calc(100vh-3rem)] overflow-y-auto rounded-[30px] border border-white/12 bg-[rgba(10,18,27,0.94)] backdrop-blur-xl shadow-2xl animate-modalIn [scrollbar-width:thin] [scrollbar-color:rgba(45,212,191,0.45)_transparent] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-teal-400/40 hover:[&::-webkit-scrollbar-thumb]:bg-teal-300/55">
+      <div className="relative w-full max-w-4xl">
+        <div className="max-h-[calc(100dvh-6.5rem)] overflow-y-auto rounded-[30px] border border-white/12 bg-[rgba(10,18,27,0.94)] backdrop-blur-xl shadow-2xl animate-modalIn [scrollbar-width:thin] [scrollbar-color:rgba(45,212,191,0.45)_transparent] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-teal-400/40 hover:[&::-webkit-scrollbar-thumb]:bg-teal-300/55 md:max-h-[calc(100dvh-7rem)]">
           <div className="flex items-start justify-between gap-4 p-6 border-b border-white/10">
             <div>
               <div className="mb-3">
