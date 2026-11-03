@@ -163,11 +163,12 @@ app.MapGet("/api/experience", () => new object[]
     organization = "MBC (Munhwa Broadcasting Corporation), South Korea",
     role = "Broadcast Technician",
     period = "May 2009 – May 2011",
-    description = "Maintained broadcast and studio equipment and supported editorial room operations, ensuring stable on-air broadcasting and technical reliability.",
+    description = "Maintained broadcast and studio equipment and supported editorial room operations.",
     journeyVariant = "major",
     journeyLabel = "Operational Reliability",
     journeySide = "left",
     journeySummary = "Learned operational reliability in live broadcast environments.",
+    modalSize = "compact",
     media = new[] { "/images/mbc/mbc1.JPG", "/images/mbc/mbc2.JPG" }
     , journey = new { nodeType = "employment", narrativeRole = "supporting", startDate = "2009-05", endDate = "2011-05", label = "MBC", chronologyIndex = 3, relatedExperienceIds = new[] { "camino" }, relatedDomainIds = new[] { "live-operations" } }
     },

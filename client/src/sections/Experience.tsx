@@ -24,6 +24,7 @@ type ExperienceItem = {
   details?: string[];
   media?: string[];
   storyBlocks?: StoryBlock[];
+  modalSize?: "default" | "compact";
   journey?: JourneyMetadata;
 };
 
@@ -193,11 +194,12 @@ const FALLBACK_EXPERIENCE: ExperienceItem[] = [
     organization: "MBC (Munhwa Broadcasting Corporation), South Korea",
     role: "Broadcast Technician",
     period: "May 2009 – May 2011",
-    description: "Maintained broadcast and studio equipment and supported editorial room operations, ensuring stable on-air broadcasting and technical reliability.",
+    description: "Maintained broadcast and studio equipment and supported editorial room operations.",
     journeyVariant: "major",
     journeyLabel: "Operational Reliability",
     journeySide: "left",
     journeySummary: "Learned operational reliability in live broadcast environments.",
+    modalSize: "compact",
     media: [
       "/images/mbc/mbc1.JPG",
       "/images/mbc/mbc2.JPG",
@@ -1473,7 +1475,7 @@ function ExperienceModal({
         className="absolute inset-0 bg-black/70"
       />
 
-      <div className="relative w-full max-w-4xl">
+      <div className={`relative w-full ${item.modalSize === "compact" ? "max-w-2xl" : "max-w-4xl"}`}>
         <div className="max-h-[calc(100dvh-6.5rem)] overflow-y-auto rounded-[30px] border border-white/12 bg-[rgba(10,18,27,0.94)] backdrop-blur-xl shadow-2xl animate-modalIn [scrollbar-width:thin] [scrollbar-color:rgba(45,212,191,0.45)_transparent] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-teal-400/40 hover:[&::-webkit-scrollbar-thumb]:bg-teal-300/55 md:max-h-[calc(100dvh-7rem)]">
           <div className="flex items-start justify-between gap-4 p-6 border-b border-white/10">
             <div>
