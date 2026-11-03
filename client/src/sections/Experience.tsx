@@ -198,6 +198,10 @@ const FALLBACK_EXPERIENCE: ExperienceItem[] = [
     journeyLabel: "Operational Reliability",
     journeySide: "left",
     journeySummary: "Learned operational reliability in live broadcast environments.",
+    media: [
+      "/images/mbc/mbc1.JPG",
+      "/images/mbc/mbc2.JPG",
+    ],
   },
   {
     id: "camino",
@@ -1104,30 +1108,32 @@ function CareerNetwork({
                 const focused = selected || hoveredNodeId === node.id;
                 const lines = node.label.split("\n");
                 const isTurningPoint = node.kind === "primary";
-                const nodeFill = selected || (focused && isTurningPoint)
+                // MBC remains a supporting-sized chapter, but shares the primary journey palette.
+                const usesPrimaryPalette = isTurningPoint || node.id === "mbc";
+                const nodeFill = selected || (focused && usesPrimaryPalette)
                   ? "url(#journey-primary-selected)"
-                  : isTurningPoint
+                  : usesPrimaryPalette
                     ? "url(#journey-primary-surface)"
                     : "url(#journey-supporting-surface)";
                 const nodeStroke = selected
                   ? "rgba(231,224,255,0.96)"
-                  : focused && isTurningPoint
+                  : focused && usesPrimaryPalette
                     ? "rgba(207,195,255,0.88)"
-                    : isTurningPoint
+                    : usesPrimaryPalette
                       ? "rgba(182,166,255,0.7)"
                       : focused
                         ? "rgba(143,234,248,0.54)"
                         : "rgba(143,234,248,0.2)";
                 const nodeGlow = selected
                   ? "drop-shadow(0 0 16px rgba(167,139,250,0.42))"
-                  : focused && isTurningPoint
+                  : focused && usesPrimaryPalette
                     ? "drop-shadow(0 0 12px rgba(167,139,250,0.34))"
-                    : isTurningPoint
+                    : usesPrimaryPalette
                       ? "drop-shadow(0 0 9px rgba(167,139,250,0.24))"
                       : focused
                         ? "drop-shadow(0 0 5px rgba(94,234,212,0.14))"
                         : undefined;
-                const depthFill = isTurningPoint
+                const depthFill = usesPrimaryPalette
                   ? selected || focused
                     ? "rgba(47,36,112,0.97)"
                     : "rgba(34,25,82,0.97)"

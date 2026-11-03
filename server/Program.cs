@@ -167,7 +167,8 @@ app.MapGet("/api/experience", () => new object[]
     journeyVariant = "major",
     journeyLabel = "Operational Reliability",
     journeySide = "left",
-    journeySummary = "Learned operational reliability in live broadcast environments."
+    journeySummary = "Learned operational reliability in live broadcast environments.",
+    media = new[] { "/images/mbc/mbc1.JPG", "/images/mbc/mbc2.JPG" }
     , journey = new { nodeType = "employment", narrativeRole = "supporting", startDate = "2009-05", endDate = "2011-05", label = "MBC", chronologyIndex = 3, relatedExperienceIds = new[] { "camino" }, relatedDomainIds = new[] { "live-operations" } }
     },
 
